@@ -1,0 +1,62 @@
+{
+  "playerData": {
+    "0": {
+      "uid": 0,
+      "name": "玩家A",
+      "health": 100,
+      "state": 0,
+      "maxHealth": 0,
+      "group": {
+        "id": 0,
+        "name": "红色",
+        "maxMember": 32,
+        "color": {
+          "r": 1.0,
+          "g": 0.0,
+          "b": 0.0,
+          "a": 1.0,
+          "grayscale": 0.299,
+          "maxColorComponent": 1.0
+        }
+      },
+      "damage": 10,
+      "moveSpeed": 10,
+      "attackRadius": 1.0,
+      "lastPos": {
+        "x": -0.394476831,
+        "y": 6.1181016,
+        "z": 0.0,
+        "normalized": {
+          "x": -0.0643433854,
+          "y": 0.9979278,
+          "z": 0.0,
+          "normalized": {
+            "x": -0.06434339,
+            "y": 0.997927845,
+            "z": 0.0,
+            "magnitude": 1.0,
+            "sqrMagnitude": 1.0
+          },
+          "magnitude": 0.99999994,
+          "sqrMagnitude": 0.99999994
+        },
+        "magnitude": 6.130806,
+        "sqrMagnitude": 37.58678
+      },
+      "coinCount": 0,
+      "dirty": false,
+      "packageData": {
+        "items": [
+          {
+            "id": 1,
+            "count": 1
+          },
+          {
+            "id": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
+  }
+}
