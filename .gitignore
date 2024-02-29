@@ -26,6 +26,12 @@
 # Visual Studio cache directory
 .vs/
 
+# JetBrains Rider
+.idea/
+
+# vscode
+.vscode/
+
 # Gradle cache directory
 .gradle/
 
@@ -70,3 +76,20 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+
+# MacOS
+.DS_Store
+
+# Editor Plugins
+Assets/Plugins/RainbowFolders/
+Assets/Plugins/RainbowFolders.meta
+
+# Pokemon Unity
+Assets/Bin3DS/
+Assets/Bin3DS.meta
+
+Assets/Complete/
+Assets/Complete.meta
+
+
