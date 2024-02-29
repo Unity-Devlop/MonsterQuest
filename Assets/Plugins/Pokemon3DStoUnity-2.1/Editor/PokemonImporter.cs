@@ -177,7 +177,7 @@ namespace P3DS2U.Editor
 
             EditorUtility.ClearProgressBar();
         }
-
+ 
         private static void GenerateAnimationController(GameObject modelGo, string combinedExportFolder,
             string modelName)
         {
