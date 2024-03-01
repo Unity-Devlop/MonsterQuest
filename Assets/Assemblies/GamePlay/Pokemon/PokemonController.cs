@@ -54,9 +54,17 @@ namespace Game
             _characterController.Move(moveVec);
         }
 
+
         [Command]
         internal void CmdIdle()
         {
+            stateMachine.Change<PokemonIdleState>();
+            RpcIdle();
+        }
+        [ClientRpc]
+        private void RpcIdle()
+        {
+            stateMachine.Change<PokemonIdleState>();
         }
 
 
@@ -64,6 +72,14 @@ namespace Game
         internal void CmdWalk(Vector3 moveVec)
         {
             _characterController.Move(moveVec);
+            stateMachine.Change<PokemonWalkState>();
+            RpcWalk();
+        }
+
+        [ClientRpc]
+        private void RpcWalk()
+        {
+            stateMachine.Change<PokemonWalkState>();
         }
 
 
@@ -82,5 +98,17 @@ namespace Game
         {
             pokemonTransform.Rotate(Vector3.up, deltaAngel);
         }
+
+        // [ClientRpc]
+        // public void RpcSetAnimBool(int hash, bool value)
+        // {
+        //     animator.SetBool(hash, value);
+        // }
+        //
+        // [Command]
+        // public void CmdSetAnimBool(int hash, bool value)
+        // {
+        //     RpcSetAnimBool(hash, value);
+        // }
     }
 }

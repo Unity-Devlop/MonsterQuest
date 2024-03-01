@@ -67,7 +67,7 @@ namespace Game
             PokemonServer.Singleton.QueryPosition(msg.userId, out Vector3 position);
 
             // 在网络上创建角色
-            GameObject player = Instantiate(playerPrefab, position, Quaternion.identity);
+            GameObject player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
             player.name = $"player:[{msg.playerName}]";
             PlayerController component = player.GetComponent<PlayerController>();
             PokemonServer.Singleton.QueryPlayerData(msg.userId, out var playerData);

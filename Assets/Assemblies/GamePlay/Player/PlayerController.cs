@@ -86,8 +86,7 @@ namespace Game
                 float forward = moveInput.y;
                 float right = moveInput.x;
                 // forward控制前后移动
-                Vector3 moveVec = pokemonController.pokemonTransform.forward * forward +
-                                  pokemonController.pokemonTransform.right * right;
+                Vector3 moveVec = pokemonController.pokemonTransform.forward * forward;
                 moveVec *= _data.moveSpeed * Time.deltaTime;
                 //right控制旋转
                 if (right != 0)
@@ -96,8 +95,13 @@ namespace Game
                     float deltaAngel = right * Time.deltaTime * Mathf.Rad2Deg;
                     pokemonController.CmdRotate(deltaAngel);
                 }
-
+pokemonController.stateMachine.Change<PokemonWalkState>();
                 pokemonController.CmdWalk(moveVec);
+            }
+            else
+            {
+                pokemonController.stateMachine.Change<PokemonIdleState>();
+                pokemonController.CmdIdle();
             }
         }
 
@@ -123,9 +127,10 @@ namespace Game
             gameObject.name = $"Player:[{playerName}]";
             // 配置信息
             pokemonController.InitPokemon(pokemon.gameObject, position);
-            pokemon.gameObject.name = $"{playerName}-Pokemon:[{_data.currentPokemonId}]";
+            GameObject pokemonObj = pokemon.gameObject;
+            pokemonObj.name = $"{playerName}-Pokemon:[{_data.currentPokemonId}]";
             
-            PokemonSetup(pokemon.gameObject, position);
+            PokemonSetup(pokemonObj, position);
         }
 
         [Server]

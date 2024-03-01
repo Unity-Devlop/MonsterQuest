@@ -6,12 +6,26 @@ namespace Game
     {
         public override void OnEnter(PokemonController owner)
         {
-            owner.animator.SetBool(PokemonController.idle, true);
+            // if (owner.isClient)
+            // {
+            //     owner.CmdSetAnimBool(PokemonController.idle, true);
+            // }
+            // else if (owner.isServerOnly)
+            // {
+                owner.animator.SetBool(PokemonController.idle, true);
+            // }
         }
 
         public override void OnExit(PokemonController owner)
         {
-            owner.animator.SetBool(PokemonController.idle, false);
+            // if (owner.isClient)
+            // {
+            //     owner.CmdSetAnimBool(PokemonController.idle, false);
+            // }
+            // else if (owner.isServerOnly)
+            // {
+                owner.animator.SetBool(PokemonController.idle, false);
+            // }
         }
     }
 }

@@ -58,6 +58,7 @@ namespace UnityToolkit
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual void Change(Type type)
         {
+            if (CurrentState.GetType() == type) return;
             CurrentState?.OnExit(Owner);
             CurrentState = stateDic[type];
             CurrentState.OnEnter(Owner);
@@ -77,7 +78,7 @@ namespace UnityToolkit
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual void OnUpdate()
         {
-            if(CurrentState == null) return;
+            if (CurrentState == null) return;
             CurrentState.OnUpdate(Owner);
         }
 
