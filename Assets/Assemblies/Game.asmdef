@@ -10,7 +10,8 @@
         "UniTask",
         "Unity.Mathematics",
         "Cinemachine",
-        "MemoryPack"
+        "MemoryPack",
+        "Mirror.Components"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

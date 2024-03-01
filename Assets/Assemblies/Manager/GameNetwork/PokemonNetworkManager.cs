@@ -72,7 +72,7 @@ namespace Game
             PlayerController component = player.GetComponent<PlayerController>();
             PokemonServer.Singleton.QueryPlayerData(msg.userId, out var playerData);
             PokemonServer.Singleton.QueryPackageData(msg.userId, out var packageData);
-            component.ServerInitData(playerData, packageData);
+            component.ServerInitData(playerData, packageData, connection);
             NetworkServer.AddPlayerForConnection(connection, player);
         }
 
