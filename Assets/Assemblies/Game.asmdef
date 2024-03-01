@@ -9,7 +9,8 @@
         "Unity.TextMeshPro",
         "UniTask",
         "Unity.Mathematics",
-        "Cinemachine"
+        "Cinemachine",
+        "MemoryPack"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
