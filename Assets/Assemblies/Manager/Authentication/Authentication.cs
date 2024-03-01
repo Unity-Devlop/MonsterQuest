@@ -6,10 +6,8 @@ namespace Game
 {
     public static class Authentication
     {
-        public static string userName;
+        public static string playerName;
         public static string userId;
-        // public static string password;
+        public static string password;
     }
-
-
 }

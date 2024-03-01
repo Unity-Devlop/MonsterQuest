@@ -1,7 +1,15 @@
 {
+  "002": {
+    "userId": "002",
+    "userName": "二号",
+    "level": 1,
+    "moveSpeed": 5.0,
+    "runSpeed": 8.0,
+    "currentPokemonId": 1
+  },
   "001": {
     "userId": "001",
-    "userName": "玩家一号",
+    "userName": "一号",
     "level": 1,
     "moveSpeed": 5.0,
     "runSpeed": 8.0,

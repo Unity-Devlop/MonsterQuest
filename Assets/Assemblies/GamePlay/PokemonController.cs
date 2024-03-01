@@ -16,20 +16,15 @@ namespace Game
         private static readonly int BeAttack = Animator.StringToHash("BeAttack");
 
         private Animator _animator;
+        private CharacterController _characterController;
 
         public void InitComponent(GameObject pokemonGameObj)
         {
-            _animator = pokemonGameObj.transform.Find("Model").GetComponent<Animator>();
+            _characterController = pokemonGameObj.GetComponent<CharacterController>();
+            Transform model = pokemonGameObj.transform.Find("Model");
+            _animator = model.GetComponent<Animator>();
         }
-
-
-        [Command]
-        private void CmdInitModel(int modelId)
-        {
-            // Id2Prefab
-        }
-
-
+        
         [Command]
         private void CmdRun(Vector3 moveVec)
         {

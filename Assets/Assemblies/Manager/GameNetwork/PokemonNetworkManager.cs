@@ -13,44 +13,62 @@ namespace Game
             NetworkServer.RegisterHandler<RequestEnterGameMessage>(RequestEnterGame);
         }
 
+        
+        
+        public override void OnDestroy()
+        {
+            base.OnApplicationQuit();
+        }
+
+        public override void OnApplicationQuit()
+        {
+            base.OnApplicationQuit();
+        }
+
         public override void OnStopServer()
         {
-            DestroyImmediate(PokemonServer.Singleton);
+            if (PokemonServer.SingletonNullable != null)
+            {
+                DestroyImmediate(PokemonServer.SingletonNullable);
+            }
             NetworkServer.UnregisterHandler<RequestEnterGameMessage>();
         }
 
         public override void OnServerConnect(NetworkConnectionToClient conn)
         {
-            
+            base.OnServerConnect(conn);
         }
 
         public override void OnServerDisconnect(NetworkConnectionToClient conn)
         {
-            PokemonServer.Singleton.OffLine(conn);
+            if (PokemonServer.SingletonNullable != null)
+            {
+                PokemonServer.SingletonNullable.OffLine(conn);
+            }
         }
 
         private void RequestEnterGame(NetworkConnectionToClient connection, RequestEnterGameMessage msg)
         {
             if (!PokemonServer.Singleton.Registered(msg.userId))
             {
-                Debug.Log($"Id:[{msg.userId}],Name:[{msg.userName}]第一次上线,初始化角色信息\n");
-                PokemonServer.Singleton.Register(msg.userId, msg.userName);
+                Debug.Log($"Id:[{msg.userId}],Name:[{msg.playerName}]第一次上线,初始化角色信息\n");
+                PokemonServer.Singleton.Register(msg.userId, msg.playerName);
             }
 
             if (PokemonServer.Singleton.IsOnline(msg.userId))
             {
-                Debug.Log($"Id:[{msg.userId}],Name:[{msg.userName}]已经在线,踢出之前的玩家\n");
+                Debug.Log($"Id:[{msg.userId}],Name:[{msg.playerName}]已经在线,踢出之前的玩家\n");
                 PokemonServer.Singleton.OffLine(msg.userId);
             }
-            
+
             PokemonServer.Singleton.OnLine(msg.userId, connection);
-            
+
             // Query Last Pos
             PokemonServer.Singleton.QueryPosition(msg.userId, out Vector3 position);
-            
+
             // 在网络上创建角色
             GameObject player = Instantiate(playerPrefab, position, Quaternion.identity);
-            player.name = $"player:[{msg.userName}]-[{msg.userName}]";
+            player.name = $"player:[{msg.playerName}]";
             NetworkServer.AddPlayerForConnection(connection, player);
         }
 
@@ -60,11 +78,12 @@ namespace Game
 
         public override void OnStartClient()
         {
+            base.OnStartClient();
         }
 
         public override void OnStopClient()
         {
-            
+            base.OnStopClient();
         }
 
         public override void OnClientConnect()
@@ -73,7 +92,7 @@ namespace Game
             NetworkClient.Send(new RequestEnterGameMessage
             {
                 userId = Authentication.userId,
-                userName = Authentication.userName
+                playerName = Authentication.playerName
             });
         }
 

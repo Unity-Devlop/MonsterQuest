@@ -29,7 +29,10 @@ namespace Game
         public override void OnStartClient()
         {
             _camera.enabled = isLocalPlayer;
-            CmdInitData(Authentication.userId);
+            if (isLocalPlayer)
+            {
+                CmdInitData(Authentication.userId);
+            }
         }
 
 
@@ -50,7 +53,10 @@ namespace Game
         {
             _data = MemoryPackSerializer.Deserialize<PlayerData>(playerDataPayload);
             _packageData = MemoryPackSerializer.Deserialize<PackageData>(packageDataPayload);
-            CmdSpawnCurPokemon(_data.currentPokemonId);
+            if (isLocalPlayer)
+            {
+                CmdSpawnCurPokemon(_data.currentPokemonId);   
+            }
         }
 
         [Command]

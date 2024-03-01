@@ -10,11 +10,12 @@ namespace Game
     public class PokemonServer : MonoSingleton<PokemonServer>
     {
         protected override bool DontDestroyOnLoad() => true;
-        
+
         private static readonly string UserSetPath = "UserSet.json";
         private static readonly string PlayerDataPath = "PlayerData.json";
         private static readonly string PackageDataPath = "PackageData.json";
         private static readonly string PositionPath = "Position.json";
+        private static readonly string NameSetPath = "NameSet.json";
 
         // 玩家基础数据
         [SerializeField] private SerializableDictionary<string, PlayerData> id2PlayerData;
@@ -24,6 +25,11 @@ namespace Game
 
         // 玩家下线位置
         [SerializeField] private SerializableDictionary<string, Vector3> id2Position;
+
+
+        // 用户名集合
+        [Sirenix.OdinInspector.ShowInInspector]
+        private HashSet<string> _nameSet;
 
 
         // 非持久化数据
@@ -55,6 +61,7 @@ namespace Game
             JsonUtil.SaveJsonToStreamingAssets(PackageDataPath, id2PackageData);
             JsonUtil.SaveJsonToStreamingAssets(PositionPath, id2Position);
             JsonUtil.SaveJsonToStreamingAssets(UserSetPath, _userSet);
+            JsonUtil.SaveJsonToStreamingAssets(NameSetPath, _nameSet);
         }
 
         [Sirenix.OdinInspector.Button]
@@ -68,12 +75,15 @@ namespace Game
                 JsonUtil.LoadJsonFromStreamingAssets<SerializableDictionary<string, Vector3>>(PositionPath);
             _userSet =
                 JsonUtil.LoadJsonFromStreamingAssets<HashSet<string>>(UserSetPath);
+            _nameSet =
+                JsonUtil.LoadJsonFromStreamingAssets<HashSet<string>>(NameSetPath);
 
 
             if (id2PlayerData == null) id2PlayerData = new SerializableDictionary<string, PlayerData>();
             if (id2PackageData == null) id2PackageData = new SerializableDictionary<string, PackageData>();
             if (id2Position == null) id2Position = new SerializableDictionary<string, Vector3>();
             if (_userSet == null) _userSet = new HashSet<string>();
+            if (_nameSet == null) _nameSet = new HashSet<string>();
         }
 
         public bool IsOnline(string userId)
@@ -107,6 +117,7 @@ namespace Game
             if (_userSet.Contains(userId)) return;
             // TODO 多样初始化
             _userSet.Add(userId);
+            _nameSet.Add(userName);
             id2PlayerData[userId] = new PlayerData
             {
                 userId = userId,
