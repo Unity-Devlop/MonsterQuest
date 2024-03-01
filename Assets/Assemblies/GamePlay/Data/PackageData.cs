@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MemoryPack;
 
 namespace Game
 {
     // 玩家背包数据
-    [MemoryPackable]
+    [MemoryPackable,Serializable]
     public partial class PackageData
     {
         public List<ItemData> items = new List<ItemData>();

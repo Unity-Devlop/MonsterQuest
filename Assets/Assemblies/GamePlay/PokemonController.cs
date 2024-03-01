@@ -1,7 +1,4 @@
-﻿using System;
-using Cinemachine;
-using MemoryPack;
-using Mirror;
+﻿using Mirror;
 using UnityEngine;
 
 namespace Game
@@ -17,36 +14,46 @@ namespace Game
 
         private Animator _animator;
         private CharacterController _characterController;
+        private bool _initialized = false;
+        public Vector3 pokemonPosition => _characterController.transform.position;
 
-        public void InitComponent(GameObject pokemonGameObj)
+        public void Init(GameObject pokemonGameObj,Vector3 position)
         {
             _characterController = pokemonGameObj.GetComponent<CharacterController>();
+            _characterController.transform.position = position;
             Transform model = pokemonGameObj.transform.Find("Model");
             _animator = model.GetComponent<Animator>();
         }
-        
+
         [Command]
-        private void CmdRun(Vector3 moveVec)
+        internal void CmdRun(Vector3 moveVec)
         {
         }
 
         [Command]
-        private void CmdWalk()
+        internal void CmdWalk(Vector3 moveVec)
+        {
+            RpcWalk(moveVec);
+        }
+
+        [ClientRpc]
+        internal void RpcWalk(Vector3 moveVec)
+        {
+            _characterController.Move(moveVec);
+        }
+
+        [Command]
+        internal void CmdAttack()
         {
         }
 
         [Command]
-        private void CmdAttack()
+        internal void CmdBeAttack()
         {
         }
 
         [Command]
-        private void CmdBeAttack()
-        {
-        }
-
-        [Command]
-        private void CmdSkill()
+        internal void CmdSkill()
         {
         }
     }

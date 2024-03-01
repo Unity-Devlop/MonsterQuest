@@ -69,6 +69,10 @@ namespace Game
             // 在网络上创建角色
             GameObject player = Instantiate(playerPrefab, position, Quaternion.identity);
             player.name = $"player:[{msg.playerName}]";
+            PlayerController component = player.GetComponent<PlayerController>();
+            PokemonServer.Singleton.QueryPlayerData(msg.userId, out var playerData);
+            PokemonServer.Singleton.QueryPackageData(msg.userId, out var packageData);
+            component.ServerInitData(playerData, packageData);
             NetworkServer.AddPlayerForConnection(connection, player);
         }
 

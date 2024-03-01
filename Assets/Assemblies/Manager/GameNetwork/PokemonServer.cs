@@ -37,6 +37,8 @@ namespace Game
 
         private Dictionary<NetworkConnectionToClient, string> _onLineConn2Id;
 
+        private Dictionary<string, PlayerController> _id2PlayerController;
+
         // 注册过的用户
         [Sirenix.OdinInspector.ShowInInspector]
         private HashSet<string> _userSet;
@@ -46,12 +48,23 @@ namespace Game
         {
             _onlineId2Conn = new Dictionary<string, NetworkConnectionToClient>();
             _onLineConn2Id = new Dictionary<NetworkConnectionToClient, string>();
+            _id2PlayerController = new Dictionary<string, PlayerController>();
             Load();
         }
 
         protected override void OnDispose()
         {
             Save();
+        }
+
+        public void AddPlayer(PlayerController controller)
+        {
+            _id2PlayerController.Add(controller.userId, controller);
+        }
+
+        public void RemovePlayer(PlayerController controller)
+        {
+            _id2PlayerController.Remove(controller.userId);
         }
 
         [Sirenix.OdinInspector.Button]
@@ -121,7 +134,7 @@ namespace Game
             id2PlayerData[userId] = new PlayerData
             {
                 userId = userId,
-                userName = userName,
+                playerName = userName,
                 level = 1,
                 moveSpeed = 5,
                 runSpeed = 8,
@@ -149,7 +162,18 @@ namespace Game
 
         public bool QueryPosition(string userId, out Vector3 position)
         {
+            if (_id2PlayerController.TryGetValue(userId, out var controller) && controller.state == PlayerState.Ready)
+            {
+                position = controller.pokemonController.pokemonPosition;
+                return true;
+            }
+
             return id2Position.TryGetValue(userId, out position);
+        }
+
+        public void UpdatePosition(string userId, Vector3 pokemonPosition)
+        {
+            id2Position[userId] = pokemonPosition;
         }
     }
 }

@@ -1,12 +1,13 @@
-﻿using MemoryPack;
+﻿using System;
+using MemoryPack;
 
 namespace Game
 {
-    [MemoryPackable]
+    [MemoryPackable,Serializable]
     public partial class PlayerData
     {
         public string userId;
-        public string userName;
+        public string playerName;
         public int level;
         public float moveSpeed;
         public float runSpeed;

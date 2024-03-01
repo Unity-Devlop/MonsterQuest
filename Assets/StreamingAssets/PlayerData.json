@@ -1,7 +1,7 @@
 {
   "002": {
     "userId": "002",
-    "userName": "二号",
+    "playerName": "二号",
     "level": 1,
     "moveSpeed": 5.0,
     "runSpeed": 8.0,
@@ -9,7 +9,7 @@
   },
   "001": {
     "userId": "001",
-    "userName": "一号",
+    "playerName": "一号",
     "level": 1,
     "moveSpeed": 5.0,
     "runSpeed": 8.0,

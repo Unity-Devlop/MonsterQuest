@@ -413,9 +413,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e7f279a12b84c1494f4144f10df2d63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: 
+  playerName: "\u4E8C\u53F7"
   password: 
-  userId: 
+  userId: 002
 --- !u!4 &1996486103
 Transform:
   m_ObjectHideFlags: 0
