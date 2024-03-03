@@ -7,13 +7,13 @@ using UnityEngine.Serialization;
 
 namespace Game
 {
-    [Serializable]
-    public struct HitBoxFrame
-    {
-        public float time;
-        public Vector3 center;
-        public float radius;
-    }
+    // [Serializable]
+    // public struct HitBoxFrame
+    // {
+    //     public float time;
+    //     public Vector3 center;
+    //     public float radius;
+    // }
 
     public enum ElementType
     {
@@ -34,8 +34,7 @@ namespace Game
         public float baseRunSpeed;
         public float baseRotateSpeed;
         public float baseFlySpeed;
-
-        public List<HitBoxFrame> hitBoxFrames;
+        
 
         [MemoryPackIgnore, JsonIgnore] public GameObject prefab;
     }

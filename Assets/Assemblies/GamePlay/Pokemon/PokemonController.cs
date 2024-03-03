@@ -18,9 +18,9 @@ namespace Game
         public static readonly int BeAttack = Animator.StringToHash("BeAttack");
         public Animator animator { get; private set; }
 
-        private CharacterController _characterController;
+        public CharacterController characterController { get; private set; }
 
-        public Vector3 pokemonPosition => _characterController.transform.position;
+        public Vector3 pokemonPosition => characterController.transform.position;
         public PokemonStateMachine stateMachine { get; private set; }
         public PokemonData data { get; private set; }
 
@@ -28,12 +28,12 @@ namespace Game
         public Transform modelTransform { get; private set; }
         public NetworkIdentity pokemonIdentity { get; private set; }
 
-        public Collider hitBox { get; private set; }
-
 
         // private List<Timer> _attackTimers;
 
         public Transform orientation { get; private set; }
+
+        public BoxCollider hitBox { get; private set; }
         // private bool _init = false;
 
         public void InitPokemon(GameObject pokemonGameObj, PokemonData data, Vector3 position)
@@ -43,13 +43,14 @@ namespace Game
             modelTransform = pokemonGameObj.transform.Find("Model");
             orientation = pokemonGameObj.transform.Find("Orientation");
 
-            _characterController = pokemonGameObj.GetComponent<CharacterController>();
-            _characterController.transform.position = position;
+            characterController = pokemonGameObj.GetComponent<CharacterController>();
+            characterController.transform.position = position;
 
 
             this.data = data;
 
             animator = modelTransform.GetComponent<Animator>();
+            hitBox = modelTransform.Find("HitBox").GetComponent<BoxCollider>();
 
 
             // TODO 服务器 和 客户端的区分
@@ -64,52 +65,6 @@ namespace Game
             stateMachine.Add<PokemonAttackState>();
             stateMachine.Add<PokemonBeAttackState>();
             stateMachine.Start<PokemonIdleState>();
-
-            // if (NetworkManager.singleton.mode == NetworkManagerMode.ServerOnly)
-            // {
-            //     // Debug.Log("isServerOnly");
-            //     // 服务器不需要播动画
-            //     animator.enabled = false;
-            //     // 服务器不需要渲染模型
-            //     modelTransform.gameObject.SetActive(false);
-            //
-            //     // 服务器需要攻击计时器
-            //     // _attackTimers = new List<Timer>(data.config.hitBoxFrames.Count + 1);
-            // }
-            // else if (NetworkManager.singleton.mode == NetworkManagerMode.ClientOnly)
-            // {
-            //     // Debug.Log("isNotServerOnly");
-            //     // 客户端需要播动画
-            //     animator.enabled = true;
-            //     // 客户端需要渲染模型
-            //     modelTransform.gameObject.SetActive(true);
-            //     // 客户端需要状态机
-            //     stateMachine = new PokemonStateMachine(this);
-            //     stateMachine.Add<PokemonIdleState>();
-            //     stateMachine.Add<PokemonWalkState>();
-            //     stateMachine.Add<PokemonRunState>();
-            //     stateMachine.Add<PokemonAttackState>();
-            //     stateMachine.Add<PokemonBeAttackState>();
-            //     stateMachine.Start<PokemonIdleState>();
-            // }
-            // else if (NetworkManager.singleton.mode == NetworkManagerMode.Host)
-            // {
-            //     // 客户端需要播动画
-            //     animator.enabled = true;
-            //     // 客户端需要渲染模型
-            //     modelTransform.gameObject.SetActive(true);
-            //     // 客户端需要状态机
-            //     stateMachine = new PokemonStateMachine(this);
-            //     stateMachine.Add<PokemonIdleState>();
-            //     stateMachine.Add<PokemonWalkState>();
-            //     stateMachine.Add<PokemonRunState>();
-            //     stateMachine.Add<PokemonAttackState>();
-            //     stateMachine.Add<PokemonBeAttackState>();
-            //     stateMachine.Start<PokemonIdleState>();
-            //
-            //     // 主机需要攻击计时器
-            //     // _attackTimers = new List<Timer>(data.config.hitBoxFrames.Count + 1);
-            // }
         }
 
         private void ServerOnlySetup()
@@ -135,10 +90,10 @@ namespace Game
             if (isServer)
             {
                 //不在地面上时，应用重力
-                if (!_characterController.isGrounded)
+                if (!characterController.isGrounded)
                 {
                     // TODO 这个不是加速运动
-                    _characterController.Move(Time.deltaTime * Physics.gravity);
+                    characterController.Move(Time.deltaTime * Physics.gravity);
                 }
             }
         }
@@ -153,7 +108,7 @@ namespace Game
         [Command]
         internal void CmdIdle()
         {
-            // stateMachine.Change<PokemonIdleState>(); // 服务器上没必要播动画
+            stateMachine.Change<PokemonIdleState>(); // 服务器上没必要播动画
             RpcIdle();
         }
 
@@ -199,7 +154,7 @@ namespace Game
             pokemonTransform.forward =
                 Vector3.Slerp(pokemonTransform.forward, moveVec.normalized, Time.deltaTime * data.rotateSpeed);
             HandleCharacterControllerMove(moveVec * (Time.deltaTime * data.moveSpeed));
-            // stateMachine.Change<PokemonWalkState>(); // 服务器上没必要播动画
+            stateMachine.Change<PokemonWalkState>(); // 服务器上没必要播动画
             RpcWalkAnim();
         }
 
@@ -228,7 +183,7 @@ namespace Game
 
         private void HandleCharacterControllerMove(Vector3 moveVec)
         {
-            _characterController.Move(moveVec);
+            characterController.Move(moveVec);
         }
 
         [Command]
@@ -237,7 +192,7 @@ namespace Game
             pokemonTransform.forward =
                 Vector3.Slerp(pokemonTransform.forward, moveVec.normalized, Time.deltaTime * data.rotateSpeed);
             HandleCharacterControllerMove(moveVec * (Time.deltaTime * data.runSpeed));
-            // stateMachine.Change<PokemonRunState>(); // 服务器上没必要播动画
+            stateMachine.Change<PokemonRunState>(); // 服务器上没必要播动画
             RpcRunAnim();
         }
 
@@ -258,17 +213,6 @@ namespace Game
         }
 
 
-        internal void CancelAttack()
-        {
-            // if (_attackTimers.Count == 0) return;
-            // foreach (var timer in _attackTimers)
-            // {
-            //     timer.Cancel();
-            // }
-            //
-            // _attackTimers.Clear();
-        }
-
         public void HandleAttack()
         {
             stateMachine.Change<PokemonAttackState>();
@@ -276,10 +220,8 @@ namespace Game
         }
 
         [Command]
-        internal void CmdAttack()
+        private void CmdAttack()
         {
-            CancelAttack();
-
             // for (int i = 0; i < data.config.hitBoxFrames.Count; i++)
             // {
             //     HitBoxFrame hitBoxFrame = data.config.hitBoxFrames[i];
@@ -287,6 +229,12 @@ namespace Game
             //     Timer timer = this.AttachTimer(hitBoxFrame.time, () => { OnAttack(idx); });
             //     _attackTimers.Add(timer);
             // }
+
+            // Host 已经播了  所以不需要再播 仅服务器时 这个动画需要播
+            if (isServerOnly)
+            {
+                stateMachine.Change<PokemonAttackState>();
+            }
 
             RpcAttackAnim();
         }
@@ -306,20 +254,19 @@ namespace Game
         }
 
         [Server]
-        private void OnAttack(int idx)
+        private void OnAttack()
         {
-            HitBoxFrame frame = data.config.hitBoxFrames[idx];
-            int count = RayCaster.OverlapSphereAll(pokemonTransform.position + frame.center, frame.radius,
-                out var results, GlobalManager.Singleton.hittableLayer);
-            for (int i = 0; i < count; i++)
-            {
-                if (results[i].gameObject.TryGetComponent(out IHittable hittable) && hittable.CanBeHit() &&
-                    !ReferenceEquals(hittable, this))
-                {
-                    int damagePoint = data.damagePoint;
-                    hittable.CmdBeAttack(damagePoint);
-                }
-            }
+            // int count = RayCaster.OverlapSphereAll(pokemonTransform.position + frame.center, frame.radius,
+            //     out var results, GlobalManager.Singleton.hittableLayer);
+            // for (int i = 0; i < count; i++)
+            // {
+            //     if (results[i].gameObject.TryGetComponent(out IHittable hittable) && hittable.CanBeHit() &&
+            //         !ReferenceEquals(hittable, this))
+            //     {
+            //         int damagePoint = data.damagePoint;
+            //         hittable.CmdBeAttack(damagePoint);
+            //     }
+            // }
         }
 
 

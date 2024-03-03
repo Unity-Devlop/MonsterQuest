@@ -241,5 +241,12 @@ namespace UnityToolkit
             colliders = _colliders;
             return count;
         }
+
+        public static int OverlapBoxAll(Vector3 pokemonTransformPosition, Vector3 halfExtents,out Collider[] colliders, LayerMask layer)
+        {
+            int count = Physics.OverlapBoxNonAlloc(pokemonTransformPosition, halfExtents, _colliders, Quaternion.identity, layer);
+            colliders = _colliders;
+            return count;
+        }
     }
 }
