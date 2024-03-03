@@ -5,11 +5,20 @@ using UnityEngine;
 
 namespace Game
 {
-    [MemoryPackable, Serializable]
-    public partial struct PokemonConfig
+    public enum ElementType
+    {
+        草,
+        水,
+        火
+    }
+    [Serializable]
+    public struct PokemonConfig
     {
         public int id;
         public string name;
+        public ElementType element;
+        public float baseHitPoint;
+        public float baseMaxHealth;
         public float baseMoveSpeed;
         public float baseRunSpeed;
         public float baseRotateSpeed;

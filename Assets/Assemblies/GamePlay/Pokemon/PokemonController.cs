@@ -39,27 +39,37 @@ namespace Game
             _characterController = pokemonGameObj.GetComponent<CharacterController>();
             _characterController.transform.position = position;
 
-            animator = modelTransform.GetComponent<Animator>();
-            stateMachine = new PokemonStateMachine(this);
-            stateMachine.Add<PokemonIdleState>();
-            stateMachine.Add<PokemonWalkState>();
-            stateMachine.Add<PokemonRunState>();
-            stateMachine.Add<PokemonAttackState>();
-            stateMachine.Add<PokemonBeAttackState>();
-            stateMachine.Start<PokemonIdleState>();
+
             this.data = data;
-            // _init = true;
-        }
 
-        [Command]
-        internal void CmdRun(Vector3 moveVec)
-        {
-        }
-
-        [Command]
-        internal void RpcRun(Vector3 moveVec)
-        {
-            _characterController.Move(moveVec);
+            animator = modelTransform.GetComponent<Animator>();
+            
+            
+            // 服务器 和 客户端的区分
+            if (NetworkManager.singleton.mode == NetworkManagerMode.ServerOnly)
+            {
+                Debug.Log("isServerOnly");
+                // 服务器不需要播动画
+                animator.enabled = false;
+                // 服务器不需要渲染模型
+                modelTransform.gameObject.SetActive(false);
+            }
+            else
+            {
+                Debug.Log("isNotServerOnly");
+                // 客户端需要播动画
+                animator.enabled = true;
+                // 客户端需要状态机
+                stateMachine = new PokemonStateMachine(this);
+                stateMachine.Add<PokemonIdleState>();
+                stateMachine.Add<PokemonWalkState>();
+                stateMachine.Add<PokemonRunState>();
+                stateMachine.Add<PokemonAttackState>();
+                stateMachine.Add<PokemonBeAttackState>();
+                stateMachine.Start<PokemonIdleState>();
+                // 客户端需要渲染模型
+                modelTransform.gameObject.SetActive(true);
+            }
         }
 
 
@@ -79,43 +89,44 @@ namespace Game
                 {
                     // if (_init)
                     // {
-                        stateMachine.Change<PokemonIdleState>();
+                    stateMachine.Change<PokemonIdleState>();
                     // }
                 }
             }
         }
 
         // TODO remove moveSpeed param
-        internal void HandleWalk(Vector3 viewDir, Vector2 moveInput, float moveSpeed, float rotateSpeed)
+        internal void HandleWalk(Vector3 viewDir, Vector2 moveInput)
+        {
+            Vector3 moveDir = ProcessMoveInput(viewDir, moveInput);
+
+            stateMachine.Change<PokemonWalkState>();
+
+            CmdWalk(moveDir);
+        }
+
+        private Vector3 ProcessMoveInput(Vector3 viewDir, Vector2 moveInput)
         {
             orientation.forward = viewDir.normalized;
             float forward = moveInput.y;
             float right = moveInput.x;
-            // Vector3 viewDir 
-
-            // 计算Vec
-            // TODO 服务器上计算
-            Vector3 moveVec = orientation.forward * forward +
+            Vector3 moveDir = orientation.forward * forward +
                               orientation.right * right;
-            moveVec *= moveSpeed * Time.deltaTime;
-
-            stateMachine.Change<PokemonWalkState>();
-
-            CmdWalk(moveVec, rotateSpeed);
+            return moveDir;
         }
 
         [Command]
-        internal void CmdWalk(Vector3 moveVec, float rotateSpeed)
+        internal void CmdWalk(Vector3 moveVec)
         {
             pokemonTransform.forward =
-                Vector3.Slerp(pokemonTransform.forward, moveVec.normalized, Time.deltaTime * rotateSpeed);
-            _characterController.Move(moveVec);
+                Vector3.Slerp(pokemonTransform.forward, moveVec.normalized, Time.deltaTime * data.rotateSpeed);
+            _characterController.Move(moveVec * (Time.deltaTime * data.moveSpeed));
             // stateMachine.Change<PokemonWalkState>(); // 服务器上没必要播动画
-            RpcWalk();
+            RpcWalkAnim();
         }
 
         [ClientRpc]
-        private void RpcWalk()
+        private void RpcWalkAnim()
         {
             if (NetworkClient.ready)
             {
@@ -123,12 +134,43 @@ namespace Game
                 {
                     /*if (_init)
                     {*/
-                        stateMachine.Change<PokemonWalkState>();
+                    stateMachine.Change<PokemonWalkState>();
                     // }
                 }
             }
         }
 
+        public void HandleRun(Vector3 viewDir, Vector2 moveInput)
+        {
+            Vector3 moveDir = ProcessMoveInput(viewDir, moveInput);
+            stateMachine.Change<PokemonRunState>();
+            CmdRun(moveDir);
+        }
+
+        [Command]
+        private void CmdRun(Vector3 moveVec)
+        {
+            pokemonTransform.forward =
+                Vector3.Slerp(pokemonTransform.forward, moveVec.normalized, Time.deltaTime * data.rotateSpeed);
+            _characterController.Move(moveVec * (Time.deltaTime * data.runSpeed));
+            // stateMachine.Change<PokemonRunState>(); // 服务器上没必要播动画
+            RpcRunAnim();
+        }
+
+        [ClientRpc]
+        private void RpcRunAnim()
+        {
+            if (NetworkClient.ready)
+            {
+                if (!isOwned)
+                {
+                    /*if (_init)
+                    {*/
+                    stateMachine.Change<PokemonRunState>();
+                    // }
+                }
+            }
+        }
 
         [Command]
         internal void CmdAttack()
@@ -139,17 +181,5 @@ namespace Game
         internal void CmdBeAttack()
         {
         }
-
-        // [ClientRpc]
-        // public void RpcSetAnimBool(int hash, bool value)
-        // {
-        //     animator.SetBool(hash, value);
-        // }
-        //
-        // [Command]
-        // public void CmdSetAnimBool(int hash, bool value)
-        // {
-        //     RpcSetAnimBool(hash, value);
-        // }
     }
 }

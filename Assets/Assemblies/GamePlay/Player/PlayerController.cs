@@ -97,8 +97,15 @@ namespace Game
                 Vector3 pokemonPos = pokemonController.pokemonTransform.position;
                 Vector3 cameraPos = _camera.transform.position;
                 Vector3 viewDir = pokemonPos - new Vector3(cameraPos.x, pokemonPos.y, cameraPos.z);
-                pokemonController.HandleWalk(viewDir, moveInput, data.currentPokemonData.moveSpeed,
-                    data.currentPokemonData.rotateSpeed);
+                if (input.Run.IsPressed())
+                {
+                    pokemonController.HandleRun(viewDir, moveInput);
+                }
+                else
+                {
+                    pokemonController.HandleWalk(viewDir, moveInput);
+                }
+               
             }
             else
             {
@@ -128,10 +135,8 @@ namespace Game
             package = MemoryPackSerializer.Deserialize<PackageData>(packageDataPayload);
             gameObject.name = $"Player:[{playerName}]";
             // 配置信息
-            pokemonController.InitPokemon(pokemon.gameObject, data.currentPokemonData, position);
             GameObject pokemonObj = pokemon.gameObject;
             pokemonObj.name = $"{playerName}-Pokemon:[{data.currentPokemonData.configId}]";
-
             PokemonSetup(pokemonObj, position);
         }
 
