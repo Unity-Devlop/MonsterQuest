@@ -7,5 +7,7 @@ namespace Assemblies
     {
         protected override bool DontDestroyOnLoad() => true;
         [field: SerializeField] public Camera camera { get; private set; }
+        public LayerMask hittableLayer;
+        
     }
 }

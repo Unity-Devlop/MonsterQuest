@@ -1,28 +1,42 @@
 ﻿using System;
+using System.Collections.Generic;
 using MemoryPack;
 using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Game
 {
+    [Serializable]
+    public struct HitBoxFrame
+    {
+        public float time;
+        public Vector3 center;
+        public float radius;
+    }
+
     public enum ElementType
     {
         草,
         水,
         火
     }
+
     [Serializable]
     public struct PokemonConfig
     {
         public int id;
         public string name;
         public ElementType element;
-        public float baseHitPoint;
-        public float baseMaxHealth;
+        public int baseDamagePoint;
+        public int baseMaxHealth;
         public float baseMoveSpeed;
         public float baseRunSpeed;
         public float baseRotateSpeed;
         public float baseFlySpeed;
+
+        public List<HitBoxFrame> hitBoxFrames;
+
         [MemoryPackIgnore, JsonIgnore] public GameObject prefab;
     }
 
@@ -34,7 +48,7 @@ namespace Game
         [MemoryPackIgnore, JsonIgnore] private bool _configInitialized;
         [MemoryPackIgnore, JsonIgnore] private PokemonConfig _config;
 
-        [MemoryPackIgnore,JsonIgnore]
+        [MemoryPackIgnore, JsonIgnore]
         public PokemonConfig config
         {
             get
@@ -49,6 +63,9 @@ namespace Game
             }
         }
 
+        public int maxHealth;
+        public int currentHealth;
+        public int damagePoint;
         public float moveSpeed;
         public float runSpeed;
         public float rotateSpeed;
@@ -62,6 +79,9 @@ namespace Game
             runSpeed = config.baseRunSpeed;
             rotateSpeed = config.baseRotateSpeed;
             flySpeed = config.baseFlySpeed;
+            damagePoint = config.baseDamagePoint;
+            maxHealth = config.baseMaxHealth;
+            currentHealth = maxHealth;
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEngine;
 
 namespace UnityToolkit
 {
@@ -58,8 +59,11 @@ namespace UnityToolkit
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual void Change(Type type)
         {
-            if (CurrentState.GetType() == type) return;
-            CurrentState?.OnExit(Owner);
+            if (CurrentState.GetType() == type)
+            {
+                return;
+            }
+            CurrentState.OnExit(Owner);
             CurrentState = stateDic[type];
             CurrentState.OnEnter(Owner);
         }

@@ -309,6 +309,17 @@ namespace Game
                 },
                 {
                     ""name"": """",
+                    ""id"": ""0b481144-7f08-47d0-9acf-afb8cdadd099"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""87b2ab7a-7460-4b89-b9c7-e57656957abd"",
                     ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",

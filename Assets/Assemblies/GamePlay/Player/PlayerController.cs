@@ -91,6 +91,19 @@ namespace Game
 
         private void TickPokemonStateLogic()
         {
+            if (input.Fire.triggered)
+            {
+                pokemonController.HandleAttack();
+                return;
+            }
+
+            if (pokemonState is ITempAnimState { canExit: false })
+            {
+                return;
+            }
+
+            // 必须要结束瞬时状态才能切换到其他状态
+
             Vector2 moveInput = input.Move.ReadValue<Vector2>();
             if (moveInput.sqrMagnitude > 0.01f)
             {
@@ -105,12 +118,10 @@ namespace Game
                 {
                     pokemonController.HandleWalk(viewDir, moveInput);
                 }
-               
             }
             else
             {
-                pokemonController.stateMachine.Change<PokemonIdleState>();
-                pokemonController.CmdIdle();
+                pokemonController.HandleIdle();
             }
         }
 
@@ -141,22 +152,16 @@ namespace Game
         }
 
         [Server]
-        public void ServerInitData(PlayerData playerData, PackageData packageData, NetworkConnectionToClient connection)
+        public void ServerInitData(PlayerData playerData, PackageData packageData, NetworkConnectionToClient connection,Vector3 position)
         {
             data = playerData;
             package = packageData;
-            SpawnCurPokemon(data.currentPokemonData.configId, connection);
-        }
-
-        [Server]
-        private void SpawnCurPokemon(int pokemonId, NetworkConnectionToClient connection)
-        {
-            PokemonServer.Singleton.QueryPosition(userId, out Vector3 position);
+            int pokemonId = data.currentPokemonData.configId;
             GameObject prefab = ConfigTable.Instance.GetPokemonConfig(pokemonId).prefab;
             GameObject pokemon = Instantiate(prefab, null);
             pokemon.name = $"{playerName}]-Pokemon:[{pokemonId}]";
-            NetworkServer.Spawn(pokemon, connection);
             PokemonSetup(pokemon, position);
+            NetworkServer.Spawn(pokemon, connection);
         }
 
         private void PokemonSetup(GameObject pokemon, Vector3 position)

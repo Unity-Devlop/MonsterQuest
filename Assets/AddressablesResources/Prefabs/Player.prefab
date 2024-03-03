@@ -249,7 +249,7 @@ MonoBehaviour:
     m_VelocityFilterStrength: 4
     m_Bias: 0
   m_RecenterToTargetHeading:
-    m_enabled: 1
+    m_enabled: 0
     m_WaitTime: 0.3
     m_RecenteringTime: 0.5
     m_LegacyHeadingDefinition: -1
@@ -685,12 +685,15 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  _data:
+  <data>k__BackingField:
     userId: 
     playerName: 
     level: 0
     currentPokemonData:
       configId: 0
+      maxHealth: 0
+      currentHealth: 0
+      damagePoint: 0
       moveSpeed: 0
       runSpeed: 0
       rotateSpeed: 0
