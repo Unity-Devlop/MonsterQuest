@@ -57,8 +57,9 @@ namespace Game
 
             if (PokemonServer.Singleton.IsOnline(msg.userId))
             {
-                Debug.Log($"Id:[{msg.userId}],Name:[{msg.playerName}]已经在线,踢出之前的玩家\n");
-                PokemonServer.Singleton.OffLine(msg.userId);
+                Debug.Log($"Id:[{msg.userId}],Name:[{msg.playerName}]已经在线,不可加入\n");
+                connection.Disconnect();
+                return;
             }
 
             PokemonServer.Singleton.OnLine(msg.userId, connection);

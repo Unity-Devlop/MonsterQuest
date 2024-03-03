@@ -20,14 +20,16 @@ namespace Game
 
         public Vector3 pokemonPosition => _characterController.transform.position;
         public PokemonStateMachine stateMachine { get; private set; }
+        public PokemonData data { get; private set; }
 
         public Transform pokemonTransform { get; private set; }
         public Transform modelTransform { get; private set; }
         public NetworkIdentity pokemonIdentity { get; private set; }
-        
-        public Transform orientation { get; private set; }
 
-        public void InitPokemon(GameObject pokemonGameObj, Vector3 position)
+        public Transform orientation { get; private set; }
+        // private bool _init = false;
+
+        public void InitPokemon(GameObject pokemonGameObj, PokemonData data, Vector3 position)
         {
             pokemonTransform = pokemonGameObj.transform;
             pokemonIdentity = pokemonGameObj.GetComponent<NetworkIdentity>();
@@ -45,6 +47,8 @@ namespace Game
             stateMachine.Add<PokemonAttackState>();
             stateMachine.Add<PokemonBeAttackState>();
             stateMachine.Start<PokemonIdleState>();
+            this.data = data;
+            // _init = true;
         }
 
         [Command]
@@ -65,6 +69,7 @@ namespace Game
             // stateMachine.Change<PokemonIdleState>(); // 服务器上没必要播动画
             RpcIdle();
         }
+
         [ClientRpc]
         private void RpcIdle()
         {
@@ -72,33 +77,38 @@ namespace Game
             {
                 if (!isOwned)
                 {
-                    stateMachine.Change<PokemonIdleState>();
+                    // if (_init)
+                    // {
+                        stateMachine.Change<PokemonIdleState>();
+                    // }
                 }
             }
         }
 
         // TODO remove moveSpeed param
-        internal void HandleWalk(Vector3 viewDir,Vector2 moveInput,float moveSpeed,float rotateSpeed)
+        internal void HandleWalk(Vector3 viewDir, Vector2 moveInput, float moveSpeed, float rotateSpeed)
         {
             orientation.forward = viewDir.normalized;
             float forward = moveInput.y;
             float right = moveInput.x;
             // Vector3 viewDir 
-            
+
             // 计算Vec
+            // TODO 服务器上计算
             Vector3 moveVec = orientation.forward * forward +
                               orientation.right * right;
             moveVec *= moveSpeed * Time.deltaTime;
-            
+
             stateMachine.Change<PokemonWalkState>();
-            
-            CmdWalk(moveVec,rotateSpeed);
+
+            CmdWalk(moveVec, rotateSpeed);
         }
 
         [Command]
-        internal void CmdWalk(Vector3 moveVec,float rotateSpeed)
+        internal void CmdWalk(Vector3 moveVec, float rotateSpeed)
         {
-            pokemonTransform.forward = Vector3.Slerp(pokemonTransform.forward, moveVec.normalized,Time.deltaTime*rotateSpeed);
+            pokemonTransform.forward =
+                Vector3.Slerp(pokemonTransform.forward, moveVec.normalized, Time.deltaTime * rotateSpeed);
             _characterController.Move(moveVec);
             // stateMachine.Change<PokemonWalkState>(); // 服务器上没必要播动画
             RpcWalk();
@@ -111,7 +121,10 @@ namespace Game
             {
                 if (!isOwned)
                 {
-                    stateMachine.Change<PokemonWalkState>();
+                    /*if (_init)
+                    {*/
+                        stateMachine.Change<PokemonWalkState>();
+                    // }
                 }
             }
         }

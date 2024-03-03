@@ -23,10 +23,12 @@ namespace Game
         public PokemonController pokemonController { get; private set; }
         public Transform Orientation { get; private set; }
         public State<PokemonController> pokemonState => pokemonController.stateMachine.CurrentState;
-        private string playerName => _data.playerName;
-        public string userId => _data.userId;
-        [SerializeField] private PlayerData _data;
-        [SerializeField] private PackageData _packageData;
+        private string playerName => data.playerName;
+        public string userId => data.userId;
+
+        [field: SerializeField] public PlayerData data { get; private set; }
+
+        [field: SerializeField] public PackageData package { get; private set; }
 
         [field: SerializeField] public PlayerState state { get; private set; }
 
@@ -95,8 +97,8 @@ namespace Game
                 Vector3 pokemonPos = pokemonController.pokemonTransform.position;
                 Vector3 cameraPos = _camera.transform.position;
                 Vector3 viewDir = pokemonPos - new Vector3(cameraPos.x, pokemonPos.y, cameraPos.z);
-                pokemonController.HandleWalk(viewDir, moveInput, _data.currentPokemonData.moveSpeed,
-                    _data.currentPokemonData.rotateSpeed);
+                pokemonController.HandleWalk(viewDir, moveInput, data.currentPokemonData.moveSpeed,
+                    data.currentPokemonData.rotateSpeed);
             }
             else
             {
@@ -122,13 +124,13 @@ namespace Game
         private void TargetInitData(NetworkConnectionToClient conn, ArraySegment<byte> playerDataPayload,
             ArraySegment<byte> packageDataPayload, NetworkIdentity pokemon, Vector3 position)
         {
-            _data = MemoryPackSerializer.Deserialize<PlayerData>(playerDataPayload);
-            _packageData = MemoryPackSerializer.Deserialize<PackageData>(packageDataPayload);
+            data = MemoryPackSerializer.Deserialize<PlayerData>(playerDataPayload);
+            package = MemoryPackSerializer.Deserialize<PackageData>(packageDataPayload);
             gameObject.name = $"Player:[{playerName}]";
             // 配置信息
-            pokemonController.InitPokemon(pokemon.gameObject, position);
+            pokemonController.InitPokemon(pokemon.gameObject, data.currentPokemonData, position);
             GameObject pokemonObj = pokemon.gameObject;
-            pokemonObj.name = $"{playerName}-Pokemon:[{_data.currentPokemonData.configId}]";
+            pokemonObj.name = $"{playerName}-Pokemon:[{data.currentPokemonData.configId}]";
 
             PokemonSetup(pokemonObj, position);
         }
@@ -136,9 +138,9 @@ namespace Game
         [Server]
         public void ServerInitData(PlayerData playerData, PackageData packageData, NetworkConnectionToClient connection)
         {
-            _data = playerData;
-            _packageData = packageData;
-            SpawnCurPokemon(_data.currentPokemonData.configId, connection);
+            data = playerData;
+            package = packageData;
+            SpawnCurPokemon(data.currentPokemonData.configId, connection);
         }
 
         [Server]
@@ -154,7 +156,7 @@ namespace Game
 
         private void PokemonSetup(GameObject pokemon, Vector3 position)
         {
-            pokemonController.InitPokemon(pokemon.gameObject, position);
+            pokemonController.InitPokemon(pokemon.gameObject, data.currentPokemonData, position);
             Transform modelTransform = pokemonController.pokemonTransform;
             _camera.Follow = modelTransform;
             _camera.LookAt = modelTransform;

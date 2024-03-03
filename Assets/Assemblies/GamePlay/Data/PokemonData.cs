@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Game
 {
-    [MemoryPackable]
+    [MemoryPackable, Serializable]
     public partial struct PokemonConfig
     {
         public int id;

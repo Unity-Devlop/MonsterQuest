@@ -17,3 +17,12 @@ MonoBehaviour:
   pokemonConfigs:
     list:
     - key: 1
+      value:
+        id: 1
+        name: "\u5999\u86D9\u79CD\u5B50"
+        baseMoveSpeed: 3
+        baseRunSpeed: 5
+        baseRotateSpeed: 5
+        baseFlySpeed: 0
+        prefab: {fileID: 4078537705340059023, guid: c3cdc83333d16294bac7452f0baaec0f,
+          type: 3}
