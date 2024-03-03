@@ -144,10 +144,7 @@ namespace Game
                 userId = userId,
                 playerName = userName,
                 level = 1,
-                moveSpeed = 5,
-                runSpeed = 8,
-                currentPokemonId = 001,
-                rotateSpeed = 7,
+                currentPokemonData = new PokemonData(1)
             };
             id2PackageData[userId] = new PackageData();
             id2Position[userId] = Vector3.zero;

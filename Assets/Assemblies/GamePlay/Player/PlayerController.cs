@@ -95,7 +95,8 @@ namespace Game
                 Vector3 pokemonPos = pokemonController.pokemonTransform.position;
                 Vector3 cameraPos = _camera.transform.position;
                 Vector3 viewDir = pokemonPos - new Vector3(cameraPos.x, pokemonPos.y, cameraPos.z);
-                pokemonController.HandleWalk(viewDir,moveInput,_data.moveSpeed,_data.rotateSpeed);
+                pokemonController.HandleWalk(viewDir, moveInput, _data.currentPokemonData.moveSpeed,
+                    _data.currentPokemonData.rotateSpeed);
             }
             else
             {
@@ -127,7 +128,7 @@ namespace Game
             // 配置信息
             pokemonController.InitPokemon(pokemon.gameObject, position);
             GameObject pokemonObj = pokemon.gameObject;
-            pokemonObj.name = $"{playerName}-Pokemon:[{_data.currentPokemonId}]";
+            pokemonObj.name = $"{playerName}-Pokemon:[{_data.currentPokemonData.configId}]";
 
             PokemonSetup(pokemonObj, position);
         }
@@ -137,14 +138,14 @@ namespace Game
         {
             _data = playerData;
             _packageData = packageData;
-            SpawnCurPokemon(_data.currentPokemonId, connection);
+            SpawnCurPokemon(_data.currentPokemonData.configId, connection);
         }
 
         [Server]
         private void SpawnCurPokemon(int pokemonId, NetworkConnectionToClient connection)
         {
             PokemonServer.Singleton.QueryPosition(userId, out Vector3 position);
-            PrefabTable.Instance.GetPokemonPrefab(pokemonId, out GameObject prefab);
+            GameObject prefab = ConfigTable.Instance.GetPokemonConfig(pokemonId).prefab;
             GameObject pokemon = Instantiate(prefab, null);
             pokemon.name = $"{playerName}]-Pokemon:[{pokemonId}]";
             NetworkServer.Spawn(pokemon, connection);

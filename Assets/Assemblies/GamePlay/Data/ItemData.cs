@@ -6,6 +6,11 @@ using UnityToolkit;
 
 namespace Game
 {
+    public enum ItemType
+    {
+        材料,
+        宝石
+    }
     [MemoryPackable]
     public partial struct ItemConfig
     {

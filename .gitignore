@@ -93,3 +93,5 @@ Assets/Complete/
 Assets/Complete.meta
 
 
+Assets/StreamingAssets/*.json
+Assets/StreamingAssets/*.json.meta

@@ -9,10 +9,16 @@ namespace Game
     public class ConfigTable : GlobalConfig<ConfigTable>
     {
         public SerializableDictionary<int, ItemConfig> itemConfigs;
+        public SerializableDictionary<int,PokemonConfig> pokemonConfigs;
 
         public ItemConfig GetItemConfig(int id)
         {
             return itemConfigs[id];
+        }
+
+        public PokemonConfig GetPokemonConfig(int configId)
+        {
+            return pokemonConfigs[configId];
         }
     }
 }
