@@ -16,6 +16,7 @@ namespace Game
         private static readonly string PackageDataPath = "PackageData.json";
         private static readonly string PositionPath = "Position.json";
         private static readonly string NameSetPath = "NameSet.json";
+        private static readonly string DataBasePath = "DataBase.json";
 
         // 玩家基础数据
         [SerializeField] private SerializableDictionary<string, PlayerData> id2PlayerData;
@@ -30,6 +31,8 @@ namespace Game
         // 用户名集合
         [Sirenix.OdinInspector.ShowInInspector]
         private HashSet<string> _nameSet;
+
+        [field: SerializeField] public PokemonDataBase DataBase { get; private set; }
 
 
         // 非持久化数据
@@ -75,6 +78,7 @@ namespace Game
             JsonUtil.SaveJsonToStreamingAssets(PositionPath, id2Position);
             JsonUtil.SaveJsonToStreamingAssets(UserSetPath, _userSet);
             JsonUtil.SaveJsonToStreamingAssets(NameSetPath, _nameSet);
+            JsonUtil.SaveJsonToStreamingAssets(DataBasePath, DataBase);
         }
 
         [Sirenix.OdinInspector.Button]
@@ -90,6 +94,8 @@ namespace Game
                 JsonUtil.LoadJsonFromStreamingAssets<HashSet<string>>(UserSetPath);
             _nameSet =
                 JsonUtil.LoadJsonFromStreamingAssets<HashSet<string>>(NameSetPath);
+            
+            DataBase = JsonUtil.LoadJsonFromStreamingAssets<PokemonDataBase>(DataBasePath);
 
 
             if (id2PlayerData == null) id2PlayerData = new SerializableDictionary<string, PlayerData>();
@@ -97,6 +103,8 @@ namespace Game
             if (id2Position == null) id2Position = new SerializableDictionary<string, Vector3>();
             if (_userSet == null) _userSet = new HashSet<string>();
             if (_nameSet == null) _nameSet = new HashSet<string>();
+
+            if (DataBase == null) DataBase = new PokemonDataBase();
         }
 
         public bool IsOnline(string userId)
@@ -139,6 +147,7 @@ namespace Game
                 moveSpeed = 5,
                 runSpeed = 8,
                 currentPokemonId = 001,
+                rotateSpeed = 7,
             };
             id2PackageData[userId] = new PackageData();
             id2Position[userId] = Vector3.zero;

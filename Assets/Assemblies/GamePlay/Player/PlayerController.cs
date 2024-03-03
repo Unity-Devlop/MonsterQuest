@@ -21,6 +21,7 @@ namespace Game
         private CinemachineInputProvider _cameraInputProvider;
 
         public PokemonController pokemonController { get; private set; }
+        public Transform Orientation { get; private set; }
         public State<PokemonController> pokemonState => pokemonController.stateMachine.CurrentState;
         private string playerName => _data.playerName;
         public string userId => _data.userId;
@@ -39,6 +40,7 @@ namespace Game
             pokemonController = GetComponent<PokemonController>();
             _camera = transform.Find("Camera").GetComponent<CinemachineFreeLook>();
             _cameraInputProvider = _camera.GetComponent<CinemachineInputProvider>();
+            Orientation = transform.Find("Orientation");
         }
 
         public override void OnStartServer()
@@ -60,6 +62,21 @@ namespace Game
             {
                 CmdInitData(); // 所有客户端都要请求初始化数据
             }
+
+            if (isLocalPlayer)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+        }
+
+        public override void OnStopClient()
+        {
+            if (isLocalPlayer)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
         }
 
         private void Update()
@@ -67,14 +84,6 @@ namespace Game
             if (isLocalPlayer && state == PlayerState.Ready)
             {
                 TickPokemonStateLogic();
-                if (Mouse.current.leftButton.isPressed)
-                {
-                    _cameraInputProvider.enabled = true;
-                }
-                else
-                {
-                    _cameraInputProvider.enabled = false;
-                }
             }
         }
 
@@ -83,20 +92,10 @@ namespace Game
             Vector2 moveInput = input.Move.ReadValue<Vector2>();
             if (moveInput.sqrMagnitude > 0.01f)
             {
-                float forward = moveInput.y;
-                float right = moveInput.x;
-                // forward控制前后移动
-                Vector3 moveVec = pokemonController.pokemonTransform.forward * forward;
-                moveVec *= _data.moveSpeed * Time.deltaTime;
-                //right控制旋转
-                if (right != 0)
-                {
-                    // 插值
-                    float deltaAngel = right * Time.deltaTime * Mathf.Rad2Deg;
-                    pokemonController.CmdRotate(deltaAngel);
-                }
-pokemonController.stateMachine.Change<PokemonWalkState>();
-                pokemonController.CmdWalk(moveVec);
+                Vector3 pokemonPos = pokemonController.pokemonTransform.position;
+                Vector3 cameraPos = _camera.transform.position;
+                Vector3 viewDir = pokemonPos - new Vector3(cameraPos.x, pokemonPos.y, cameraPos.z);
+                pokemonController.HandleWalk(viewDir,moveInput,_data.moveSpeed,_data.rotateSpeed);
             }
             else
             {
@@ -129,7 +128,7 @@ pokemonController.stateMachine.Change<PokemonWalkState>();
             pokemonController.InitPokemon(pokemon.gameObject, position);
             GameObject pokemonObj = pokemon.gameObject;
             pokemonObj.name = $"{playerName}-Pokemon:[{_data.currentPokemonId}]";
-            
+
             PokemonSetup(pokemonObj, position);
         }
 

@@ -22,18 +22,22 @@ namespace Game
         public PokemonStateMachine stateMachine { get; private set; }
 
         public Transform pokemonTransform { get; private set; }
+        public Transform modelTransform { get; private set; }
         public NetworkIdentity pokemonIdentity { get; private set; }
+        
+        public Transform orientation { get; private set; }
 
         public void InitPokemon(GameObject pokemonGameObj, Vector3 position)
         {
             pokemonTransform = pokemonGameObj.transform;
             pokemonIdentity = pokemonGameObj.GetComponent<NetworkIdentity>();
-            Transform model = pokemonGameObj.transform.Find("Model");
+            modelTransform = pokemonGameObj.transform.Find("Model");
+            orientation = pokemonGameObj.transform.Find("Orientation");
 
             _characterController = pokemonGameObj.GetComponent<CharacterController>();
             _characterController.transform.position = position;
 
-            animator = model.GetComponent<Animator>();
+            animator = modelTransform.GetComponent<Animator>();
             stateMachine = new PokemonStateMachine(this);
             stateMachine.Add<PokemonIdleState>();
             stateMachine.Add<PokemonWalkState>();
@@ -58,28 +62,58 @@ namespace Game
         [Command]
         internal void CmdIdle()
         {
-            stateMachine.Change<PokemonIdleState>();
+            // stateMachine.Change<PokemonIdleState>(); // 服务器上没必要播动画
             RpcIdle();
         }
         [ClientRpc]
         private void RpcIdle()
         {
-            stateMachine.Change<PokemonIdleState>();
+            if (NetworkClient.ready)
+            {
+                if (!isOwned)
+                {
+                    stateMachine.Change<PokemonIdleState>();
+                }
+            }
         }
 
+        // TODO remove moveSpeed param
+        internal void HandleWalk(Vector3 viewDir,Vector2 moveInput,float moveSpeed,float rotateSpeed)
+        {
+            orientation.forward = viewDir.normalized;
+            float forward = moveInput.y;
+            float right = moveInput.x;
+            // Vector3 viewDir 
+            
+            // 计算Vec
+            Vector3 moveVec = orientation.forward * forward +
+                              orientation.right * right;
+            moveVec *= moveSpeed * Time.deltaTime;
+            
+            stateMachine.Change<PokemonWalkState>();
+            
+            CmdWalk(moveVec,rotateSpeed);
+        }
 
         [Command]
-        internal void CmdWalk(Vector3 moveVec)
+        internal void CmdWalk(Vector3 moveVec,float rotateSpeed)
         {
+            pokemonTransform.forward = Vector3.Slerp(pokemonTransform.forward, moveVec.normalized,Time.deltaTime*rotateSpeed);
             _characterController.Move(moveVec);
-            stateMachine.Change<PokemonWalkState>();
+            // stateMachine.Change<PokemonWalkState>(); // 服务器上没必要播动画
             RpcWalk();
         }
 
         [ClientRpc]
         private void RpcWalk()
         {
-            stateMachine.Change<PokemonWalkState>();
+            if (NetworkClient.ready)
+            {
+                if (!isOwned)
+                {
+                    stateMachine.Change<PokemonWalkState>();
+                }
+            }
         }
 
 
@@ -91,12 +125,6 @@ namespace Game
         [Command]
         internal void CmdBeAttack()
         {
-        }
-
-        [Command]
-        public void CmdRotate(float deltaAngel)
-        {
-            pokemonTransform.Rotate(Vector3.up, deltaAngel);
         }
 
         // [ClientRpc]
