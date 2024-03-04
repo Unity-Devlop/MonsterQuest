@@ -19,6 +19,12 @@ namespace Game
             currentHealth = maxHealth;
         }
 
+
+        public int GroupId()
+        {
+            return TeamGroup.Default.id;
+        }
+
         [Command(requiresAuthority = false)]
         public void CmdBeAttack(int damagePoint)
         {

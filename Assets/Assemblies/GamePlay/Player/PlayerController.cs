@@ -52,6 +52,7 @@ namespace Game
 
         public override void OnStopServer()
         {
+            if (PokemonServer.SingletonNullable == null) return;
             PokemonServer.Singleton.RemovePlayer(this);
             // 保持位置信息
             PokemonServer.Singleton.UpdatePosition(userId, pokemonController.pokemonPosition);
@@ -90,7 +91,7 @@ namespace Game
             {
                 return;
             }
-            
+
             if (input.Fire.WasPressedThisFrame())
             {
                 pokemonController.stateMachine.Change<PokemonAttackState>(); // 本地立刻切换状态 避免异常
@@ -164,7 +165,7 @@ namespace Game
 
         private void PokemonSetup(GameObject pokemon, Vector3 position)
         {
-            pokemonController.InitPokemon(pokemon.gameObject, data.currentPokemonData, position);
+            pokemonController.InitPokemon(this, pokemon.gameObject, data.currentPokemonData, position);
             Transform modelTransform = pokemonController.pokemonTransform;
             _camera.Follow = modelTransform;
             _camera.LookAt = modelTransform;

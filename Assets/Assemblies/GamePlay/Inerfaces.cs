@@ -5,6 +5,7 @@ namespace Game
 {
     public interface IHittable
     {
+        int GroupId();
         void CmdBeAttack(int damagePoint);
     }
 

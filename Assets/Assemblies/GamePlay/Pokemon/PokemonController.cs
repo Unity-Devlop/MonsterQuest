@@ -18,7 +18,7 @@ namespace Game
         public Animator animator { get; private set; }
 
         public CharacterController characterController { get; private set; }
-        public HealthComponent healthComponent { get; private set; }
+        public HitTarget hitTarget { get; private set; }
 
         public Vector3 pokemonPosition => characterController.transform.position;
         public PokemonStateMachine stateMachine { get; private set; }
@@ -29,16 +29,30 @@ namespace Game
         public NetworkIdentity pokemonIdentity { get; private set; }
 
 
-        // private List<Timer> _attackTimers;
-
         public Transform orientation { get; private set; }
 
         public BoxCollider hitBox { get; private set; }
 
         // private bool _init = false;
+        [field: SerializeField] public PlayerController player { get; private set; }
+        public bool isWild => player == null;
 
-        public void InitPokemon(GameObject pokemonGameObj, PokemonData data, Vector3 position)
+        public int groupId
         {
+            get
+            {
+                if (player == null)
+                {
+                    return TeamGroup.Default.id;
+                }
+
+                return player.data.group.id;
+            }
+        }
+
+        public void InitPokemon(PlayerController ownerId, GameObject pokemonGameObj, PokemonData data, Vector3 position)
+        {
+            this.player = ownerId;
             pokemonTransform = pokemonGameObj.transform;
             pokemonIdentity = pokemonGameObj.GetComponent<NetworkIdentity>();
             modelTransform = pokemonGameObj.transform.Find("Model");
@@ -47,8 +61,16 @@ namespace Game
             characterController = pokemonGameObj.GetComponent<CharacterController>();
             characterController.transform.position = position;
 
-            healthComponent = pokemonGameObj.GetComponent<HealthComponent>();
-            healthComponent.OnTakeDamage += OnTakeDamage;
+            hitTarget = pokemonGameObj.GetComponent<HitTarget>();
+            if (isServer)
+            {  
+                hitTarget.ServerSetGroupId(player.data.group.id);
+            }
+            else
+            {
+                hitTarget.CmdSetGroupId(player.data.group.id);
+            }
+            hitTarget.OnTakeDamage += OnTakeDamage;
 
 
             this.data = data;
@@ -129,7 +151,6 @@ namespace Game
         }
 
 
-
         [Server]
         private void OnTakeDamage(int damagePoint)
         {
@@ -137,7 +158,7 @@ namespace Game
             data.currentHealth -= damagePoint;
             RpcBeAttack(data.currentHealth);
         }
-        
+
         [ClientRpc]
         private void RpcBeAttack(int currentHealth)
         {
