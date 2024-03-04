@@ -133,19 +133,13 @@ namespace Game
             _onLineConn2Id.Remove(conn);
         }
 
-        public void Register(string userId, string userName)
+        public void Register(string userId, string playerName)
         {
             if (_userSet.Contains(userId)) return;
             // TODO 多样初始化
             _userSet.Add(userId);
-            _nameSet.Add(userName);
-            id2PlayerData[userId] = new PlayerData
-            {
-                userId = userId,
-                playerName = userName,
-                level = 1,
-                currentPokemonData = new PokemonData(1)
-            };
+            _nameSet.Add(playerName);
+            id2PlayerData[userId] = new PlayerData(userId,playerName,new PokemonData(1));
             id2PackageData[userId] = new PackageData();
             id2Position[userId] = Vector3.zero;
         }

@@ -8,10 +8,15 @@ namespace Game
     {
         public string userId;
         public string playerName;
-        public int level;
-        
         // pokemonData
         public PokemonData currentPokemonData;
+        
+        public PlayerData(string userId,string playerName,PokemonData currentPokemonData)
+        {
+            this.userId = userId;
+            this.playerName = playerName;
+            this.currentPokemonData = currentPokemonData;
+        }
 
     }
 }

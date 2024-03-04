@@ -849,7 +849,7 @@ Transform:
   m_GameObject: {fileID: 2026138631}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0.34, y: 0.5, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -888,6 +888,8 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  maxHealth: 100
+  currentHealth: 0
 --- !u!1001 &2800493380335099271
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -903,9 +905,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1339358646301485545, guid: 158769b850fb1c04782e3f1293a1b6c6,
         type: 3}
+      propertyPath: spawnPrefabs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1339358646301485545, guid: 158769b850fb1c04782e3f1293a1b6c6,
+        type: 3}
       propertyPath: spawnPrefabs.Array.data[0]
       value: 
       objectReference: {fileID: 4078537705340059023, guid: c3cdc83333d16294bac7452f0baaec0f,
+        type: 3}
+    - target: {fileID: 1339358646301485545, guid: 158769b850fb1c04782e3f1293a1b6c6,
+        type: 3}
+      propertyPath: spawnPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 1798567185816299044, guid: f8bf43b5d839c4748a57d2b7429bb47e,
+        type: 3}
+    - target: {fileID: 1339358646301485545, guid: 158769b850fb1c04782e3f1293a1b6c6,
+        type: 3}
+      propertyPath: spawnPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 7656037985046311837, guid: 7a89bccb408eccf4c81905cec933c391,
         type: 3}
     - target: {fileID: 2290031529814278814, guid: 158769b850fb1c04782e3f1293a1b6c6,
         type: 3}

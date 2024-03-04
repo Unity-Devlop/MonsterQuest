@@ -74,11 +74,6 @@ namespace Game
 
         public override void OnStopClient()
         {
-            if (isLocalPlayer)
-            {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
         }
 
         private void Update()

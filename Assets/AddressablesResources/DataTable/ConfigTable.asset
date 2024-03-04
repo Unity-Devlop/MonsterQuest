@@ -29,3 +29,16 @@ MonoBehaviour:
         baseFlySpeed: 0
         prefab: {fileID: 4078537705340059023, guid: c3cdc83333d16294bac7452f0baaec0f,
           type: 3}
+    - key: 7
+      value:
+        id: 7
+        name: "\u55B7\u706B\u9F99"
+        element: 2
+        baseDamagePoint: 2
+        baseMaxHealth: 10
+        baseMoveSpeed: 3
+        baseRunSpeed: 6
+        baseRotateSpeed: 5
+        baseFlySpeed: 3
+        prefab: {fileID: 1798567185816299044, guid: f8bf43b5d839c4748a57d2b7429bb47e,
+          type: 3}

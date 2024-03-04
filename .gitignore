@@ -92,6 +92,9 @@ Assets/Bin3DS.meta
 Assets/Complete/
 Assets/Complete.meta
 
+/Assets/Exported/
+/Assets/Exported.meta
+
 
 Assets/StreamingAssets/*.json
 Assets/StreamingAssets/*.json.meta
