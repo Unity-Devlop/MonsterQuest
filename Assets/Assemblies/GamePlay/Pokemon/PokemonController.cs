@@ -7,7 +7,7 @@ using UnityToolkit;
 
 namespace Game
 {
-    public class PokemonController : NetworkBehaviour, IHittable
+    public class PokemonController : NetworkBehaviour
     {
         // AnimHash
         public static readonly int idle = Animator.StringToHash("Idle");
@@ -18,6 +18,7 @@ namespace Game
         public Animator animator { get; private set; }
 
         public CharacterController characterController { get; private set; }
+        public HealthComponent healthComponent { get; private set; }
 
         public Vector3 pokemonPosition => characterController.transform.position;
         public PokemonStateMachine stateMachine { get; private set; }
@@ -33,6 +34,7 @@ namespace Game
         public Transform orientation { get; private set; }
 
         public BoxCollider hitBox { get; private set; }
+
         // private bool _init = false;
 
         public void InitPokemon(GameObject pokemonGameObj, PokemonData data, Vector3 position)
@@ -44,6 +46,9 @@ namespace Game
 
             characterController = pokemonGameObj.GetComponent<CharacterController>();
             characterController.transform.position = position;
+
+            healthComponent = pokemonGameObj.GetComponent<HealthComponent>();
+            healthComponent.OnTakeDamage += OnTakeDamage;
 
 
             this.data = data;
@@ -70,6 +75,7 @@ namespace Game
                 throw new NotImplementedException($"未实现的网络模式处理:{mode}");
             }
         }
+
 
         private void ServerOnlySetup()
         {
@@ -122,6 +128,28 @@ namespace Game
             }
         }
 
+
+
+        [Server]
+        private void OnTakeDamage(int damagePoint)
+        {
+            Debug.Log("OnTakeDamage");
+            data.currentHealth -= damagePoint;
+            RpcBeAttack(data.currentHealth);
+        }
+        
+        [ClientRpc]
+        private void RpcBeAttack(int currentHealth)
+        {
+            data.currentHealth = currentHealth;
+            if (NetworkClient.ready)
+            {
+                if (stateMachine != null)
+                {
+                    stateMachine.Change<PokemonBeAttackState>();
+                }
+            }
+        }
 
         public void HandleIdle()
         {
@@ -250,30 +278,6 @@ namespace Game
                     if (!isOwned)
                     {
                         stateMachine.Change<PokemonAttackState>();
-                    }
-                }
-            }
-        }
-
-
-        [Command]
-        public void CmdBeAttack(int damagePoint)
-        {
-            data.currentHealth -= damagePoint;
-            RpcBeAttack(data.currentHealth);
-        }
-
-        [ClientRpc]
-        private void RpcBeAttack(int currentHealth)
-        {
-            data.currentHealth = currentHealth;
-            if (NetworkClient.ready)
-            {
-                if (!isOwned)
-                {
-                    if (stateMachine != null)
-                    {
-                        stateMachine.Change<PokemonBeAttackState>();
                     }
                 }
             }

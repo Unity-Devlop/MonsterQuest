@@ -17,6 +17,7 @@ namespace Game
         private static readonly string PositionPath = "Position.json";
         private static readonly string NameSetPath = "NameSet.json";
         private static readonly string DataBasePath = "DataBase.json";
+        private static readonly string TeamGroupPath = "TeamGroup.json";
 
         // 玩家基础数据
         [SerializeField] private SerializableDictionary<string, PlayerData> id2PlayerData;
@@ -26,6 +27,8 @@ namespace Game
 
         // 玩家下线位置
         [SerializeField] private SerializableDictionary<string, Vector3> id2Position;
+
+        [SerializeField] private SerializableDictionary<int, TeamGroup> id2TeamGroup;
 
 
         // 用户名集合
@@ -78,6 +81,7 @@ namespace Game
             JsonUtil.SaveJsonToStreamingAssets(PositionPath, id2Position);
             JsonUtil.SaveJsonToStreamingAssets(UserSetPath, _userSet);
             JsonUtil.SaveJsonToStreamingAssets(NameSetPath, _nameSet);
+            JsonUtil.SaveJsonToStreamingAssets(TeamGroupPath, id2TeamGroup);
             JsonUtil.SaveJsonToStreamingAssets(DataBasePath, DataBase);
         }
 
@@ -94,7 +98,8 @@ namespace Game
                 JsonUtil.LoadJsonFromStreamingAssets<HashSet<string>>(UserSetPath);
             _nameSet =
                 JsonUtil.LoadJsonFromStreamingAssets<HashSet<string>>(NameSetPath);
-            
+
+            id2TeamGroup = JsonUtil.LoadJsonFromStreamingAssets<SerializableDictionary<int, TeamGroup>>(TeamGroupPath);
             DataBase = JsonUtil.LoadJsonFromStreamingAssets<PokemonDataBase>(DataBasePath);
 
 
@@ -103,6 +108,14 @@ namespace Game
             if (id2Position == null) id2Position = new SerializableDictionary<string, Vector3>();
             if (_userSet == null) _userSet = new HashSet<string>();
             if (_nameSet == null) _nameSet = new HashSet<string>();
+            if (id2TeamGroup == null)
+            {
+                id2TeamGroup = new SerializableDictionary<int, TeamGroup>();
+                // preset groups
+                id2TeamGroup[0] = TeamGroup.Default;
+                id2TeamGroup[1] = new TeamGroup(1, "Red", Color.red); // 红队
+                id2TeamGroup[2] = new TeamGroup(2, "Blue", Color.blue); // 蓝队
+            }
 
             if (DataBase == null) DataBase = new PokemonDataBase();
         }
@@ -139,7 +152,7 @@ namespace Game
             // TODO 多样初始化
             _userSet.Add(userId);
             _nameSet.Add(playerName);
-            id2PlayerData[userId] = new PlayerData(userId,playerName,new PokemonData(1));
+            id2PlayerData[userId] = new PlayerData(userId, playerName, new PokemonData(1));
             id2PackageData[userId] = new PackageData();
             id2Position[userId] = Vector3.zero;
         }
