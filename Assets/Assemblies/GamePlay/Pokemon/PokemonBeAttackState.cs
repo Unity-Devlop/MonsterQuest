@@ -9,7 +9,7 @@ namespace Game
 
         public override void OnEnter(PokemonController owner)
         {
-            Debug.Log("PokemonBeAttackState OnEnter");
+            // Debug.Log("PokemonBeAttackState OnEnter");
             canExit = false;
             owner.animator.SetTrigger(PokemonController.BeAttack);
         }
@@ -31,7 +31,7 @@ namespace Game
 
         public override void OnExit(PokemonController owner)
         {
-            Debug.Log("PokemonBeAttackState OnExit");
+            // Debug.Log("PokemonBeAttackState OnExit");
             canExit = true;
         }
     }

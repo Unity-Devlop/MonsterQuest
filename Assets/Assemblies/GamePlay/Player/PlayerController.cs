@@ -91,7 +91,7 @@ namespace Game
                 return;
             }
             
-            if (input.Fire.triggered)
+            if (input.Fire.WasPressedThisFrame())
             {
                 pokemonController.stateMachine.Change<PokemonAttackState>(); // 本地立刻切换状态 避免异常
                 pokemonController.CmdAttack();

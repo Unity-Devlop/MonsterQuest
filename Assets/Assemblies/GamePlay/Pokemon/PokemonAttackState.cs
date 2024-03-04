@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityToolkit;
 
@@ -8,21 +9,15 @@ namespace Game
     {
         public bool canExit { get; private set; }
         // private AnimationClip targetClip;
-
+        private readonly HashSet<Collider> _filter = new HashSet<Collider>(10);
         public override void OnEnter(PokemonController owner)
         {
             owner.animator.SetBool(PokemonController.attack, true);
             canExit = false; // TODO 必须要打出关键帧后才能退出
-
-            Debug.Log("PokemonAttackState OnEnter");
-
-            // if (targetClip == null)
-            // {
-            //     targetClip =
-            //         owner.animator.runtimeAnimatorController.animationClips.FirstOrDefault(
-            //             clip => clip.name == "Attack");
-            // }
+            _filter.Clear();
         }
+
+
 
         public override void OnUpdate(PokemonController owner)
         {
@@ -32,7 +27,7 @@ namespace Game
             // TODO 必须要打出关键帧后才能退出
             if (owner.isOwned)
             {
-                Debug.Log("Owned OnUpdate");
+                // Debug.Log("Owned OnUpdate");
                 // 攻击检测只在拥有者的客户端进行
                 if (owner.hitBox.gameObject.activeSelf)
                 {
@@ -44,8 +39,10 @@ namespace Game
                     {
                         Collider collider = colliders[i];
                         if (collider == owner.characterController) continue;
+                        if (_filter.Contains(collider)) continue;
                         if (collider.TryGetComponent(out IHittable hittable))
                         {
+                            _filter.Add(collider);
                             hittable.CmdBeAttack(owner.data.damagePoint);
                         }
                     }
@@ -56,7 +53,7 @@ namespace Game
             // 动画放结束就切换到Idle状态
             if (stateInfo.normalizedTime > 0.95f)
             {
-                Debug.Log("Player Over");
+                // Debug.Log("Player Over");
                 canExit = true;
                 return;
             }
@@ -65,7 +62,8 @@ namespace Game
 
         public override void OnExit(PokemonController owner)
         {
-            Debug.Log("PokemonAttackState OnExit");
+            _filter.Clear();
+            // Debug.Log("PokemonAttackState OnExit");
             owner.animator.SetBool(PokemonController.attack, false);
             canExit = false;
         }

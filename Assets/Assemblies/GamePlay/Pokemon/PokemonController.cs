@@ -120,7 +120,7 @@ namespace Game
             if (isServer)
             {
                 //不在地面上时，应用重力
-                if (!characterController.isGrounded)
+                if (!characterController.isGrounded && characterController.transform.position.y > 0)
                 {
                     // TODO 这个不是加速运动
                     characterController.Move(Time.deltaTime * Physics.gravity);
@@ -133,7 +133,7 @@ namespace Game
         [Server]
         private void OnTakeDamage(int damagePoint)
         {
-            Debug.Log("OnTakeDamage");
+            // Debug.Log("OnTakeDamage");
             data.currentHealth -= damagePoint;
             RpcBeAttack(data.currentHealth);
         }
