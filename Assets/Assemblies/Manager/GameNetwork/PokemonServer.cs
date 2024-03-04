@@ -188,5 +188,14 @@ namespace Game
         {
             id2Position[userId] = pokemonPosition;
         }
+
+        public void QueryGroupData(int id, out TeamGroup teamGroup)
+        {
+            if (!id2TeamGroup.TryGetValue(id, out teamGroup))
+            {
+                teamGroup = TeamGroup.Default;
+                Debug.LogError($"Group:{id} not found , use default group");
+            }
+        }
     }
 }

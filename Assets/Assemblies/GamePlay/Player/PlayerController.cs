@@ -39,7 +39,6 @@ namespace Game
 
         private void Awake()
         {
-            pokemonController = GetComponent<PokemonController>();
             _camera = transform.Find("Camera").GetComponent<CinemachineFreeLook>();
             _cameraInputProvider = _camera.GetComponent<CinemachineInputProvider>();
             Orientation = transform.Find("Orientation");
@@ -165,11 +164,26 @@ namespace Game
 
         private void PokemonSetup(GameObject pokemon, Vector3 position)
         {
+            pokemonController = pokemon.GetComponent<PokemonController>();
             pokemonController.InitPokemon(this, pokemon.gameObject, data.currentPokemonData, position);
             Transform modelTransform = pokemonController.pokemonTransform;
             _camera.Follow = modelTransform;
             _camera.LookAt = modelTransform;
             state = PlayerState.Ready;
+        }
+
+        [Command]
+        public void CmdChangeGroup(int id)
+        {
+            PokemonServer.Singleton.QueryGroupData(id, out TeamGroup groupData);
+            RpcChangeGroup(MemoryPackSerializer.Serialize(groupData));
+        }
+
+        [ClientRpc]
+        private void RpcChangeGroup(ArraySegment<byte> groupPayload)
+        {
+            TeamGroup groupData = MemoryPackSerializer.Deserialize<TeamGroup>(groupPayload);
+            data.group = groupData;
         }
     }
 }

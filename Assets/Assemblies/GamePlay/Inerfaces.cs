@@ -1,11 +1,15 @@
-﻿
-using Mirror;
+﻿using Mirror;
 
 namespace Game
 {
-    public interface IHittable
+    public interface IEntity
     {
-        int GroupId();
+        int groupId { get; }
+    }
+
+    public interface IHittable : IEntity
+    {
+        bool canBeHit { get; }
         void CmdBeAttack(int damagePoint);
     }
 

@@ -7,7 +7,7 @@ using UnityToolkit;
 
 namespace Game
 {
-    public class PokemonController : NetworkBehaviour
+    public class PokemonController : NetworkBehaviour, IHittable
     {
         // AnimHash
         public static readonly int idle = Animator.StringToHash("Idle");
@@ -18,7 +18,6 @@ namespace Game
         public Animator animator { get; private set; }
 
         public CharacterController characterController { get; private set; }
-        public HitTarget hitTarget { get; private set; }
 
         public Vector3 pokemonPosition => characterController.transform.position;
         public PokemonStateMachine stateMachine { get; private set; }
@@ -35,7 +34,7 @@ namespace Game
 
         // private bool _init = false;
         [field: SerializeField] public PlayerController player { get; private set; }
-        public bool isWild => player == null;
+        public bool canBeHit { get; private set; } = true;
 
         public int groupId
         {
@@ -50,9 +49,9 @@ namespace Game
             }
         }
 
-        public void InitPokemon(PlayerController ownerId, GameObject pokemonGameObj, PokemonData data, Vector3 position)
+        public void InitPokemon(PlayerController player, GameObject pokemonGameObj, PokemonData data, Vector3 position)
         {
-            this.player = ownerId;
+            this.player = player;
             pokemonTransform = pokemonGameObj.transform;
             pokemonIdentity = pokemonGameObj.GetComponent<NetworkIdentity>();
             modelTransform = pokemonGameObj.transform.Find("Model");
@@ -60,18 +59,6 @@ namespace Game
 
             characterController = pokemonGameObj.GetComponent<CharacterController>();
             characterController.transform.position = position;
-
-            hitTarget = pokemonGameObj.GetComponent<HitTarget>();
-            if (isServer)
-            {  
-                hitTarget.ServerSetGroupId(player.data.group.id);
-            }
-            else
-            {
-                hitTarget.CmdSetGroupId(player.data.group.id);
-            }
-            hitTarget.OnTakeDamage += OnTakeDamage;
-
 
             this.data = data;
 
@@ -151,13 +138,13 @@ namespace Game
         }
 
 
-        [Server]
-        private void OnTakeDamage(int damagePoint)
+        [Command(requiresAuthority = false)]
+        public void CmdBeAttack(int damagePoint)
         {
-            // Debug.Log("OnTakeDamage");
             data.currentHealth -= damagePoint;
             RpcBeAttack(data.currentHealth);
         }
+
 
         [ClientRpc]
         private void RpcBeAttack(int currentHealth)

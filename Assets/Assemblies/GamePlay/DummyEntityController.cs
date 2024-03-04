@@ -7,7 +7,8 @@ namespace Game
 {
     public class DummyEntityController : NetworkBehaviour, IHittable
     {
-        private bool canBeHit = true;
+        public bool canBeHit { get; private set; } = true;
+        public int groupId => TeamGroup.Default.id;
         private Timer _hitCoolDown;
         public int maxHealth = 100;
 
@@ -19,17 +20,9 @@ namespace Game
             currentHealth = maxHealth;
         }
 
-
-        public int GroupId()
-        {
-            return TeamGroup.Default.id;
-        }
-
         [Command(requiresAuthority = false)]
         public void CmdBeAttack(int damagePoint)
         {
-            if (!canBeHit) return;
-
             Debug.Log($"CmdBeAttack:{damagePoint}");
             canBeHit = false;
             _hitCoolDown = this.AttachTimer(1, () => { canBeHit = true; });

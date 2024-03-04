@@ -628,7 +628,6 @@ GameObject:
   - component: {fileID: 4248358126748491458}
   - component: {fileID: 6323349489473176111}
   - component: {fileID: 647146960142136290}
-  - component: {fileID: 4328320619441722146}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -688,7 +687,10 @@ MonoBehaviour:
   <data>k__BackingField:
     userId: 
     playerName: 
-    level: 0
+    group:
+      id: 0
+      name: 
+      color: {r: 0, g: 0, b: 0, a: 0}
     currentPokemonData:
       configId: 0
       maxHealth: 0
@@ -700,21 +702,6 @@ MonoBehaviour:
       flySpeed: 0
   <state>k__BackingField: 0
   facingAngle: 0
---- !u!114 &4328320619441722146
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7656037985046311837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4977ba2d45346e0bf62f10444a9860a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
 --- !u!1 &7805937557236542461
 GameObject:
   m_ObjectHideFlags: 3
