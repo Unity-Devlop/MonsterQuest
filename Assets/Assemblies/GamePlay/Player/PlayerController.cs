@@ -64,12 +64,12 @@ namespace Game
             {
                 CmdInitData(); // 所有客户端都要请求初始化数据
             }
-
-            if (isLocalPlayer)
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
+// TODO DEBUG时不这样搞
+            // if (isLocalPlayer)
+            // {
+            //     Cursor.lockState = CursorLockMode.Locked;
+            //     Cursor.visible = false;
+            // }
         }
 
         public override void OnStopClient()
