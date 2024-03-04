@@ -21,7 +21,7 @@ MonoBehaviour:
         id: 1
         name: "\u5999\u86D9\u79CD\u5B50"
         element: 0
-        baseHitPoint: 1
+        baseDamagePoint: 1
         baseMaxHealth: 10
         baseMoveSpeed: 3
         baseRunSpeed: 5

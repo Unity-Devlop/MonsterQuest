@@ -1,10 +1,10 @@
 ﻿
+using Mirror;
+
 namespace Game
 {
     public interface IHittable
     {
-        bool CanBeHit();
-
         void CmdBeAttack(int damagePoint);
     }
 

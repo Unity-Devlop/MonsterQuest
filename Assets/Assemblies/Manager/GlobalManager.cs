@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityToolkit;
 
-namespace Assemblies
+namespace Game
 {
     public class GlobalManager : MonoSingleton<GlobalManager>
     {

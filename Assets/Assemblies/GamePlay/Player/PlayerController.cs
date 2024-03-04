@@ -91,16 +91,18 @@ namespace Game
 
         private void TickPokemonStateLogic()
         {
-            if (input.Fire.triggered)
-            {
-                pokemonController.HandleAttack();
-                return;
-            }
-
             if (pokemonState is ITempAnimState { canExit: false })
             {
                 return;
             }
+            
+            if (input.Fire.triggered)
+            {
+                pokemonController.stateMachine.Change<PokemonAttackState>(); // 本地立刻切换状态 避免异常
+                pokemonController.CmdAttack();
+                return;
+            }
+
 
             // 必须要结束瞬时状态才能切换到其他状态
 
@@ -152,7 +154,8 @@ namespace Game
         }
 
         [Server]
-        public void ServerInitData(PlayerData playerData, PackageData packageData, NetworkConnectionToClient connection,Vector3 position)
+        public void ServerInitData(PlayerData playerData, PackageData packageData, NetworkConnectionToClient connection,
+            Vector3 position)
         {
             data = playerData;
             package = packageData;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assemblies;
 using Mirror;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -53,11 +52,35 @@ namespace Game
             hitBox = modelTransform.Find("HitBox").GetComponent<BoxCollider>();
 
 
-            // TODO 服务器 和 客户端的区分
+            NetworkManagerMode mode = NetworkManager.singleton.mode;
+            if (mode == NetworkManagerMode.ServerOnly)
+            {
+                ServerOnlySetup();
+            }
+            else if (mode == NetworkManagerMode.ClientOnly)
+            {
+                ClientOnlySetup();
+            }
+            else if (mode == NetworkManagerMode.Host)
+            {
+                HostSetup();
+            }
+            else
+            {
+                throw new NotImplementedException($"未实现的网络模式处理:{mode}");
+            }
+        }
+
+        private void ServerOnlySetup()
+        {
+            animator.enabled = false;
+            modelTransform.gameObject.SetActive(false);
+        }
+
+        private void ClientOnlySetup()
+        {
             animator.enabled = true;
-            // 客户端需要渲染模型
             modelTransform.gameObject.SetActive(true);
-            // 客户端需要状态机
             stateMachine = new PokemonStateMachine(this);
             stateMachine.Add<PokemonIdleState>();
             stateMachine.Add<PokemonWalkState>();
@@ -67,16 +90,17 @@ namespace Game
             stateMachine.Start<PokemonIdleState>();
         }
 
-        private void ServerOnlySetup()
-        {
-        }
-
-        private void ClientOnlySetup()
-        {
-        }
-
         private void HostSetup()
         {
+            animator.enabled = true;
+            modelTransform.gameObject.SetActive(true);
+            stateMachine = new PokemonStateMachine(this);
+            stateMachine.Add<PokemonIdleState>();
+            stateMachine.Add<PokemonWalkState>();
+            stateMachine.Add<PokemonRunState>();
+            stateMachine.Add<PokemonAttackState>();
+            stateMachine.Add<PokemonBeAttackState>();
+            stateMachine.Start<PokemonIdleState>();
         }
 
         private void Update()
@@ -108,7 +132,7 @@ namespace Game
         [Command]
         internal void CmdIdle()
         {
-            stateMachine.Change<PokemonIdleState>(); // 服务器上没必要播动画
+            // stateMachine.Change<PokemonIdleState>(); // 服务器上没必要播动画
             RpcIdle();
         }
 
@@ -154,7 +178,7 @@ namespace Game
             pokemonTransform.forward =
                 Vector3.Slerp(pokemonTransform.forward, moveVec.normalized, Time.deltaTime * data.rotateSpeed);
             HandleCharacterControllerMove(moveVec * (Time.deltaTime * data.moveSpeed));
-            stateMachine.Change<PokemonWalkState>(); // 服务器上没必要播动画
+            // stateMachine.Change<PokemonWalkState>(); // 服务器上没必要播动画
             RpcWalkAnim();
         }
 
@@ -192,7 +216,7 @@ namespace Game
             pokemonTransform.forward =
                 Vector3.Slerp(pokemonTransform.forward, moveVec.normalized, Time.deltaTime * data.rotateSpeed);
             HandleCharacterControllerMove(moveVec * (Time.deltaTime * data.runSpeed));
-            stateMachine.Change<PokemonRunState>(); // 服务器上没必要播动画
+            // stateMachine.Change<PokemonRunState>(); // 服务器上没必要播动画
             RpcRunAnim();
         }
 
@@ -203,39 +227,16 @@ namespace Game
             {
                 if (!isOwned)
                 {
-                    /*if (_init)
-                    {*/
                     if (stateMachine != null)
                         stateMachine.Change<PokemonRunState>();
-                    // }
                 }
             }
         }
 
 
-        public void HandleAttack()
-        {
-            stateMachine.Change<PokemonAttackState>();
-            CmdAttack();
-        }
-
         [Command]
-        private void CmdAttack()
+        public void CmdAttack()
         {
-            // for (int i = 0; i < data.config.hitBoxFrames.Count; i++)
-            // {
-            //     HitBoxFrame hitBoxFrame = data.config.hitBoxFrames[i];
-            //     int idx = i;
-            //     Timer timer = this.AttachTimer(hitBoxFrame.time, () => { OnAttack(idx); });
-            //     _attackTimers.Add(timer);
-            // }
-
-            // Host 已经播了  所以不需要再播 仅服务器时 这个动画需要播
-            if (isServerOnly)
-            {
-                stateMachine.Change<PokemonAttackState>();
-            }
-
             RpcAttackAnim();
         }
 
@@ -244,35 +245,14 @@ namespace Game
         {
             if (NetworkClient.ready)
             {
-                if (!isOwned)
+                if (stateMachine != null)
                 {
-                    if (stateMachine != null)
-                        // Debug.Log("RpcAttackAnim");
+                    if (!isOwned)
+                    {
                         stateMachine.Change<PokemonAttackState>();
+                    }
                 }
             }
-        }
-
-        [Server]
-        private void OnAttack()
-        {
-            // int count = RayCaster.OverlapSphereAll(pokemonTransform.position + frame.center, frame.radius,
-            //     out var results, GlobalManager.Singleton.hittableLayer);
-            // for (int i = 0; i < count; i++)
-            // {
-            //     if (results[i].gameObject.TryGetComponent(out IHittable hittable) && hittable.CanBeHit() &&
-            //         !ReferenceEquals(hittable, this))
-            //     {
-            //         int damagePoint = data.damagePoint;
-            //         hittable.CmdBeAttack(damagePoint);
-            //     }
-            // }
-        }
-
-
-        public bool CanBeHit()
-        {
-            return true; // TODO complete this method
         }
 
 
