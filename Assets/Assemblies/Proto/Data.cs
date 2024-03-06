@@ -38,44 +38,44 @@ namespace Proto {
             "ZXF1ZXN0EgsKA3VpZBgBIAEoDRIVCg1jaGFyYWN0ZXJOYW1lGAIgASgJIkoK",
             "F0NyZWF0ZUNoYXJhY3RlclJlc3BvbnNlEiIKBWVycm9yGAEgASgLMhMucHJv",
             "dG8uRXJyb3JNZXNzYWdlEgsKA3VpZBgCIAEoDSIaCgtDaGF0UmVxdWVzdBIL",
-            "CgN1aWQYASABKA0iHgoPU3RvcENoYXRSZXF1ZXN0EgsKA3VpZBgBIAEoDSIn",
-            "CgtDaGF0TWVzc2FnZRILCgN1aWQYASABKA0SCwoDbXNnGAIgASgJIj0KE1Nl",
-            "YXJjaEZyaWVuZFJlcXVlc3QSEwoLc2VhcmNoZXJVaWQYASABKA0SEQoJdGFy",
-            "Z2V0VWlkGAIgASgNIoIBChRTZWFyY2hGcmllbmRSZXNwb25zZRIiCgVlcnJv",
-            "chgBIAEoCzITLnByb3RvLkVycm9yTWVzc2FnZRITCgtzZWFyY2hlclVpZBgC",
-            "IAEoDRIRCgl0YXJnZXRVaWQYAyABKA0SDAoEbmFtZRgEIAEoCRIQCghpc0Zy",
-            "aWVuZBgFIAEoCCI1ChBBZGRGcmllbmRSZXF1ZXN0Eg4KBnNyY1VpZBgBIAEo",
-            "DRIRCgl0YXJnZXRVaWQYAiABKA0iOAoTUmVtb3ZlRnJpZW5kUmVxdWVzdBIO",
-            "CgZzcmNVaWQYASABKA0SEQoJdGFyZ2V0VWlkGAIgASgNIiAKEUZyaWVuZExp",
-            "c3RSZXF1ZXN0EgsKA3VpZBgBIAEoDSJ0ChJGcmllbmRMaXN0UmVzcG9uc2US",
-            "IgoFZXJyb3IYASABKAsyEy5wcm90by5FcnJvck1lc3NhZ2USCwoDdWlkGAIg",
-            "ASgNEhUKDWZyaWVuZFVpZExpc3QYAyADKA0SFgoOZnJpZW5kTmFtZUxpc3QY",
-            "BCADKAkiKAoMR29vZHNNZXNzYWdlEgoKAmlkGAEgASgNEgwKBG5hbWUYAiAB",
-            "KAkiIwoQR29vZHNEZXNjUmVxdWVzdBIPCgdnb29kc0lkGAEgASgNIlMKEUdv",
-            "b2RzRGVzY1Jlc3BvbnNlEh8KBGNvZGUYASABKA4yES5wcm90by5TdGF0dXND",
-            "b2RlEg8KB2dvb2RzSWQYAiABKA0SDAoEZGVzYxgDIAEoCSofCgpTdGF0dXND",
-            "b2RlEgYKAk9LEAASCQoFRVJST1IQATKTBwoLR2FtZVNlcnZpY2USOwoIVXNl",
-            "ckluZm8SFi5wcm90by5Vc2VySW5mb1JlcXVlc3QaFy5wcm90by5Vc2VySW5m",
-            "b1Jlc3BvbnNlEj4KCVVzZXJMb2dpbhIXLnByb3RvLlVzZXJMb2dpblJlcXVl",
-            "c3QaGC5wcm90by5Vc2VyTG9naW5SZXNwb25zZRJHCgxVc2VyUmVnaXN0ZXIS",
-            "Gi5wcm90by5Vc2VyUmVnaXN0ZXJSZXF1ZXN0GhsucHJvdG8uVXNlclJlZ2lz",
-            "dGVyUmVzcG9uc2USUAoPQ3JlYXRlQ2hhcmFjdGVyEh0ucHJvdG8uQ3JlYXRl",
-            "Q2hhcmFjdGVyUmVxdWVzdBoeLnByb3RvLkNyZWF0ZUNoYXJhY3RlclJlc3Bv",
-            "bnNlEjUKClB1YmxpY0NoYXQSEi5wcm90by5DaGF0TWVzc2FnZRoTLnByb3Rv",
-            "LkVycm9yTWVzc2FnZRI1CgpCdWJibGVDaGF0EhIucHJvdG8uQ2hhdE1lc3Nh",
-            "Z2UaEy5wcm90by5FcnJvck1lc3NhZ2USOwoPU3RhcnRQdWJsaWNDaGF0EhIu",
-            "cHJvdG8uQ2hhdFJlcXVlc3QaEi5wcm90by5DaGF0TWVzc2FnZTABEjsKD1N0",
-            "YXJ0QnViYmxlQ2hhdBISLnByb3RvLkNoYXRSZXF1ZXN0GhIucHJvdG8uQ2hh",
-            "dE1lc3NhZ2UwARI9Cg5TdG9wUHVibGljQ2hhdBIWLnByb3RvLlN0b3BDaGF0",
-            "UmVxdWVzdBoTLnByb3RvLkVycm9yTWVzc2FnZRI9Cg5TdG9wQnViYmxlQ2hh",
-            "dBIWLnByb3RvLlN0b3BDaGF0UmVxdWVzdBoTLnByb3RvLkVycm9yTWVzc2Fn",
-            "ZRJHCgxTZWFyY2hGcmllbmQSGi5wcm90by5TZWFyY2hGcmllbmRSZXF1ZXN0",
-            "GhsucHJvdG8uU2VhcmNoRnJpZW5kUmVzcG9uc2USOQoJQWRkRnJpZW5kEhcu",
-            "cHJvdG8uQWRkRnJpZW5kUmVxdWVzdBoTLnByb3RvLkVycm9yTWVzc2FnZRJB",
-            "CgpGcmllbmRMaXN0EhgucHJvdG8uRnJpZW5kTGlzdFJlcXVlc3QaGS5wcm90",
-            "by5GcmllbmRMaXN0UmVzcG9uc2USPwoMUmVtb3ZlRnJpZW5kEhoucHJvdG8u",
-            "UmVtb3ZlRnJpZW5kUmVxdWVzdBoTLnByb3RvLkVycm9yTWVzc2FnZUIKWggu",
-            "Lztwcm90b2IGcHJvdG8z"));
+            "CgN1aWQYASABKA0iHgoPU3RvcENoYXRSZXF1ZXN0EgsKA3VpZBgBIAEoDSIx",
+            "CgtDaGF0TWVzc2FnZRIRCglzZW5kZXJVaWQYASABKA0SDwoHY29udGVudBgC",
+            "IAEoCSI9ChNTZWFyY2hGcmllbmRSZXF1ZXN0EhMKC3NlYXJjaGVyVWlkGAEg",
+            "ASgNEhEKCXRhcmdldFVpZBgCIAEoDSKCAQoUU2VhcmNoRnJpZW5kUmVzcG9u",
+            "c2USIgoFZXJyb3IYASABKAsyEy5wcm90by5FcnJvck1lc3NhZ2USEwoLc2Vh",
+            "cmNoZXJVaWQYAiABKA0SEQoJdGFyZ2V0VWlkGAMgASgNEgwKBG5hbWUYBCAB",
+            "KAkSEAoIaXNGcmllbmQYBSABKAgiNQoQQWRkRnJpZW5kUmVxdWVzdBIOCgZz",
+            "cmNVaWQYASABKA0SEQoJdGFyZ2V0VWlkGAIgASgNIjgKE1JlbW92ZUZyaWVu",
+            "ZFJlcXVlc3QSDgoGc3JjVWlkGAEgASgNEhEKCXRhcmdldFVpZBgCIAEoDSIg",
+            "ChFGcmllbmRMaXN0UmVxdWVzdBILCgN1aWQYASABKA0idAoSRnJpZW5kTGlz",
+            "dFJlc3BvbnNlEiIKBWVycm9yGAEgASgLMhMucHJvdG8uRXJyb3JNZXNzYWdl",
+            "EgsKA3VpZBgCIAEoDRIVCg1mcmllbmRVaWRMaXN0GAMgAygNEhYKDmZyaWVu",
+            "ZE5hbWVMaXN0GAQgAygJIigKDEdvb2RzTWVzc2FnZRIKCgJpZBgBIAEoDRIM",
+            "CgRuYW1lGAIgASgJIiMKEEdvb2RzRGVzY1JlcXVlc3QSDwoHZ29vZHNJZBgB",
+            "IAEoDSJTChFHb29kc0Rlc2NSZXNwb25zZRIfCgRjb2RlGAEgASgOMhEucHJv",
+            "dG8uU3RhdHVzQ29kZRIPCgdnb29kc0lkGAIgASgNEgwKBGRlc2MYAyABKAkq",
+            "HwoKU3RhdHVzQ29kZRIGCgJPSxAAEgkKBUVSUk9SEAEykwcKC0dhbWVTZXJ2",
+            "aWNlEjsKCFVzZXJJbmZvEhYucHJvdG8uVXNlckluZm9SZXF1ZXN0GhcucHJv",
+            "dG8uVXNlckluZm9SZXNwb25zZRI+CglVc2VyTG9naW4SFy5wcm90by5Vc2Vy",
+            "TG9naW5SZXF1ZXN0GhgucHJvdG8uVXNlckxvZ2luUmVzcG9uc2USRwoMVXNl",
+            "clJlZ2lzdGVyEhoucHJvdG8uVXNlclJlZ2lzdGVyUmVxdWVzdBobLnByb3Rv",
+            "LlVzZXJSZWdpc3RlclJlc3BvbnNlElAKD0NyZWF0ZUNoYXJhY3RlchIdLnBy",
+            "b3RvLkNyZWF0ZUNoYXJhY3RlclJlcXVlc3QaHi5wcm90by5DcmVhdGVDaGFy",
+            "YWN0ZXJSZXNwb25zZRI1CgpQdWJsaWNDaGF0EhIucHJvdG8uQ2hhdE1lc3Nh",
+            "Z2UaEy5wcm90by5FcnJvck1lc3NhZ2USNQoKQnViYmxlQ2hhdBISLnByb3Rv",
+            "LkNoYXRNZXNzYWdlGhMucHJvdG8uRXJyb3JNZXNzYWdlEjsKD1N0YXJ0UHVi",
+            "bGljQ2hhdBISLnByb3RvLkNoYXRSZXF1ZXN0GhIucHJvdG8uQ2hhdE1lc3Nh",
+            "Z2UwARI7Cg9TdGFydEJ1YmJsZUNoYXQSEi5wcm90by5DaGF0UmVxdWVzdBoS",
+            "LnByb3RvLkNoYXRNZXNzYWdlMAESPQoOU3RvcFB1YmxpY0NoYXQSFi5wcm90",
+            "by5TdG9wQ2hhdFJlcXVlc3QaEy5wcm90by5FcnJvck1lc3NhZ2USPQoOU3Rv",
+            "cEJ1YmJsZUNoYXQSFi5wcm90by5TdG9wQ2hhdFJlcXVlc3QaEy5wcm90by5F",
+            "cnJvck1lc3NhZ2USRwoMU2VhcmNoRnJpZW5kEhoucHJvdG8uU2VhcmNoRnJp",
+            "ZW5kUmVxdWVzdBobLnByb3RvLlNlYXJjaEZyaWVuZFJlc3BvbnNlEjkKCUFk",
+            "ZEZyaWVuZBIXLnByb3RvLkFkZEZyaWVuZFJlcXVlc3QaEy5wcm90by5FcnJv",
+            "ck1lc3NhZ2USQQoKRnJpZW5kTGlzdBIYLnByb3RvLkZyaWVuZExpc3RSZXF1",
+            "ZXN0GhkucHJvdG8uRnJpZW5kTGlzdFJlc3BvbnNlEj8KDFJlbW92ZUZyaWVu",
+            "ZBIaLnByb3RvLlJlbW92ZUZyaWVuZFJlcXVlc3QaEy5wcm90by5FcnJvck1l",
+            "c3NhZ2VCCloILi87cHJvdG9iBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Proto.StatusCode), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -90,7 +90,7 @@ namespace Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.CreateCharacterResponse), global::Proto.CreateCharacterResponse.Parser, new[]{ "Error", "Uid" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.ChatRequest), global::Proto.ChatRequest.Parser, new[]{ "Uid" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.StopChatRequest), global::Proto.StopChatRequest.Parser, new[]{ "Uid" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Proto.ChatMessage), global::Proto.ChatMessage.Parser, new[]{ "Uid", "Msg" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Proto.ChatMessage), global::Proto.ChatMessage.Parser, new[]{ "SenderUid", "Content" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.SearchFriendRequest), global::Proto.SearchFriendRequest.Parser, new[]{ "SearcherUid", "TargetUid" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.SearchFriendResponse), global::Proto.SearchFriendResponse.Parser, new[]{ "Error", "SearcherUid", "TargetUid", "Name", "IsFriend" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.AddFriendRequest), global::Proto.AddFriendRequest.Parser, new[]{ "SrcUid", "TargetUid" }, null, null, null, null),
@@ -2690,8 +2690,8 @@ namespace Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ChatMessage(ChatMessage other) : this() {
-      uid_ = other.uid_;
-      msg_ = other.msg_;
+      senderUid_ = other.senderUid_;
+      content_ = other.content_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2701,27 +2701,27 @@ namespace Proto {
       return new ChatMessage(this);
     }
 
-    /// <summary>Field number for the "uid" field.</summary>
-    public const int UidFieldNumber = 1;
-    private uint uid_;
+    /// <summary>Field number for the "senderUid" field.</summary>
+    public const int SenderUidFieldNumber = 1;
+    private uint senderUid_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public uint Uid {
-      get { return uid_; }
+    public uint SenderUid {
+      get { return senderUid_; }
       set {
-        uid_ = value;
+        senderUid_ = value;
       }
     }
 
-    /// <summary>Field number for the "msg" field.</summary>
-    public const int MsgFieldNumber = 2;
-    private string msg_ = "";
+    /// <summary>Field number for the "content" field.</summary>
+    public const int ContentFieldNumber = 2;
+    private string content_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Msg {
-      get { return msg_; }
+    public string Content {
+      get { return content_; }
       set {
-        msg_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        content_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -2740,8 +2740,8 @@ namespace Proto {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Uid != other.Uid) return false;
-      if (Msg != other.Msg) return false;
+      if (SenderUid != other.SenderUid) return false;
+      if (Content != other.Content) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2749,8 +2749,8 @@ namespace Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Uid != 0) hash ^= Uid.GetHashCode();
-      if (Msg.Length != 0) hash ^= Msg.GetHashCode();
+      if (SenderUid != 0) hash ^= SenderUid.GetHashCode();
+      if (Content.Length != 0) hash ^= Content.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2769,13 +2769,13 @@ namespace Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Uid != 0) {
+      if (SenderUid != 0) {
         output.WriteRawTag(8);
-        output.WriteUInt32(Uid);
+        output.WriteUInt32(SenderUid);
       }
-      if (Msg.Length != 0) {
+      if (Content.Length != 0) {
         output.WriteRawTag(18);
-        output.WriteString(Msg);
+        output.WriteString(Content);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -2787,13 +2787,13 @@ namespace Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Uid != 0) {
+      if (SenderUid != 0) {
         output.WriteRawTag(8);
-        output.WriteUInt32(Uid);
+        output.WriteUInt32(SenderUid);
       }
-      if (Msg.Length != 0) {
+      if (Content.Length != 0) {
         output.WriteRawTag(18);
-        output.WriteString(Msg);
+        output.WriteString(Content);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -2805,11 +2805,11 @@ namespace Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Uid != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Uid);
+      if (SenderUid != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(SenderUid);
       }
-      if (Msg.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Msg);
+      if (Content.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Content);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2823,11 +2823,11 @@ namespace Proto {
       if (other == null) {
         return;
       }
-      if (other.Uid != 0) {
-        Uid = other.Uid;
+      if (other.SenderUid != 0) {
+        SenderUid = other.SenderUid;
       }
-      if (other.Msg.Length != 0) {
-        Msg = other.Msg;
+      if (other.Content.Length != 0) {
+        Content = other.Content;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -2845,11 +2845,11 @@ namespace Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Uid = input.ReadUInt32();
+            SenderUid = input.ReadUInt32();
             break;
           }
           case 18: {
-            Msg = input.ReadString();
+            Content = input.ReadString();
             break;
           }
         }
@@ -2868,11 +2868,11 @@ namespace Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Uid = input.ReadUInt32();
+            SenderUid = input.ReadUInt32();
             break;
           }
           case 18: {
-            Msg = input.ReadString();
+            Content = input.ReadString();
             break;
           }
         }

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using MemoryPack;
 using Newtonsoft.Json;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Game
 {
@@ -74,13 +72,13 @@ namespace Game
         {
             uniqueId = Guid.NewGuid();
             this.configId = configId;
+            maxHealth = config.baseMaxHealth;
+            currentHealth = maxHealth;
+            damagePoint = config.baseDamagePoint;
             moveSpeed = config.baseMoveSpeed;
             runSpeed = config.baseRunSpeed;
             rotateSpeed = config.baseRotateSpeed;
             flySpeed = config.baseFlySpeed;
-            damagePoint = config.baseDamagePoint;
-            maxHealth = config.baseMaxHealth;
-            currentHealth = maxHealth;
         }
     }
 }

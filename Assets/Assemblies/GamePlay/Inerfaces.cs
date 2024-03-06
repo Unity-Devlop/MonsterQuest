@@ -9,7 +9,7 @@ namespace Game
 
     public interface IHittable : IEntity
     {
-        bool canBeHit { get; }
+        bool canBeHit { get; set; }
         void CmdBeAttack(int damagePoint);
     }
 

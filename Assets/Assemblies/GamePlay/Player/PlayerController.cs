@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Cinemachine;
 using MemoryPack;
 using Mirror;
@@ -17,11 +18,13 @@ namespace Game
 
     public class PlayerController : NetworkBehaviour
     {
+        public static PlayerController LocalPlayer { get; private set; }
         private CinemachineFreeLook _camera;
-        private CinemachineInputProvider _cameraInputProvider;
+        // private CinemachineInputProvider _cameraInputProvider;
 
         public PokemonController pokemonController { get; private set; }
-        public Transform Orientation { get; private set; }
+
+        // public Transform Orientation { get; private set; }
         public State<PokemonController> pokemonState => pokemonController.stateMachine.CurrentState;
         private string playerName => data.playerName;
         public string userId => data.userId;
@@ -33,15 +36,17 @@ namespace Game
         [field: SerializeField] public PlayerState state { get; private set; }
 
 
-        [SyncVar] public float facingAngle;
+        // [SyncVar] public float facingAngle;
 
         private GameInput.PlayerActions input => InputManager.Singleton.input.Player;
+
+        public event Action<PlayerController> OnPlayerSpawned;
 
         private void Awake()
         {
             _camera = transform.Find("Camera").GetComponent<CinemachineFreeLook>();
-            _cameraInputProvider = _camera.GetComponent<CinemachineInputProvider>();
-            Orientation = transform.Find("Orientation");
+            // _cameraInputProvider = _camera.GetComponent<CinemachineInputProvider>();
+            // Orientation = transform.Find("Orientation");
         }
 
         public override void OnStartServer()
@@ -60,20 +65,27 @@ namespace Game
         public override void OnStartClient()
         {
             _camera.enabled = isLocalPlayer;
-            if (!isServer)
+            if (isClientOnly) // 非Host下的Client Host下的数据 已经在ServerInitData中初始化
             {
                 CmdInitData(); // 所有客户端都要请求初始化数据
             }
-// TODO DEBUG时不这样搞
-            // if (isLocalPlayer)
-            // {
-            //     Cursor.lockState = CursorLockMode.Locked;
-            //     Cursor.visible = false;
-            // }
+
+            if (isLocalPlayer)
+            {
+                LocalPlayer = this;
+                //  TODO DEBUG时不这样搞
+                //     Cursor.lockState = CursorLockMode.Locked; 
+                //     Cursor.visible = false;
+            }
         }
 
         public override void OnStopClient()
         {
+            // if (PokemonClient.SingletonNullable == null) return;
+            if (isLocalPlayer)
+            {
+                LocalPlayer = null;
+            }
         }
 
         private void Update()
@@ -146,6 +158,9 @@ namespace Game
             GameObject pokemonObj = pokemon.gameObject;
             pokemonObj.name = $"{playerName}-Pokemon:[{data.currentPokemonData.configId}]";
             PokemonSetup(pokemonObj, position);
+
+            // 玩家初始化完成
+            OnPlayerSpawned?.Invoke(this);
         }
 
         [Server]
@@ -172,8 +187,14 @@ namespace Game
             state = PlayerState.Ready;
         }
 
+
+        public void HandleChangeGroup(int id)
+        {
+            CmdChangeGroup(id);
+        }
+
         [Command]
-        public void CmdChangeGroup(int id)
+        private void CmdChangeGroup(int id)
         {
             PokemonServer.Singleton.QueryGroupData(id, out TeamGroup groupData);
             RpcChangeGroup(MemoryPackSerializer.Serialize(groupData));

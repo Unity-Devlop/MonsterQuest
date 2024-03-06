@@ -34,7 +34,7 @@ namespace Game
 
         // private bool _init = false;
         [field: SerializeField] public PlayerController player { get; private set; }
-        public bool canBeHit { get; private set; } = true;
+        public bool canBeHit { get; set; } = true;
 
         public int groupId
         {
@@ -137,11 +137,13 @@ namespace Game
             }
         }
 
+        public event Action<int> OnCurrentHealthChanged;
 
         [Command(requiresAuthority = false)]
         public void CmdBeAttack(int damagePoint)
         {
             data.currentHealth -= damagePoint;
+            // OnCurrentHealthChanged?.Invoke(data.currentHealth);
             RpcBeAttack(data.currentHealth);
         }
 
@@ -150,6 +152,7 @@ namespace Game
         private void RpcBeAttack(int currentHealth)
         {
             data.currentHealth = currentHealth;
+            OnCurrentHealthChanged?.Invoke(data.currentHealth);
             if (NetworkClient.ready)
             {
                 if (stateMachine != null)

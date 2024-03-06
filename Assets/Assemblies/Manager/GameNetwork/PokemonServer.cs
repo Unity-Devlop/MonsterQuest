@@ -9,14 +9,14 @@ namespace Game
     [Serializable]
     public class PokemonServer : MonoSingleton<PokemonServer>
     {
-        protected override bool DontDestroyOnLoad() => true;
+        protected override bool DontDestroyOnLoad() => false;
 
         private static readonly string UserSetPath = "UserSet.json";
         private static readonly string PlayerDataPath = "PlayerData.json";
         private static readonly string PackageDataPath = "PackageData.json";
         private static readonly string PositionPath = "Position.json";
         private static readonly string NameSetPath = "NameSet.json";
-        private static readonly string DataBasePath = "DataBase.json";
+        // private static readonly string DataBasePath = "DataBase.json";
         private static readonly string TeamGroupPath = "TeamGroup.json";
 
         // 玩家基础数据
@@ -35,7 +35,7 @@ namespace Game
         [Sirenix.OdinInspector.ShowInInspector]
         private HashSet<string> _nameSet;
 
-        [field: SerializeField] public PokemonDataBase DataBase { get; private set; }
+        // [field: SerializeField] public PokemonDataBase DataBase { get; private set; }
 
 
         // 非持久化数据
@@ -73,6 +73,17 @@ namespace Game
             _id2PlayerController.Remove(controller.userId);
         }
 
+        [Server]
+        public IEnumerator<PlayerController> OnlinePlayers()
+        {
+            // TODO Error Handle
+            foreach (var controller in _id2PlayerController.Values)
+            {
+                yield return controller;
+            }
+        }
+
+        [Server]
         [Sirenix.OdinInspector.Button]
         private void Save()
         {
@@ -82,9 +93,10 @@ namespace Game
             JsonUtil.SaveJsonToStreamingAssets(UserSetPath, _userSet);
             JsonUtil.SaveJsonToStreamingAssets(NameSetPath, _nameSet);
             JsonUtil.SaveJsonToStreamingAssets(TeamGroupPath, id2TeamGroup);
-            JsonUtil.SaveJsonToStreamingAssets(DataBasePath, DataBase);
+            // JsonUtil.SaveJsonToStreamingAssets(DataBasePath, DataBase);
         }
 
+        [Server]
         [Sirenix.OdinInspector.Button]
         private void Load()
         {
@@ -100,7 +112,7 @@ namespace Game
                 JsonUtil.LoadJsonFromStreamingAssets<HashSet<string>>(NameSetPath);
 
             id2TeamGroup = JsonUtil.LoadJsonFromStreamingAssets<SerializableDictionary<int, TeamGroup>>(TeamGroupPath);
-            DataBase = JsonUtil.LoadJsonFromStreamingAssets<PokemonDataBase>(DataBasePath);
+            // DataBase = JsonUtil.LoadJsonFromStreamingAssets<PokemonDataBase>(DataBasePath);
 
 
             if (id2PlayerData == null) id2PlayerData = new SerializableDictionary<string, PlayerData>();
@@ -117,21 +129,23 @@ namespace Game
                 id2TeamGroup[2] = new TeamGroup(2, "Blue", Color.blue); // 蓝队
             }
 
-            if (DataBase == null) DataBase = new PokemonDataBase();
+            // if (DataBase == null) DataBase = new PokemonDataBase();
         }
 
+        [Server]
         public bool IsOnline(string userId)
         {
             return _onlineId2Conn.ContainsKey(userId);
         }
 
-
+        [Server]
         public void OnLine(string userId, NetworkConnectionToClient conn)
         {
             _onlineId2Conn.Add(userId, conn);
             _onLineConn2Id.Add(conn, userId);
         }
 
+        [Server]
         public void OffLine(string userId)
         {
             NetworkServer.DestroyPlayerForConnection(_onlineId2Conn[userId]);
@@ -139,6 +153,7 @@ namespace Game
             _onlineId2Conn.Remove(userId);
         }
 
+        [Server]
         public void OffLine(NetworkConnectionToClient conn)
         {
             NetworkServer.DestroyPlayerForConnection(conn);
@@ -146,6 +161,7 @@ namespace Game
             _onLineConn2Id.Remove(conn);
         }
 
+        [Server]
         public void Register(string userId, string playerName)
         {
             if (_userSet.Contains(userId)) return;
@@ -157,22 +173,25 @@ namespace Game
             id2Position[userId] = Vector3.zero;
         }
 
+        [Server]
         public bool Registered(string userId)
         {
             return _userSet.Contains(userId);
         }
 
-
+        [Server]
         public bool QueryPlayerData(string userId, out PlayerData data)
         {
             return id2PlayerData.TryGetValue(userId, out data);
         }
 
+        [Server]
         public bool QueryPackageData(string userId, out PackageData data)
         {
             return id2PackageData.TryGetValue(userId, out data);
         }
 
+        [Server]
         public bool QueryPosition(string userId, out Vector3 position)
         {
             if (_id2PlayerController.TryGetValue(userId, out var controller) && controller.state == PlayerState.Ready)
@@ -184,11 +203,13 @@ namespace Game
             return id2Position.TryGetValue(userId, out position);
         }
 
+        [Server]
         public void UpdatePosition(string userId, Vector3 pokemonPosition)
         {
             id2Position[userId] = pokemonPosition;
         }
 
+        [Server]
         public void QueryGroupData(int id, out TeamGroup teamGroup)
         {
             if (!id2TeamGroup.TryGetValue(id, out teamGroup))

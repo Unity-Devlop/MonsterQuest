@@ -7,7 +7,7 @@ namespace Game
 {
     public class DummyEntityController : NetworkBehaviour, IHittable
     {
-        public bool canBeHit { get; private set; } = true;
+        public bool canBeHit { get;  set; } = true;
         public int groupId => TeamGroup.Default.id;
         private Timer _hitCoolDown;
         public int maxHealth = 100;

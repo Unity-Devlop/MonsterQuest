@@ -1,15 +1,17 @@
-﻿using Mirror;
+﻿using Game.UI;
+using Mirror;
 using UnityEngine;
+using UnityToolkit;
 
 namespace Game
 {
     public class PokemonNetworkManager : NetworkManager
     {
         #region Server
-
+        
         public override void OnStartServer()
         {
-            gameObject.AddComponent<PokemonServer>();
+            new GameObject("PokemonServer").AddComponent<PokemonServer>();
             NetworkServer.RegisterHandler<RequestEnterGameMessage>(RequestEnterGame);
         }
 
@@ -29,7 +31,7 @@ namespace Game
         {
             if (PokemonServer.SingletonNullable != null)
             {
-                DestroyImmediate(PokemonServer.SingletonNullable);
+                DestroyImmediate(PokemonServer.Singleton.gameObject);
             }
             NetworkServer.UnregisterHandler<RequestEnterGameMessage>();
         }
@@ -83,12 +85,16 @@ namespace Game
 
         public override void OnStartClient()
         {
-            base.OnStartClient();
+            new GameObject("PokemonClient").AddComponent<PokemonClient>();
+            
         }
 
         public override void OnStopClient()
         {
-            base.OnStopClient();
+            if(PokemonClient.SingletonNullable!=null)
+                DestroyImmediate(PokemonClient.Singleton.gameObject);
+            NetworkClient.UnregisterHandler<RequestEnterGameMessage>();
+            UIRoot.Singleton.CloseAll(); // TODO: Close all panels
         }
 
         public override void OnClientConnect()
@@ -99,6 +105,7 @@ namespace Game
                 userId = Authentication.userId,
                 playerName = Authentication.playerName
             });
+            UIRoot.Singleton.OpenPanel<GamePanel>(); // TODO: Open game panel
         }
 
         #endregion
