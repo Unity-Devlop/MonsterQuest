@@ -1,4 +1,5 @@
-﻿using Game.UI;
+﻿using Cysharp.Threading.Tasks.Triggers;
+using Game.UI;
 using Mirror;
 using UnityEngine;
 using UnityToolkit;
@@ -8,15 +9,14 @@ namespace Game
     public class PokemonNetworkManager : NetworkManager
     {
         #region Server
-        
+
         public override void OnStartServer()
         {
             new GameObject("PokemonServer").AddComponent<PokemonServer>();
             NetworkServer.RegisterHandler<RequestEnterGameMessage>(RequestEnterGame);
         }
 
-        
-        
+
         public override void OnDestroy()
         {
             base.OnApplicationQuit();
@@ -33,6 +33,7 @@ namespace Game
             {
                 DestroyImmediate(PokemonServer.Singleton.gameObject);
             }
+
             NetworkServer.UnregisterHandler<RequestEnterGameMessage>();
         }
 
@@ -85,13 +86,12 @@ namespace Game
 
         public override void OnStartClient()
         {
-            new GameObject("PokemonClient").AddComponent<PokemonClient>();
-            
+            PokemonClient client = new GameObject("PokemonClient").AddComponent<PokemonClient>();
         }
 
         public override void OnStopClient()
         {
-            if(PokemonClient.SingletonNullable!=null)
+            if (PokemonClient.SingletonNullable != null)
                 DestroyImmediate(PokemonClient.Singleton.gameObject);
             NetworkClient.UnregisterHandler<RequestEnterGameMessage>();
             UIRoot.Singleton.CloseAll(); // TODO: Close all panels

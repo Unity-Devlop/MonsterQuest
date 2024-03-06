@@ -4,10 +4,14 @@ using UnityToolkit;
 
 namespace Game
 {
-    public static class Authentication
+    public class Authentication : MonoSingleton<Authentication>
     {
-        public static string playerName;
-        public static string userId;
-        public static string password;
+        private string _playerName;
+        private string _userId;
+        private string _password;
+        public static string userId => SingletonNullable._userId;
+        public static string playerName => SingletonNullable._playerName;
+
+        protected override bool DontDestroyOnLoad() => false;
     }
 }

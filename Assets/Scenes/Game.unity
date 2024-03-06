@@ -911,6 +911,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1339358646301485545, guid: 158769b850fb1c04782e3f1293a1b6c6,
         type: 3}
+      propertyPath: dontDestroyOnLoad
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1339358646301485545, guid: 158769b850fb1c04782e3f1293a1b6c6,
+        type: 3}
       propertyPath: spawnPrefabs.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1129,6 +1134,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalRotation.z
       value: -1.02446746e-10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6550449493906615262, guid: 047b47828a4bb4941b4d910e796f2100,
+        type: 3}
+      propertyPath: m_UpdateMethod
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

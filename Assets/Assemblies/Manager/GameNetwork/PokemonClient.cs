@@ -9,27 +9,33 @@ namespace Game
     {
         protected override bool DontDestroyOnLoad() => false;
         
-        public List<ChatMessage> messages { get; private set; }
+        public List<ChatMessage> ChatMessages { get; private set; }
         public event Action OnNewMessage; 
 
         protected override void OnInit()
         {
-            messages = new List<ChatMessage>();
+            ChatMessages = new List<ChatMessage>();
+            // GrpcManager.Singleton.Client.StartPublicChat(new ChatRequest()
+            // {
+            //     Uid = Authentication.userId,
+            // });
         }
 
         protected override void OnDispose()
         {
+            ChatMessages.Clear();
+            ChatMessages = null;
         }
         
-        [Sirenix.OdinInspector.Button]
-        public void DebugMessage(string msg)
-        {
-            messages.Add(new ChatMessage
-            {
-                SenderUid = 0,
-                Content = msg,
-            });
-            OnNewMessage?.Invoke();
-        }
+        // [Sirenix.OdinInspector.Button]
+        // public void DebugMessage(string msg)
+        // {
+        //     ChatMessages.Add(new ChatMessage
+        //     {
+        //         SenderUid = 0,
+        //         Content = msg,
+        //     });
+        //     OnNewMessage?.Invoke();
+        // }
     }
 }

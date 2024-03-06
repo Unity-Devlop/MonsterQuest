@@ -6,10 +6,14 @@ using UnityToolkit;
 
 namespace Game
 {
-    public class GrpcManager : MonoSingleton<GrpcManager>
+    public class GrpcClient : MonoSingleton<GrpcClient>
     {
         protected override bool DontDestroyOnLoad() => true;
-        public GameService.GameServiceClient Client { get; private set; }
+
+        private GameService.GameServiceClient _gameService;
+        public static GameService.GameServiceClient GameService => Singleton._gameService;
+        public static bool ready => SingletonNullable != null;
+
         private Channel _rpcChannel;
         public string address = "127.0.0.1:22333";
 
@@ -17,7 +21,7 @@ namespace Game
         {
             Application.wantsToQuit += OnWantToQuit;
             _rpcChannel = new Channel(address, ChannelCredentials.Insecure);
-            Client = new GameService.GameServiceClient(_rpcChannel);
+            _gameService = new GameService.GameServiceClient(_rpcChannel);
         }
 
         protected override void OnDispose()
@@ -34,7 +38,6 @@ namespace Game
                 Debug.LogError(e);
             }
         }
-
 
         private bool OnWantToQuit()
         {

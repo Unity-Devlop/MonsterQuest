@@ -8,6 +8,7 @@ namespace Game.UI
 {
     public class ChatMessageItem : MonoBehaviour
     {
+        // TODO Dynamic size
         public const float DEFAULT_HEIGHT = 40;
         public const float DEFAULT_WIDTH = 400;
         public const float DEFAULT_ICON_WIDTH = 40;

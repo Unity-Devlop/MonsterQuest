@@ -4,6 +4,7 @@ using Cinemachine;
 using MemoryPack;
 using Mirror;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityToolkit;
@@ -102,8 +103,8 @@ namespace Game
             {
                 return;
             }
-
-            if (input.Fire.WasPressedThisFrame())
+            
+            if (input.Fire.WasPressedThisFrame() && !EventSystem.current.IsPointerOverGameObject())
             {
                 pokemonController.stateMachine.Change<PokemonAttackState>(); // 本地立刻切换状态 避免异常
                 pokemonController.CmdAttack();
