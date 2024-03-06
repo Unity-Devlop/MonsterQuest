@@ -20,6 +20,8 @@ namespace Game
     {
         public static PlayerController LocalPlayer { get; private set; }
         private CinemachineFreeLook _camera;
+
+        public static event Action OnLocalPlayerSpawned;
         // private CinemachineInputProvider _cameraInputProvider;
 
         public PokemonController pokemonController { get; private set; }
@@ -39,9 +41,7 @@ namespace Game
         // [SyncVar] public float facingAngle;
 
         private GameInput.PlayerActions input => InputManager.Singleton.input.Player;
-
-        public event Action<PlayerController> OnPlayerSpawned;
-
+        
         private void Awake()
         {
             _camera = transform.Find("Camera").GetComponent<CinemachineFreeLook>();
@@ -160,7 +160,10 @@ namespace Game
             PokemonSetup(pokemonObj, position);
 
             // 玩家初始化完成
-            OnPlayerSpawned?.Invoke(this);
+            if (isLocalPlayer)
+            {
+                OnLocalPlayerSpawned?.Invoke();
+            }
         }
 
         [Server]

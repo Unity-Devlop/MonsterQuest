@@ -214,10 +214,11 @@ namespace Game
         [Command]
         internal void CmdWalk(Vector3 moveVec)
         {
-            pokemonTransform.forward =
-                Vector3.Slerp(pokemonTransform.forward, moveVec.normalized, Time.deltaTime * data.rotateSpeed);
-            HandleCharacterControllerMove(moveVec * (Time.deltaTime * data.moveSpeed));
-            // stateMachine.Change<PokemonWalkState>(); // 服务器上没必要播动画
+            Vector3 forward = Vector3.Slerp(pokemonTransform.forward, moveVec.normalized,
+                Time.deltaTime * data.rotateSpeed);
+            pokemonTransform.forward = forward;
+            characterController.Move(moveVec * (data.moveSpeed * Time.deltaTime));
+// NetworkTransformReliable
             RpcWalkAnim();
         }
 
@@ -243,19 +244,16 @@ namespace Game
             stateMachine.Change<PokemonRunState>();
             CmdRun(moveDir);
         }
-
-        private void HandleCharacterControllerMove(Vector3 moveVec)
-        {
-            characterController.Move(moveVec);
-        }
+        
 
         [Command]
         private void CmdRun(Vector3 moveVec)
         {
-            pokemonTransform.forward =
+            Vector3 forward =
                 Vector3.Slerp(pokemonTransform.forward, moveVec.normalized, Time.deltaTime * data.rotateSpeed);
-            HandleCharacterControllerMove(moveVec * (Time.deltaTime * data.runSpeed));
-            // stateMachine.Change<PokemonRunState>(); // 服务器上没必要播动画
+            pokemonTransform.forward = forward;
+            characterController.Move(moveVec * (data.runSpeed * Time.deltaTime));
+            
             RpcRunAnim();
         }
 
