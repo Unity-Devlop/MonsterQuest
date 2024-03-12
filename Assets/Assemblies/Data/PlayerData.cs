@@ -1,5 +1,6 @@
 ﻿using System;
 using MemoryPack;
+using UnityEngine.Serialization;
 
 namespace Game
 {
@@ -11,15 +12,17 @@ namespace Game
 
         public TeamGroup group;
 
-        // pokemonData
-        public PokemonData currentPokemonData;
-
-        public PlayerData(string userId, string playerName, PokemonData currentPokemonData)
+        // self 
+        public PokemonData self;
+        
+        public PokemonData carry1;
+        
+        public PlayerData(string userId, string playerName, PokemonData self)
         {
             group = TeamGroup.Default;
             this.userId = userId;
             this.playerName = playerName;
-            this.currentPokemonData = currentPokemonData;
+            this.self = self;
         }
     }
 }

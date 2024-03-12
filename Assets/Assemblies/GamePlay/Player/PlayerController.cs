@@ -25,10 +25,10 @@ namespace Game
         public Action OnSwitchPokemon;
 
         public static event Action OnLocalPlayerSpawned;
-        // private CinemachineInputProvider _cameraInputProvider;
+        private CinemachineInputProvider _cameraInputProvider;
 
         public PokemonController pokemonController { get; private set; }
-        
+
         // public Transform Orientation { get; private set; }
         public State<PokemonController> pokemonState => pokemonController.stateMachine.CurrentState;
         private string playerName => data.playerName;
@@ -39,13 +39,14 @@ namespace Game
         [field: SerializeField] public PackageData package { get; private set; }
 
         [field: SerializeField] public PlayerState state { get; private set; }
-        
+
 
         private GameInput.PlayerActions input => InputManager.Singleton.input.Player;
 
         private void Awake()
         {
             _camera = transform.Find("Camera").GetComponent<CinemachineFreeLook>();
+            _cameraInputProvider = _camera.GetComponent<CinemachineInputProvider>();
         }
 
         public override void OnStartServer()
@@ -64,16 +65,23 @@ namespace Game
         public override void OnStartClient()
         {
             _camera.enabled = isLocalPlayer;
-            if (isClientOnly) // 非Host下的Client Host下的数据 已经在ServerInitData中初始化
-            {
-                CmdInitData(isLocalPlayer); // 所有客户端都要请求初始化数据
-            }
+
 
             if (isLocalPlayer)
             {
                 LocalPlayer = this;
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
+            }
+
+            if (isClientOnly) // 非Host下的Client Host下的数据 已经在ServerInitData中初始化
+            {
+                CmdInitData(); // 所有客户端都要请求初始化数据
+            }
+
+            if (isServer && isClient) // Host
+            {
+                HostInitData();
             }
         }
 
@@ -104,17 +112,24 @@ namespace Game
 
         private void TickInputLogic()
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                _cameraInputProvider.enabled = false;
+                return;
+            }
 
             if (Keyboard.current.escapeKey.wasPressedThisFrame)
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                _cameraInputProvider.enabled = false;
             }
 
             if (Mouse.current.leftButton.wasPressedThisFrame)
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
+                _cameraInputProvider.enabled = true;
             }
 
             if (Keyboard.current.bKey.wasPressedThisFrame)
@@ -170,7 +185,7 @@ namespace Game
         }
 
         [Command(requiresAuthority = false)]
-        private void CmdInitData(bool isLocalPlayer, NetworkConnectionToClient sender = null)
+        private void CmdInitData(NetworkConnectionToClient sender = null)
         {
             // 根据userId查数据
             PokemonServer.Singleton.QueryPlayerData(userId, out var playerData);
@@ -190,6 +205,7 @@ namespace Game
             // }
         }
 
+
         [TargetRpc]
         private void TargetInitData(NetworkConnectionToClient conn, ArraySegment<byte> playerDataPayload,
             ArraySegment<byte> packageDataPayload, NetworkIdentity pokemon, Vector3 position)
@@ -199,10 +215,20 @@ namespace Game
             gameObject.name = $"Player:[{playerName}]";
             // 配置信息
             GameObject pokemonObj = pokemon.gameObject;
-            pokemonObj.name = $"{playerName}-Pokemon:[{data.currentPokemonData.configId}]";
+            pokemonObj.name = $"{playerName}-Pokemon:[{data.self.configId}]";
             PokemonSetup(pokemonObj, position);
 
+            Debug.Log($"Init Data: {data.playerName}");
             // 玩家初始化完成
+            if (isLocalPlayer)
+            {
+                Debug.Log("Local Player Spawned");
+                OnLocalPlayerSpawned?.Invoke();
+            }
+        }
+
+        private void HostInitData()
+        {
             if (isLocalPlayer)
             {
                 OnLocalPlayerSpawned?.Invoke();
@@ -215,7 +241,7 @@ namespace Game
         {
             data = playerData;
             package = packageData;
-            PokemonEnum pokemonId = data.currentPokemonData.configId;
+            PokemonEnum pokemonId = data.self.configId;
             GameObject prefab = GlobalManager.Singleton.configTable.GetPokemonConfig(pokemonId).prefab;
             GameObject pokemon = Instantiate(prefab, null);
             pokemon.name = $"{playerName}]-Pokemon:[{pokemonId}]";
@@ -226,7 +252,7 @@ namespace Game
         private void PokemonSetup(GameObject pokemon, Vector3 position)
         {
             pokemonController = pokemon.GetComponent<PokemonController>();
-            pokemonController.InitPokemon(this, pokemon, data.currentPokemonData, position);
+            pokemonController.InitPokemon(this, pokemon, data.self, position);
             Transform modelTransform = pokemonController.pokemonTransform;
             _camera.Follow = modelTransform;
             _camera.LookAt = modelTransform;
@@ -270,9 +296,10 @@ namespace Game
         {
             ChatMessage msg = MemoryPackSerializer.Deserialize<ChatMessage>(payload);
             GlobalManager.EventSystem.Send(msg);
+            Debug.Log($"Receive Chat Message: {msg.content}");
         }
-        
-        
+
+
         [TargetRpc]
         public void TargetAddScore(NetworkConnection conn, int i)
         {

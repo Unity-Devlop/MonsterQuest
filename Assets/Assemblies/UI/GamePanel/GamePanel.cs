@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using UnityToolkit;
 
 namespace Game.UI
@@ -30,6 +31,7 @@ namespace Game.UI
 
         private void OnLocalPlayerSpawned()
         {
+            // Debug.Log("OnLocalPlayerSpawned");
             _chatPanel.Open();
             _hudPanel.Open();
         }
