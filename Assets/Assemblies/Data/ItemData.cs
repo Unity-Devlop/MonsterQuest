@@ -19,7 +19,7 @@ namespace Game
             {
                 if (!_configInitialized)
                 {
-                    _config = ConfigTable.Instance.GetItemConfig(id);
+                    _config =  GlobalManager.Singleton.configTable.GetItemConfig(id);
                     _configInitialized = true;
                 }
 

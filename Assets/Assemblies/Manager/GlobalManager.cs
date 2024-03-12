@@ -14,6 +14,8 @@ namespace Game
         [field: SerializeField] public Camera MainCamera { get; private set; }
         public LayerMask hittableLayer;
 
+        public ConfigTable configTable;
+
         public static TypeEventSystem EventSystem { get; private set; }
 
         protected override void OnInit()
@@ -28,12 +30,12 @@ namespace Game
 
         private void Start()
         {
-#if UNITY_EDITOR
+// #if UNITY_EDITOR
             if (SceneManager.GetActiveScene().name == "Dev") // TODO 快速开发用
             {
                 return;
             }
-#endif
+// #endif
             ToHome();
         }
 

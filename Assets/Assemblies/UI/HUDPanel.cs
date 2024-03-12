@@ -39,7 +39,11 @@ namespace Game.UI
                 PlayerController.LocalPlayer.OnSwitchPokemon -= OnSwitchPokemon;
             }
 
-            GlobalManager.EventSystem.UnRegister<OnLocalPlayerPokemonHealthChange>(OnPokemonHealthChanged);
+            if (GlobalManager.EventSystem != null)
+            {
+                GlobalManager.EventSystem.UnRegister<OnLocalPlayerPokemonHealthChange>(OnPokemonHealthChanged);
+            }
+
             gameObject.SetActive(false);
         }
 

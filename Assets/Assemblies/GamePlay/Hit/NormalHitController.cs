@@ -5,7 +5,7 @@ using UnityToolkit;
 
 namespace Game
 {
-    public class NormalHit : HitController
+    public class NormalHitController : HitController
     {
     
         private BoxCollider _hitBox;

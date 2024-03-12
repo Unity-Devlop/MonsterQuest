@@ -132,6 +132,7 @@ namespace Game
 
         private void TickPokemonStateLogic()
         {
+            // TODO 移动到PokemonController
             if (pokemonState is ITempAnimState { canExit: false })
             {
                 return;
@@ -215,7 +216,7 @@ namespace Game
             data = playerData;
             package = packageData;
             PokemonEnum pokemonId = data.currentPokemonData.configId;
-            GameObject prefab = ConfigTable.Instance.GetPokemonConfig(pokemonId).prefab;
+            GameObject prefab = GlobalManager.Singleton.configTable.GetPokemonConfig(pokemonId).prefab;
             GameObject pokemon = Instantiate(prefab, null);
             pokemon.name = $"{playerName}]-Pokemon:[{pokemonId}]";
             PokemonSetup(pokemon, position);
@@ -271,5 +272,11 @@ namespace Game
             GlobalManager.EventSystem.Send(msg);
         }
         
+        
+        [TargetRpc]
+        public void TargetAddScore(NetworkConnection conn, int i)
+        {
+            Debug.Log($"Add Score: {i}");
+        }
     }
 }

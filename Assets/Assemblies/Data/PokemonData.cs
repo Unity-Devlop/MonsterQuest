@@ -23,7 +23,7 @@ namespace Game
             {
                 if (!_configInitialized)
                 {
-                    _config = ConfigTable.Instance.GetPokemonConfig(configId);
+                    _config =  GlobalManager.Singleton.configTable.GetPokemonConfig(configId);
                     _configInitialized = true;
                 }
 

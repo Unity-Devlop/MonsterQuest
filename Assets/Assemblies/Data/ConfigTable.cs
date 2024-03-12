@@ -5,9 +5,9 @@ using UnityToolkit;
 
 namespace Game
 {
-    [GlobalConfig("Assets/AddressablesResources/DataTable/")]
+    // [GlobalConfig("Assets/AddressablesResources/DataTable/")]
     [CreateAssetMenu(fileName = "ConfigTable", menuName = "Game/ConfigTable")]
-    public class ConfigTable : GlobalConfig<ConfigTable>
+    public class ConfigTable : ScriptableObject
     {
         
         public SerializableDictionary<ItemEnum, ItemConfig> itemConfigs;

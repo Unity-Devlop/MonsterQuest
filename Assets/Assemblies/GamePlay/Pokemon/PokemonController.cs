@@ -33,7 +33,7 @@ namespace Game
 
         public HitController hit { get; private set; }
 
-        // private bool _init = false;
+        private bool _init = false;
         [field: SerializeField,Sirenix.OdinInspector.ReadOnly] public PlayerController player { get; private set; }
         public bool canBeHit { get; set; } = true;
 
@@ -84,6 +84,8 @@ namespace Game
             {
                 throw new NotImplementedException($"未实现的网络模式处理:{mode}");
             }
+            
+            _init = true;
         }
 
 
@@ -121,6 +123,7 @@ namespace Game
 
         private void Update()
         {
+            if(!_init) return;
             if (!isServerOnly)
             {
                 // TODO Server Only 不需要更新状态机
