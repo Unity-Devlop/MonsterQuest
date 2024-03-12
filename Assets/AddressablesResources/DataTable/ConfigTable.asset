@@ -32,7 +32,7 @@ MonoBehaviour:
     - key: 7
       value:
         id: 7
-        element: 2
+        element: 3
         baseDamagePoint: 2
         baseMaxHealth: 10
         baseMoveSpeed: 3
@@ -40,4 +40,16 @@ MonoBehaviour:
         baseRotateSpeed: 5
         baseFlySpeed: 3
         prefab: {fileID: 1798567185816299044, guid: f8bf43b5d839c4748a57d2b7429bb47e,
+          type: 3}
+    - key: 0
+      value:
+        id: 0
+        element: 0
+        baseDamagePoint: 1
+        baseMaxHealth: 10
+        baseMoveSpeed: 3
+        baseRunSpeed: 5
+        baseRotateSpeed: 5
+        baseFlySpeed: 0
+        prefab: {fileID: 2602637115700601785, guid: ee3a4c11cab25ff46a1f50cb482d1944,
           type: 3}

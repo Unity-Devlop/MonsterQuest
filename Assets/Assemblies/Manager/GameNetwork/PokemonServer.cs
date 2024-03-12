@@ -155,7 +155,7 @@ namespace Game
             records[userId] = new PlayerRecord
             {
                 userId = userId,
-                data = new PlayerData(userId, playerName, new PokemonData(PokemonEnum.妙蛙种子)),
+                data = new PlayerData(userId, playerName, new PokemonData(PokemonEnum.玩家)),
                 package = new PackageData(),
                 position = Vector3.zero,
                 teamGroup = TeamGroup.Default

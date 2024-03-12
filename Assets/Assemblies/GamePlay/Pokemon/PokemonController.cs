@@ -31,10 +31,10 @@ namespace Game
 
         public Transform orientation { get; private set; }
 
-        public BoxCollider hitBox { get; private set; }
+        public HitController hit { get; private set; }
 
         // private bool _init = false;
-        [field: SerializeField] public PlayerController player { get; private set; }
+        [field: SerializeField,Sirenix.OdinInspector.ReadOnly] public PlayerController player { get; private set; }
         public bool canBeHit { get; set; } = true;
 
         public int groupId
@@ -64,9 +64,9 @@ namespace Game
             this.data = data;
 
             animator = modelTransform.GetComponent<Animator>();
-            hitBox = modelTransform.Find("HitBox").GetComponent<BoxCollider>();
-
-
+            
+            hit = modelTransform.Find("HitController").GetComponent<HitController>();
+            
             NetworkManagerMode mode = NetworkManager.singleton.mode;
             if (mode == NetworkManagerMode.ServerOnly)
             {
