@@ -28,7 +28,7 @@ namespace Game
         // private CinemachineInputProvider _cameraInputProvider;
 
         public PokemonController pokemonController { get; private set; }
-
+        
         // public Transform Orientation { get; private set; }
         public State<PokemonController> pokemonState => pokemonController.stateMachine.CurrentState;
         private string playerName => data.playerName;
@@ -39,17 +39,13 @@ namespace Game
         [field: SerializeField] public PackageData package { get; private set; }
 
         [field: SerializeField] public PlayerState state { get; private set; }
-
-
-        // [SyncVar] public float facingAngle;
+        
 
         private GameInput.PlayerActions input => InputManager.Singleton.input.Player;
 
         private void Awake()
         {
             _camera = transform.Find("Camera").GetComponent<CinemachineFreeLook>();
-            // _cameraInputProvider = _camera.GetComponent<CinemachineInputProvider>();
-            // Orientation = transform.Find("Orientation");
         }
 
         public override void OnStartServer()
@@ -108,10 +104,7 @@ namespace Game
 
         private void TickInputLogic()
         {
-            // if (input.SwitchPokemon.WasPressedThisFrame())
-            // {
-            //     CmdSwitchPokemon();
-            // }
+
             if (Keyboard.current.escapeKey.wasPressedThisFrame)
             {
                 Cursor.lockState = CursorLockMode.None;
@@ -271,10 +264,12 @@ namespace Game
             RpcReceiveChatMessage(payload);
         }
 
+        [ClientRpc]
         private void RpcReceiveChatMessage(ArraySegment<byte> payload)
         {
             ChatMessage msg = MemoryPackSerializer.Deserialize<ChatMessage>(payload);
-            // TODO Fire Event
+            GlobalManager.EventSystem.Send(msg);
         }
+        
     }
 }

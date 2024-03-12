@@ -1,8 +1,9 @@
 ﻿using Mirror;
 
 namespace Game
-{public delegate void OnHealthChangeDelegate(int current, int max);
-    
+{
+    public delegate void OnHealthChangeDelegate(int current, int max);
+
     public interface IEntity
     {
         int groupId { get; }
