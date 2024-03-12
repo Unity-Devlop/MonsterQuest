@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Game.UI;
 using Mirror;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -120,27 +121,30 @@ namespace Game
 
         private void Update()
         {
-            // TODO Server Only 不需要更新状态机
-            if (stateMachine != null)
+            if (!isServerOnly)
             {
-                stateMachine.OnUpdate();
+                // TODO Server Only 不需要更新状态机
+                if (stateMachine != null)
+                {
+                    stateMachine.OnUpdate();
+                }
             }
+
 
             if (isServer)
             {
                 //不在地面上时，应用重力
                 if (!characterController.isGrounded && characterController.transform.position.y > 0)
                 {
-                    // TODO 这个不是加速运动
+                    // TODO 变成加速运动
                     characterController.Move(Time.deltaTime * Physics.gravity);
                 }
             }
         }
 
-        public event Action<int> OnCurrentHealthChanged;
 
         [Command(requiresAuthority = false)]
-        public void CmdBeAttack(int damagePoint)
+        public void CmdBeAttack(int damagePoint, NetworkConnectionToClient sender = null)
         {
             data.currentHealth -= damagePoint;
             // OnCurrentHealthChanged?.Invoke(data.currentHealth);
@@ -152,7 +156,16 @@ namespace Game
         private void RpcBeAttack(int currentHealth)
         {
             data.currentHealth = currentHealth;
-            OnCurrentHealthChanged?.Invoke(data.currentHealth);
+            if (player != null && player.isLocalPlayer)
+            {
+                GlobalManager.EventSystem.Send(new OnLocalPlayerPokemonHealthChange()
+                {
+                    currentHealth = currentHealth,
+                    maxHealth = data.maxHealth
+                });
+            }
+
+            // OnCurrentHealthChanged?.Invoke(data.currentHealth, data.maxHealth);
             if (NetworkClient.ready)
             {
                 if (stateMachine != null)
@@ -244,7 +257,7 @@ namespace Game
             stateMachine.Change<PokemonRunState>();
             CmdRun(moveDir);
         }
-        
+
 
         [Command]
         private void CmdRun(Vector3 moveVec)
@@ -253,7 +266,7 @@ namespace Game
                 Vector3.Slerp(pokemonTransform.forward, moveVec.normalized, Time.deltaTime * data.rotateSpeed);
             pokemonTransform.forward = forward;
             characterController.Move(moveVec * (data.runSpeed * Time.deltaTime));
-            
+
             RpcRunAnim();
         }
 

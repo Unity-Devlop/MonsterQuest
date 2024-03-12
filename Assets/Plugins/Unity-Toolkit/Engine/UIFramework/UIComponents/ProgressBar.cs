@@ -150,8 +150,9 @@ namespace UnityToolkit
         private static void CreateProgressBar()
         {
             GameObject progressBarPrefab = Resources.Load<GameObject>("ProgressBar");
-            GameObject progressBar = UnityEditor.PrefabUtility.InstantiatePrefab(progressBarPrefab) as GameObject;
-            progressBar.transform.SetParent(UnityEditor.Selection.activeTransform, false);
+            // UnityEditor.PrefabUtility.InstantiatePrefab(progressBarPrefab) as GameObject;
+            GameObject progressBar = Instantiate(progressBarPrefab, UnityEditor.Selection.activeTransform, false);
+            UnityEditor.Selection.activeGameObject = progressBar;
         }
 #endif
     }

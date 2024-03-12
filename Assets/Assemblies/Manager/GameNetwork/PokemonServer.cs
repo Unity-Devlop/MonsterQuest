@@ -138,15 +138,29 @@ namespace Game
             return _onlineId2Conn.ContainsKey(userId);
         }
 
+
+
         [Server]
-        public void OnLine(string userId, NetworkConnectionToClient conn)
+        public void UserLogin(string userId, NetworkConnectionToClient conn)
         {
             _onlineId2Conn.Add(userId, conn);
             _onLineConn2Id.Add(conn, userId);
         }
+        
+        [Server]
+        public bool QueryConnection(string userId, out NetworkConnectionToClient conn)
+        {
+            return _onlineId2Conn.TryGetValue(userId, out conn);
+        }
+        
+        [Server]
+        public void QueryId(NetworkConnectionToClient conn, out string userId)
+        {
+            _onLineConn2Id.TryGetValue(conn, out userId);
+        }
 
         [Server]
-        public void OffLine(string userId)
+        public void UserOffLine(string userId)
         {
             NetworkServer.DestroyPlayerForConnection(_onlineId2Conn[userId]);
             _onLineConn2Id.Remove(_onlineId2Conn[userId]);
@@ -154,7 +168,7 @@ namespace Game
         }
 
         [Server]
-        public void OffLine(NetworkConnectionToClient conn)
+        public void UserOffLine(NetworkConnectionToClient conn)
         {
             NetworkServer.DestroyPlayerForConnection(conn);
             _onlineId2Conn.Remove(_onLineConn2Id[conn]);
@@ -168,7 +182,7 @@ namespace Game
             // TODO 多样初始化
             _userSet.Add(userId);
             _nameSet.Add(playerName);
-            id2PlayerData[userId] = new PlayerData(userId, playerName, new PokemonData(1));
+            id2PlayerData[userId] = new PlayerData(userId, playerName, new PokemonData(PokemonEnum.妙蛙种子));
             id2PackageData[userId] = new PackageData();
             id2Position[userId] = Vector3.zero;
         }

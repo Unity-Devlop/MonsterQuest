@@ -5,43 +5,14 @@ using UnityEngine;
 
 namespace Game
 {
-    // [Serializable]
-    // public struct HitBoxFrame
-    // {
-    //     public float time;
-    //     public Vector3 center;
-    //     public float radius;
-    // }
 
-    public enum ElementType
-    {
-        草,
-        水,
-        火
-    }
 
-    [Serializable]
-    public struct PokemonConfig
-    {
-        public int id;
-        public string name;
-        public ElementType element;
-        public int baseDamagePoint;
-        public int baseMaxHealth;
-        public float baseMoveSpeed;
-        public float baseRunSpeed;
-        public float baseRotateSpeed;
-        public float baseFlySpeed;
-        
-
-        [MemoryPackIgnore, JsonIgnore] public GameObject prefab;
-    }
 
     [MemoryPackable, Serializable]
     public partial class PokemonData
     {
         public Guid uniqueId;
-        public int configId;
+        public PokemonEnum configId;
         [MemoryPackIgnore, JsonIgnore] private bool _configInitialized;
         [MemoryPackIgnore, JsonIgnore] private PokemonConfig _config;
 
@@ -68,7 +39,7 @@ namespace Game
         public float rotateSpeed;
         public float flySpeed;
 
-        public PokemonData(int configId)
+        public PokemonData(PokemonEnum configId)
         {
             uniqueId = Guid.NewGuid();
             this.configId = configId;

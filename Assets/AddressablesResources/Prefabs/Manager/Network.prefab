@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67efd5883aa84ee2888718c1f699f8bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 1
+  dontDestroyOnLoad: 0
   runInBackground: 1
   headlessStartMode: 1
   editorAutoStart: 0
@@ -63,10 +63,11 @@ MonoBehaviour:
   authenticator: {fileID: 0}
   playerPrefab: {fileID: 7656037985046311837, guid: 7a89bccb408eccf4c81905cec933c391,
     type: 3}
-  autoCreatePlayer: 1
+  autoCreatePlayer: 0
   playerSpawnMethod: 0
   spawnPrefabs:
-  - {fileID: 1438889939174981037, guid: 2befaadc81e87874b9a28a1d8649ef04, type: 3}
+  - {fileID: 4078537705340059023, guid: c3cdc83333d16294bac7452f0baaec0f, type: 3}
+  - {fileID: 1798567185816299044, guid: f8bf43b5d839c4748a57d2b7429bb47e, type: 3}
   exceptionsDisconnect: 1
   snapshotSettings:
     bufferTimeMultiplier: 2
@@ -123,5 +124,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetX: 0
-  offsetY: 0
+  offsetX: 720
+  offsetY: -25

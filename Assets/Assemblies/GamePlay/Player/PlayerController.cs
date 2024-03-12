@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Cinemachine;
+using Game.UI;
 using MemoryPack;
 using Mirror;
 using UnityEngine;
@@ -21,6 +22,7 @@ namespace Game
     {
         public static PlayerController LocalPlayer { get; private set; }
         private CinemachineFreeLook _camera;
+        public Action OnSwitchPokemon;
 
         public static event Action OnLocalPlayerSpawned;
         // private CinemachineInputProvider _cameraInputProvider;
@@ -42,7 +44,7 @@ namespace Game
         // [SyncVar] public float facingAngle;
 
         private GameInput.PlayerActions input => InputManager.Singleton.input.Player;
-        
+
         private void Awake()
         {
             _camera = transform.Find("Camera").GetComponent<CinemachineFreeLook>();
@@ -68,16 +70,22 @@ namespace Game
             _camera.enabled = isLocalPlayer;
             if (isClientOnly) // 非Host下的Client Host下的数据 已经在ServerInitData中初始化
             {
-                CmdInitData(); // 所有客户端都要请求初始化数据
+                CmdInitData(isLocalPlayer); // 所有客户端都要请求初始化数据
             }
 
             if (isLocalPlayer)
             {
                 LocalPlayer = this;
-                //  TODO DEBUG时不这样搞
-                //     Cursor.lockState = CursorLockMode.Locked; 
-                //     Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
+        }
+
+        private void OnApplicationFocus(bool hasFocus)
+        {
+            if (!isLocalPlayer) return;
+            Cursor.lockState = hasFocus ? CursorLockMode.Locked : CursorLockMode.None;
+            Cursor.visible = !hasFocus;
         }
 
         public override void OnStopClient()
@@ -94,6 +102,38 @@ namespace Game
             if (isLocalPlayer && state == PlayerState.Ready)
             {
                 TickPokemonStateLogic();
+                TickInputLogic();
+            }
+        }
+
+        private void TickInputLogic()
+        {
+            // if (input.SwitchPokemon.WasPressedThisFrame())
+            // {
+            //     CmdSwitchPokemon();
+            // }
+            if (Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+
+            if (Mouse.current.leftButton.wasPressedThisFrame)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+
+            if (Keyboard.current.bKey.wasPressedThisFrame)
+            {
+                if (!UIRoot.Singleton.IsOpen<PackagePanel>())
+                {
+                    UIRoot.Singleton.OpenPanel<PackagePanel>();
+                }
+                else
+                {
+                    UIRoot.Singleton.ClosePanel<PackagePanel>();
+                }
             }
         }
 
@@ -103,7 +143,7 @@ namespace Game
             {
                 return;
             }
-            
+
             if (input.Fire.WasPressedThisFrame() && !EventSystem.current.IsPointerOverGameObject())
             {
                 pokemonController.stateMachine.Change<PokemonAttackState>(); // 本地立刻切换状态 避免异常
@@ -136,16 +176,24 @@ namespace Game
         }
 
         [Command(requiresAuthority = false)]
-        private void CmdInitData(NetworkConnectionToClient sender = null)
+        private void CmdInitData(bool isLocalPlayer, NetworkConnectionToClient sender = null)
         {
             // 根据userId查数据
             PokemonServer.Singleton.QueryPlayerData(userId, out var playerData);
             PokemonServer.Singleton.QueryPackageData(userId, out var packageData);
             ArraySegment<byte> playerDataPayload = MemoryPackSerializer.Serialize(playerData);
-            ArraySegment<byte> packageDataPayload = MemoryPackSerializer.Serialize(packageData);
+            // if (isLocalPlayer)
+            // {
+            ArraySegment<byte> packageDataPayload = MemoryPackSerializer.Serialize(packageData); // TODO 只有本地玩家才需要背包数据
             // 通知指定的客户端初始化数据
             TargetInitData(sender, playerDataPayload, packageDataPayload, pokemonController.pokemonIdentity,
                 pokemonController.pokemonPosition);
+            // }
+            // else
+            // {
+            //     TargetInitData(sender, playerDataPayload, ArraySegment<byte>.Empty, pokemonController.pokemonIdentity,
+            //         pokemonController.pokemonPosition);
+            // }
         }
 
         [TargetRpc]
@@ -153,7 +201,7 @@ namespace Game
             ArraySegment<byte> packageDataPayload, NetworkIdentity pokemon, Vector3 position)
         {
             data = MemoryPackSerializer.Deserialize<PlayerData>(playerDataPayload);
-            package = MemoryPackSerializer.Deserialize<PackageData>(packageDataPayload);
+            package = MemoryPackSerializer.Deserialize<PackageData>(packageDataPayload); // TODO 只有本地玩家才需要背包数据
             gameObject.name = $"Player:[{playerName}]";
             // 配置信息
             GameObject pokemonObj = pokemon.gameObject;
@@ -173,7 +221,7 @@ namespace Game
         {
             data = playerData;
             package = packageData;
-            int pokemonId = data.currentPokemonData.configId;
+            PokemonEnum pokemonId = data.currentPokemonData.configId;
             GameObject prefab = ConfigTable.Instance.GetPokemonConfig(pokemonId).prefab;
             GameObject pokemon = Instantiate(prefab, null);
             pokemon.name = $"{playerName}]-Pokemon:[{pokemonId}]";
@@ -184,13 +232,18 @@ namespace Game
         private void PokemonSetup(GameObject pokemon, Vector3 position)
         {
             pokemonController = pokemon.GetComponent<PokemonController>();
-            pokemonController.InitPokemon(this, pokemon.gameObject, data.currentPokemonData, position);
+            pokemonController.InitPokemon(this, pokemon, data.currentPokemonData, position);
             Transform modelTransform = pokemonController.pokemonTransform;
             _camera.Follow = modelTransform;
             _camera.LookAt = modelTransform;
             state = PlayerState.Ready;
         }
 
+        [Command]
+        public void CmdSwitchPokemon()
+        {
+            throw new NotImplementedException();
+        }
 
         public void HandleChangeGroup(int id)
         {
@@ -209,6 +262,19 @@ namespace Game
         {
             TeamGroup groupData = MemoryPackSerializer.Deserialize<TeamGroup>(groupPayload);
             data.group = groupData;
+        }
+
+
+        [Command(requiresAuthority = false)]
+        public void CmdSendChatMessage(ArraySegment<byte> payload)
+        {
+            RpcReceiveChatMessage(payload);
+        }
+
+        private void RpcReceiveChatMessage(ArraySegment<byte> payload)
+        {
+            ChatMessage msg = MemoryPackSerializer.Deserialize<ChatMessage>(payload);
+            // TODO Fire Event
         }
     }
 }

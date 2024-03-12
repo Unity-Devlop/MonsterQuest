@@ -46,7 +46,7 @@ namespace Game
         {
             if (PokemonServer.SingletonNullable != null)
             {
-                PokemonServer.SingletonNullable.OffLine(conn);
+                PokemonServer.SingletonNullable.UserOffLine(conn);
             }
         }
 
@@ -65,7 +65,7 @@ namespace Game
                 return;
             }
 
-            PokemonServer.Singleton.OnLine(msg.userId, connection);
+            PokemonServer.Singleton.UserLogin(msg.userId, connection);
 
             // Query Last Pos
             PokemonServer.Singleton.QueryPosition(msg.userId, out Vector3 position);
@@ -86,13 +86,10 @@ namespace Game
 
         public override void OnStartClient()
         {
-            PokemonClient client = new GameObject("PokemonClient").AddComponent<PokemonClient>();
         }
 
         public override void OnStopClient()
         {
-            if (PokemonClient.SingletonNullable != null)
-                DestroyImmediate(PokemonClient.Singleton.gameObject);
             NetworkClient.UnregisterHandler<RequestEnterGameMessage>();
             UIRoot.Singleton.CloseAll(); // TODO: Close all panels
         }

@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: ConfigTable
   m_EditorClassIdentifier: 
   itemConfigs:
-    list: []
+    list:
+    - key: 1
   pokemonConfigs:
     list:
     - key: 1
       value:
         id: 1
-        name: "\u5999\u86D9\u79CD\u5B50"
         element: 0
         baseDamagePoint: 1
         baseMaxHealth: 10
@@ -32,7 +32,6 @@ MonoBehaviour:
     - key: 7
       value:
         id: 7
-        name: "\u55B7\u706B\u9F99"
         element: 2
         baseDamagePoint: 2
         baseMaxHealth: 10

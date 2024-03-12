@@ -6,9 +6,9 @@ namespace Game
 {
     public class Authentication : MonoSingleton<Authentication>
     {
-        private string _playerName;
-        private string _userId;
-        private string _password;
+        [SerializeField] private string _playerName;
+        [SerializeField] private string _userId;
+        [SerializeField] private string _password;
         public static string userId => SingletonNullable._userId;
         public static string playerName => SingletonNullable._playerName;
 

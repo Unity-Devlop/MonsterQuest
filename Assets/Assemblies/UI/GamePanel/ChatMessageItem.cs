@@ -30,7 +30,7 @@ namespace Game.UI
 
         public void Bind(int idx, ChatMessage message)
         {
-            _content.text = message.Content;
+            _content.text = message.content;
             _layoutElement.preferredHeight = _content.preferredHeight;
             _content.rectTransform.sizeDelta = new Vector2(DEFAULT_CONTENT_WIDTH, _content.preferredHeight);
             if (_content.preferredHeight > DEFAULT_HEIGHT)

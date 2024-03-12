@@ -299,9 +299,9 @@ namespace UnityToolkit
         private static void CreateUIRoot()
         {
             GameObject prefab = Resources.Load<GameObject>("UIRoot");
-            GameObject uiRoot = UnityEditor.PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+            GameObject uiRoot = Instantiate(prefab, null, false);
+            // UnityEditor.PrefabUtility.InstantiatePrefab(prefab) as GameObject;
             uiRoot.name = "UIRoot";
-            uiRoot.transform.SetParent(null);
             uiRoot.transform.localPosition = Vector3.zero;
             uiRoot.transform.localRotation = Quaternion.identity;
             uiRoot.transform.localScale = Vector3.one;

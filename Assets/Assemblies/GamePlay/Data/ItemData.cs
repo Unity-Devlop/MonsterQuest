@@ -1,29 +1,14 @@
-﻿
-using MemoryPack;
+﻿using MemoryPack;
 using Sirenix.Utilities;
 using UnityEngine;
 using UnityToolkit;
 
 namespace Game
 {
-    public enum ItemType
-    {
-        材料,
-        宝石
-    }
-    [MemoryPackable]
-    public partial struct ItemConfig
-    {
-        public int id;
-        public string name;
-        public ItemType type;
-    }
-
-
     [MemoryPackable]
     public partial struct ItemData
     {
-        public int id;
+        public ItemEnum id;
         [MemoryPackIgnore] private ItemConfig _config;
         [MemoryPackIgnore] private bool _configInitialized;
 

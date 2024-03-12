@@ -98,3 +98,12 @@ Assets/Complete.meta
 
 Assets/StreamingAssets/*.json
 Assets/StreamingAssets/*.json.meta
+
+
+Assets/Temp/
+Assets/Temp.meta
+
+# Ref Images
+
+#Assets/AddressablesResources/UI/*.png
+#Assets/AddressablesResources/UI/*.png.meta

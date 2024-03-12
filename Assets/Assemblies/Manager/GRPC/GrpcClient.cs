@@ -12,6 +12,9 @@ namespace Game
 
         private GameService.GameServiceClient _gameService;
         public static GameService.GameServiceClient GameService => Singleton._gameService;
+        
+        private GlobalService.GlobalServiceClient _globalService;
+        public static GlobalService.GlobalServiceClient GlobalService => Singleton._globalService;
         public static bool ready => SingletonNullable != null;
 
         private Channel _rpcChannel;
@@ -22,6 +25,7 @@ namespace Game
             Application.wantsToQuit += OnWantToQuit;
             _rpcChannel = new Channel(address, ChannelCredentials.Insecure);
             _gameService = new GameService.GameServiceClient(_rpcChannel);
+            _globalService = new GlobalService.GlobalServiceClient(_rpcChannel);
         }
 
         protected override void OnDispose()

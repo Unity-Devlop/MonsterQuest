@@ -23,26 +23,26 @@ namespace Game.UI
         public void Open()
         {
             gameObject.SetActive(true);
-            PokemonClient.Singleton.OnNewMessage += OnNewMessage;
+            // GlobalManager.EventSystem.Register(OnNewMessage);
         }
 
 
         public void Close()
         {
             gameObject.SetActive(false);
-            if(PokemonClient.SingletonNullable==null) return;
-            PokemonClient.Singleton.OnNewMessage -= OnNewMessage;
+            // if(PokemonClient.SingletonNullable==null) return;
+            // PokemonClient.Singleton.OnNewMessage -= OnNewMessage;
         }
 
         private void OnNewMessage()
         {
-            _chatList.totalCount = PokemonClient.Singleton.ChatMessages.Count;
+            // _chatList.totalCount = PokemonClient.Singleton.ChatMessages.Count;
             _chatList.RefillCells();
         }
 
         private void ItemRenderer(Transform tar, int idx)
         {
-            tar.GetComponent<ChatMessageItem>().Bind(idx, PokemonClient.Singleton.ChatMessages[idx]);
+            // tar.GetComponent<ChatMessageItem>().Bind(idx, PokemonClient.Singleton.ChatMessages[idx]);
         }
     }
 }

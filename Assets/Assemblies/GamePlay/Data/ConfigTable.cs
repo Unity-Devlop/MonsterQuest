@@ -29,15 +29,15 @@ namespace Game
         // }
 
 
-        public SerializableDictionary<int, ItemConfig> itemConfigs;
-        public SerializableDictionary<int, PokemonConfig> pokemonConfigs;
+        public SerializableDictionary<ItemEnum, ItemConfig> itemConfigs;
+        public SerializableDictionary<PokemonEnum, PokemonConfig> pokemonConfigs;
 
-        public ItemConfig GetItemConfig(int id)
+        public ItemConfig GetItemConfig(ItemEnum id)
         {
             return itemConfigs[id];
         }
 
-        public PokemonConfig GetPokemonConfig(int configId)
+        public PokemonConfig GetPokemonConfig(PokemonEnum configId)
         {
             return pokemonConfigs[configId];
         }
