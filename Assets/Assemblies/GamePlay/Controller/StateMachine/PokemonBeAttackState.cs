@@ -6,11 +6,13 @@ namespace Game
     public class PokemonBeAttackState :MonoBehaviour, IState<PokemonController>, ITempAnimState
     {
         public bool canExit { get; private set; }
+        public bool over { get; private set; }
 
         public void OnEnter(PokemonController owner)
         {
             // Debug.Log("PokemonBeAttackState OnEnter");
             canExit = false;
+            over = false;
             owner.animator.SetTrigger(PokemonStateMachine.BeAttack);
         }
 
@@ -25,6 +27,7 @@ namespace Game
             if (stateInfo.normalizedTime > 0.95f)
             {
                 canExit = true;
+                over = true;
                 return;
             }
         }
@@ -32,7 +35,8 @@ namespace Game
         public void OnExit(PokemonController owner)
         {
             // Debug.Log("PokemonBeAttackState OnExit");
-            canExit = true;
+            canExit = false;
+            over = false;
         }
     }
 }

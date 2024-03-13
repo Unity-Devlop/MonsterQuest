@@ -18,5 +18,6 @@ namespace Game
     public interface ITempAnimState
     {
         bool canExit { get; }
+        bool over { get; }
     }
 }

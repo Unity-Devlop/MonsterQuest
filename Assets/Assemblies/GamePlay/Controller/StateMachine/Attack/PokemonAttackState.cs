@@ -8,20 +8,33 @@ namespace Game
     public class PokemonAttackState : MonoBehaviour, IState<PokemonController>, ITempAnimState
     {
         public bool canExit { get; private set; }
+        public bool over { get; private set; }
+        public float minExitTime = 0.2f;
+        private float timer = 0;
 
-        public  void OnEnter(PokemonController owner)
+        public void OnEnter(PokemonController owner)
         {
-            
             owner.animator.SetBool(PokemonStateMachine.attack, true);
-            canExit = false; // TODO 必须要打出关键帧后才能退出
+            canExit = false; 
+            over = false;
             owner.hit.Reset();
+            timer = 0;
         }
 
 
-        public  void OnUpdate(PokemonController owner)
+        public void OnUpdate(PokemonController owner)
         {
             AnimatorStateInfo stateInfo = owner.animator.GetCurrentAnimatorStateInfo(0);
             if (!stateInfo.IsName("Attack")) return;
+            
+            if (timer < minExitTime && !canExit)
+            {
+                timer += Time.deltaTime;
+            }
+            else
+            {
+                canExit = true;
+            }
 
             // TODO 必须要打出关键帧后才能退出
             if (owner.isOwned)
@@ -37,16 +50,18 @@ namespace Game
             {
                 // Debug.Log("Player Over");
                 canExit = true;
+                over = true;
                 return;
             }
         }
 
 
-        public  void OnExit(PokemonController owner)
+        public void OnExit(PokemonController owner)
         {
             // Debug.Log("PokemonAttackState OnExit");
             owner.animator.SetBool(PokemonStateMachine.attack, false);
             canExit = false;
+            over = false;
         }
     }
 }

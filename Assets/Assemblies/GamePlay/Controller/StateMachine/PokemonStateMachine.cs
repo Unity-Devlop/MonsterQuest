@@ -12,13 +12,18 @@ namespace Game
         public static readonly int run = Animator.StringToHash("Run");
         public static readonly int attack = Animator.StringToHash("Attack");
         public static readonly int BeAttack = Animator.StringToHash("BeAttack");
-        
+
         private Dictionary<Type, IState<PokemonController>> _stateDic;
         public IState<PokemonController> currentState { get; private set; }
 
         public bool Change<T>(PokemonController owner) where T : IState<PokemonController>
         {
             if (currentState is ITempAnimState { canExit: false })
+            {
+                return false;
+            }
+
+            if (typeof(T).IsAssignableFrom(typeof(PokemonIdleState)) && currentState is ITempAnimState { over: false })
             {
                 return false;
             }
