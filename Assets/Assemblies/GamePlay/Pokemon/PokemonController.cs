@@ -34,7 +34,7 @@ namespace Game
         public HitController hit { get; private set; }
 
         private bool _init = false;
-        [field: SerializeField,Sirenix.OdinInspector.ReadOnly] public PlayerController player { get; private set; }
+        [field: SerializeField,Sirenix.OdinInspector.ReadOnly] public Player player { get; private set; }
         public bool canBeHit { get; set; } = true;
 
         public int groupId
@@ -50,7 +50,7 @@ namespace Game
             }
         }
 
-        public void InitPokemon(PlayerController player, GameObject pokemonGameObj, PokemonData data, Vector3 position)
+        public void InitPokemon(Player player, GameObject pokemonGameObj, PokemonData data, Vector3 position)
         {
             this.player = player;
             pokemonTransform = pokemonGameObj.transform;

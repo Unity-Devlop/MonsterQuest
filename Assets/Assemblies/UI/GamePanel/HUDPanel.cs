@@ -23,10 +23,10 @@ namespace Game.UI
 
         public void Open()
         {
-            PlayerController.LocalPlayer.OnSwitchPokemon += OnSwitchPokemon;
+            Player.LocalPlayer.OnSwitchPokemon += OnSwitchPokemon;
             GlobalManager.EventSystem.Register<OnLocalPlayerPokemonHealthChange>(OnPokemonHealthChanged);
 
-            PokemonData data = PlayerController.LocalPlayer.pokemonController.data;
+            PokemonData data = Player.LocalPlayer.pokemonController.data;
             _healthBar.Init(data.currentHealth, 0, data.maxHealth);
 
             gameObject.SetActive(true);
@@ -34,9 +34,9 @@ namespace Game.UI
 
         public void Close()
         {
-            if (PlayerController.LocalPlayer != null)
+            if (Player.LocalPlayer != null)
             {
-                PlayerController.LocalPlayer.OnSwitchPokemon -= OnSwitchPokemon;
+                Player.LocalPlayer.OnSwitchPokemon -= OnSwitchPokemon;
             }
 
             if (GlobalManager.EventSystem != null)

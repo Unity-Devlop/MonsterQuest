@@ -17,13 +17,13 @@ namespace Game.UI
 
         public override void OnOpened()
         {
-            PlayerController.OnLocalPlayerSpawned += OnLocalPlayerSpawned;
+            Player.OnLocalPlayerSpawned += OnLocalPlayerSpawned;
             base.OnOpened();
         }
 
         public override void OnClosed()
         {
-            PlayerController.OnLocalPlayerSpawned -= OnLocalPlayerSpawned;
+            Player.OnLocalPlayerSpawned -= OnLocalPlayerSpawned;
             _chatPanel.Close();
             _hudPanel.Close();
             base.OnClosed();

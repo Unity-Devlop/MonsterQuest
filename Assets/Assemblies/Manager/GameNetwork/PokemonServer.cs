@@ -35,14 +35,14 @@ namespace Game
 
         private Dictionary<NetworkConnectionToClient, string> _onLineConn2Id;
 
-        private Dictionary<string, PlayerController> _id2PlayerController;
+        private Dictionary<string, Player> _id2PlayerController;
 
 
         protected override void OnInit()
         {
             _onlineId2Conn = new Dictionary<string, NetworkConnectionToClient>();
             _onLineConn2Id = new Dictionary<NetworkConnectionToClient, string>();
-            _id2PlayerController = new Dictionary<string, PlayerController>();
+            _id2PlayerController = new Dictionary<string, Player>();
             Load();
         }
 
@@ -51,18 +51,18 @@ namespace Game
             Save();
         }
 
-        public void AddPlayer(PlayerController controller)
+        public void AddPlayer(Player controller)
         {
             _id2PlayerController.Add(controller.userId, controller);
         }
 
-        public void RemovePlayer(PlayerController controller)
+        public void RemovePlayer(Player controller)
         {
             _id2PlayerController.Remove(controller.userId);
         }
 
         [Server]
-        public IEnumerator<PlayerController> OnlinePlayers()
+        public IEnumerator<Player> OnlinePlayers()
         {
             // TODO Error Handle
             foreach (var controller in _id2PlayerController.Values)

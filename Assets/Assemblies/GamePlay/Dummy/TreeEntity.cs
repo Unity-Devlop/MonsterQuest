@@ -24,7 +24,7 @@ namespace Game
         {
             canBeHit = false;
             await UniTask.DelayFrame(10);
-            sender.identity.GetComponent<PlayerController>().TargetAddScore(sender,1);
+            sender.identity.GetComponent<Player>().TargetAddScore(sender,1);
             canBeHit = true;
             currentHitPoint -= damagePoint;
             RpcBeHit(currentHitPoint);
