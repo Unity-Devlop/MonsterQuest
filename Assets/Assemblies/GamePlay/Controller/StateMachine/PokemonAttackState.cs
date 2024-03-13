@@ -5,19 +5,20 @@ using UnityToolkit;
 
 namespace Game
 {
-    public class PokemonAttackState : State<PokemonController>, ITempAnimState
+    public class PokemonAttackState : MonoBehaviour, IState<PokemonController>, ITempAnimState
     {
         public bool canExit { get; private set; }
 
-        public override void OnEnter(PokemonController owner)
+        public  void OnEnter(PokemonController owner)
         {
-            owner.animator.SetBool(PokemonController.attack, true);
+            
+            owner.animator.SetBool(PokemonStateMachine.attack, true);
             canExit = false; // TODO 必须要打出关键帧后才能退出
             owner.hit.Reset();
         }
 
 
-        public override void OnUpdate(PokemonController owner)
+        public  void OnUpdate(PokemonController owner)
         {
             AnimatorStateInfo stateInfo = owner.animator.GetCurrentAnimatorStateInfo(0);
             if (!stateInfo.IsName("Attack")) return;
@@ -41,10 +42,10 @@ namespace Game
         }
 
 
-        public override void OnExit(PokemonController owner)
+        public  void OnExit(PokemonController owner)
         {
             // Debug.Log("PokemonAttackState OnExit");
-            owner.animator.SetBool(PokemonController.attack, false);
+            owner.animator.SetBool(PokemonStateMachine.attack, false);
             canExit = false;
         }
     }

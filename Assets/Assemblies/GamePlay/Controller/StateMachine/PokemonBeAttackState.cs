@@ -3,18 +3,18 @@ using UnityToolkit;
 
 namespace Game
 {
-    public class PokemonBeAttackState : State<PokemonController>, ITempAnimState
+    public class PokemonBeAttackState :MonoBehaviour, IState<PokemonController>, ITempAnimState
     {
         public bool canExit { get; private set; }
 
-        public override void OnEnter(PokemonController owner)
+        public void OnEnter(PokemonController owner)
         {
             // Debug.Log("PokemonBeAttackState OnEnter");
             canExit = false;
-            owner.animator.SetTrigger(PokemonController.BeAttack);
+            owner.animator.SetTrigger(PokemonStateMachine.BeAttack);
         }
 
-        public override void OnUpdate(PokemonController owner)
+        public void OnUpdate(PokemonController owner)
         {
             AnimatorStateInfo stateInfo = owner.animator.GetCurrentAnimatorStateInfo(0);
             if (!stateInfo.IsName("Be_Attacked"))
@@ -29,7 +29,7 @@ namespace Game
             }
         }
 
-        public override void OnExit(PokemonController owner)
+        public void OnExit(PokemonController owner)
         {
             // Debug.Log("PokemonBeAttackState OnExit");
             canExit = true;

@@ -12,14 +12,14 @@ using UnityToolkit;
 
 namespace Game
 {
-    public enum PlayerState
-    {
-        WaitFofSpawnPokemon,
-        Ready,
-    }
-
     public class Player : NetworkBehaviour
     {
+        public enum NetworkState
+        {
+            WaitFofSpawnPokemon,
+            Ready,
+        }
+
         public static Player LocalPlayer { get; private set; }
         private CinemachineFreeLook _camera;
         public Action OnSwitchPokemon;
@@ -27,9 +27,8 @@ namespace Game
         public static event Action OnLocalPlayerSpawned;
         private CinemachineInputProvider _cameraInputProvider;
 
-        public PokemonController pokemonController { get; private set; }
+        public PokemonController controller { get; private set; }
         
-        public State<PokemonController> pokemonState => pokemonController.stateMachine.CurrentState;
         private string playerName => data.playerName;
         public string userId => data.userId;
 
@@ -37,7 +36,7 @@ namespace Game
 
         [field: SerializeField] public PackageData package { get; private set; }
 
-        [field: SerializeField] public PlayerState state { get; private set; }
+        [field: SerializeField] public NetworkState state { get; private set; }
 
 
         private GameInput.PlayerActions input => InputManager.Singleton.input.Player;
@@ -58,7 +57,7 @@ namespace Game
             if (PokemonServer.SingletonNullable == null) return;
             PokemonServer.Singleton.RemovePlayer(this);
             // 保持位置信息
-            PokemonServer.Singleton.UpdatePosition(userId, pokemonController.pokemonPosition);
+            PokemonServer.Singleton.UpdatePosition(userId, controller.pokemonPosition);
         }
 
         public override void OnStartClient()
@@ -102,7 +101,7 @@ namespace Game
 
         private void Update()
         {
-            if (isLocalPlayer && state == PlayerState.Ready)
+            if (isLocalPlayer && state == NetworkState.Ready)
             {
                 TickStateLogic();
                 TickUILogic();
@@ -146,40 +145,30 @@ namespace Game
 
         private void TickStateLogic()
         {
-            // TODO 移动到PokemonController
-            if (pokemonState is ITempAnimState { canExit: false })
-            {
-                return;
-            }
-
             if (input.Fire.WasPressedThisFrame() && !EventSystem.current.IsPointerOverGameObject())
             {
-                pokemonController.stateMachine.Change<PokemonAttackState>(); // 本地立刻切换状态 避免异常
-                pokemonController.CmdAttack();
+                controller.HandleAttack();
                 return;
             }
-
-
             // 必须要结束瞬时状态才能切换到其他状态
-
             Vector2 moveInput = input.Move.ReadValue<Vector2>();
             if (moveInput.sqrMagnitude > 0.01f)
             {
-                Vector3 pokemonPos = pokemonController.pokemonTransform.position;
+                Vector3 pokemonPos = controller.pokemonTransform.position;
                 Vector3 cameraPos = _camera.transform.position;
                 Vector3 viewDir = pokemonPos - new Vector3(cameraPos.x, pokemonPos.y, cameraPos.z);
                 if (input.Run.IsPressed())
                 {
-                    pokemonController.HandleRun(viewDir, moveInput);
+                    controller.HandleRun(viewDir, moveInput);
                 }
                 else
                 {
-                    pokemonController.HandleWalk(viewDir, moveInput);
+                    controller.HandleWalk(viewDir, moveInput);
                 }
             }
             else
             {
-                pokemonController.HandleIdle();
+                controller.HandleIdle();
             }
         }
 
@@ -194,8 +183,8 @@ namespace Game
             // {
             ArraySegment<byte> packageDataPayload = MemoryPackSerializer.Serialize(packageData); // TODO 只有本地玩家才需要背包数据
             // 通知指定的客户端初始化数据
-            TargetInitData(sender, playerDataPayload, packageDataPayload, pokemonController.pokemonIdentity,
-                pokemonController.pokemonPosition);
+            TargetInitData(sender, playerDataPayload, packageDataPayload, controller.pokemonIdentity,
+                controller.pokemonPosition);
             // }
             // else
             // {
@@ -250,12 +239,12 @@ namespace Game
 
         private void PokemonSetup(GameObject pokemon, Vector3 position)
         {
-            pokemonController = pokemon.GetComponent<PokemonController>();
-            pokemonController.InitPokemon(this, pokemon, data.self, position);
-            Transform modelTransform = pokemonController.pokemonTransform;
+            controller = pokemon.GetComponent<PokemonController>();
+            controller.Init(this, pokemon, data.self, position);
+            Transform modelTransform = controller.pokemonTransform;
             _camera.Follow = modelTransform;
             _camera.LookAt = modelTransform;
-            state = PlayerState.Ready;
+            state = NetworkState.Ready;
         }
 
         [Command]

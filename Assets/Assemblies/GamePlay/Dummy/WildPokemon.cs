@@ -23,7 +23,7 @@ namespace Game
         public override void OnStartClient()
         {
             data = new PokemonData(pokemonEnum);
-            _pokemonController.InitPokemon(null, gameObject, data, transform.position);
+            _pokemonController.Init(null, gameObject, data, transform.position);
         }
     }
 }

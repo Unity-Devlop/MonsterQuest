@@ -197,9 +197,9 @@ namespace Game
         [Server]
         public bool QueryPosition(string userId, out Vector3 position)
         {
-            if (_id2PlayerController.TryGetValue(userId, out var controller) && controller.state == PlayerState.Ready)
+            if (_id2PlayerController.TryGetValue(userId, out var player) && player.state == Player.NetworkState.Ready)
             {
-                position = controller.pokemonController.pokemonPosition;
+                position = player.controller.pokemonPosition;
                 return true;
             }
 

@@ -26,7 +26,7 @@ namespace Game.UI
             Player.LocalPlayer.OnSwitchPokemon += OnSwitchPokemon;
             GlobalManager.EventSystem.Register<OnLocalPlayerPokemonHealthChange>(OnPokemonHealthChanged);
 
-            PokemonData data = Player.LocalPlayer.pokemonController.data;
+            PokemonData data = Player.LocalPlayer.controller.data;
             _healthBar.Init(data.currentHealth, 0, data.maxHealth);
 
             gameObject.SetActive(true);
