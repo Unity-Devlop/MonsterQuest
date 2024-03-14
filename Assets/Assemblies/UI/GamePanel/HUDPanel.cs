@@ -1,35 +1,34 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityToolkit;
 
 namespace Game.UI
 {
-    public struct OnLocalPlayerPokemonHealthChange : IEvent
-    {
-        public int currentHealth;
-        public int maxHealth;
-    }
-
     public class HUDPanel : MonoBehaviour, IUISubPanel
     {
         private ProgressBar _healthBar;
-        private ProgressBar _expBar;
+        private TextMeshProUGUI levelText;
 
         private void Awake()
         {
             _healthBar = transform.Find("HealthBar").GetComponent<ProgressBar>();
-            _expBar = transform.Find("ExpBar").GetComponent<ProgressBar>();
+            levelText = transform.Find("LevelText").GetComponent<TextMeshProUGUI>();
         }
 
         public void Open()
         {
             // Player.LocalPlayer.OnSwitchPokemon += OnSwitchPokemon;
-            GlobalManager.EventSystem.Register<OnLocalPlayerPokemonHealthChange>(OnPokemonHealthChanged);
+            GlobalManager.EventSystem.Register<OnLocalPlayerHealthChange>(OnLocalPlayerHealthChanged);
+            GlobalManager.EventSystem.Register<OnLocalPlayerLevelChange>(OnLocalPlayerLevelChanged);
 
             PokemonData data = Player.LocalPlayer.controller.data;
-            _healthBar.Init(data.currentHealth, 0, data.maxHealth);
-
+            _healthBar.SetWithoutNotify(data.currentHealth, 0, data.maxHealth);
+            levelText.text = $"Lv.{data.level}";
+            
+            
             gameObject.SetActive(true);
+            
         }
 
         public void Close()
@@ -41,21 +40,22 @@ namespace Game.UI
 
             if (GlobalManager.EventSystem != null)
             {
-                GlobalManager.EventSystem.UnRegister<OnLocalPlayerPokemonHealthChange>(OnPokemonHealthChanged);
+                GlobalManager.EventSystem.UnRegister<OnLocalPlayerHealthChange>(OnLocalPlayerHealthChanged);
+                GlobalManager.EventSystem.UnRegister<OnLocalPlayerLevelChange>(OnLocalPlayerLevelChanged);
             }
 
             gameObject.SetActive(false);
         }
 
-
-        private void OnPokemonHealthChanged(OnLocalPlayerPokemonHealthChange e)
+        private void OnLocalPlayerLevelChanged(OnLocalPlayerLevelChange obj)
         {
-            _healthBar.Max = e.maxHealth;
-            _healthBar.Value = e.currentHealth;
+            levelText.text = $"Lv.{obj.currentLevel}";
         }
 
-        private void OnSwitchPokemon()
+
+        private void OnLocalPlayerHealthChanged(OnLocalPlayerHealthChange e)
         {
+            _healthBar.SetWithoutNotify(e.currentHealth, 0, e.maxHealth);
         }
     }
 }

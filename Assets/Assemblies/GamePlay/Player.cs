@@ -210,7 +210,7 @@ namespace Game
             // 玩家初始化完成
             if (isLocalPlayer)
             {
-                Debug.Log("Local Player Spawned");
+                // Debug.Log("Local Player Spawned");
                 OnLocalPlayerSpawned?.Invoke();
             }
         }

@@ -152,7 +152,7 @@ namespace Game
             data.currentHealth = currentHealth;
             if (player != null && player.isLocalPlayer)
             {
-                GlobalManager.EventSystem.Send(new OnLocalPlayerPokemonHealthChange()
+                GlobalManager.EventSystem.Send(new OnLocalPlayerHealthChange()
                 {
                     currentHealth = currentHealth,
                     maxHealth = data.maxHealth

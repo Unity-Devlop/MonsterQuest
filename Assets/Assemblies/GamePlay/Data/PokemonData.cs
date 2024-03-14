@@ -38,6 +38,7 @@ namespace Game
         public float runSpeed;
         public float rotateSpeed;
         public float flySpeed;
+        public int level;
 
         public PokemonData(PokemonEnum configId)
         {
@@ -50,6 +51,7 @@ namespace Game
             runSpeed = config.baseRunSpeed;
             rotateSpeed = config.baseRotateSpeed;
             flySpeed = config.baseFlySpeed;
+            level = 1;
         }
     }
 }

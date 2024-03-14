@@ -52,7 +52,7 @@ namespace Game
             Add(new PlayerIdleState());
             Add(new PlayerWalkState());
             Add(new PlayerRunState());
-            Add(new PlayerAttackState());
+            // Add(new PlayerAttackState());
             Add(new PlayerBeAttackState());
             Change<PlayerIdleState>(owner);
         }
@@ -74,7 +74,8 @@ namespace Game
 
         public bool ToAttack(PlayerController owner)
         {
-            return Change<PlayerAttackState>(owner);
+            // return Change<PlayerAttackState>(owner);
+            return true;
         }
 
         public bool ToBeAttack(PlayerController owner)

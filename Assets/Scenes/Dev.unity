@@ -1549,6 +1549,7 @@ MonoBehaviour:
     runSpeed: 0
     rotateSpeed: 0
     flySpeed: 0
+    level: 0
   pokemonEnum: 1
 --- !u!1001 &1909742727
 PrefabInstance:
