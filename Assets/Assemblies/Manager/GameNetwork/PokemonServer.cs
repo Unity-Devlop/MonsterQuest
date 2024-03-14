@@ -199,7 +199,7 @@ namespace Game
         {
             if (_id2PlayerController.TryGetValue(userId, out var player) && player.state == Player.NetworkState.Ready)
             {
-                position = player.controller.pokemonPosition;
+                position = player.controller.position;
                 return true;
             }
 

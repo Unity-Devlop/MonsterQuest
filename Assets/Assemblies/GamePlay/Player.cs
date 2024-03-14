@@ -22,13 +22,12 @@ namespace Game
 
         public static Player LocalPlayer { get; private set; }
         private CinemachineFreeLook _camera;
-        public Action OnSwitchPokemon;
 
         public static event Action OnLocalPlayerSpawned;
         private CinemachineInputProvider _cameraInputProvider;
 
-        public PokemonController controller { get; private set; }
-        
+        public PlayerController controller { get; private set; }
+
         private string playerName => data.playerName;
         public string userId => data.userId;
 
@@ -57,7 +56,7 @@ namespace Game
             if (PokemonServer.SingletonNullable == null) return;
             PokemonServer.Singleton.RemovePlayer(this);
             // 保持位置信息
-            PokemonServer.Singleton.UpdatePosition(userId, controller.pokemonPosition);
+            PokemonServer.Singleton.UpdatePosition(userId, controller.position);
         }
 
         public override void OnStartClient()
@@ -150,11 +149,12 @@ namespace Game
                 controller.HandleAttack();
                 return;
             }
+
             // 必须要结束瞬时状态才能切换到其他状态
             Vector2 moveInput = input.Move.ReadValue<Vector2>();
             if (moveInput.sqrMagnitude > 0.01f)
             {
-                Vector3 pokemonPos = controller.pokemonTransform.position;
+                Vector3 pokemonPos = controller.transform.position;
                 Vector3 cameraPos = _camera.transform.position;
                 Vector3 viewDir = pokemonPos - new Vector3(cameraPos.x, pokemonPos.y, cameraPos.z);
                 if (input.Run.IsPressed())
@@ -183,8 +183,8 @@ namespace Game
             // {
             ArraySegment<byte> packageDataPayload = MemoryPackSerializer.Serialize(packageData); // TODO 只有本地玩家才需要背包数据
             // 通知指定的客户端初始化数据
-            TargetInitData(sender, playerDataPayload, packageDataPayload, controller.pokemonIdentity,
-                controller.pokemonPosition);
+            TargetInitData(sender, playerDataPayload, packageDataPayload, controller.netIdentity,
+                controller.position);
             // }
             // else
             // {
@@ -204,7 +204,7 @@ namespace Game
             // 配置信息
             GameObject pokemonObj = pokemon.gameObject;
             pokemonObj.name = $"{playerName}-Pokemon:[{data.self.configId}]";
-            PokemonSetup(pokemonObj, position);
+            PlayerSetup(pokemonObj, position);
 
             Debug.Log($"Init Data: {data.playerName}");
             // 玩家初始化完成
@@ -230,33 +230,24 @@ namespace Game
             data = playerData;
             package = packageData;
             PokemonEnum pokemonId = data.self.configId;
-            GameObject prefab = GlobalManager.Singleton.configTable.GetPokemonConfig(pokemonId).prefab;
-            GameObject pokemon = Instantiate(prefab, null);
-            pokemon.name = $"{playerName}]-Pokemon:[{pokemonId}]";
-            PokemonSetup(pokemon, position);
-            NetworkServer.Spawn(pokemon, connection);
+            GameObject prefab = GlobalManager.Singleton.configTable.playerEntityPrefab;
+            GameObject obj = Instantiate(prefab, null);
+            obj.name = $"{playerName}]-Pokemon:[{pokemonId}]";
+            PlayerSetup(obj, position);
+            NetworkServer.Spawn(obj, connection);
         }
 
-        private void PokemonSetup(GameObject pokemon, Vector3 position)
+        private void PlayerSetup(GameObject obj, Vector3 position)
         {
-            controller = pokemon.GetComponent<PokemonController>();
-            controller.Init(this, pokemon, data.self, position);
-            Transform modelTransform = controller.pokemonTransform;
+            controller = obj.GetComponent<PlayerController>();
+            controller.Init(this, obj, data.self, position);
+            Transform modelTransform = controller.transform;
             _camera.Follow = modelTransform;
             _camera.LookAt = modelTransform;
             state = NetworkState.Ready;
         }
 
-        [Command]
-        public void CmdSwitchPokemon()
-        {
-            throw new NotImplementedException();
-        }
 
-        public void HandleChangeGroup(int id)
-        {
-            CmdChangeGroup(id);
-        }
 
         [Command]
         private void CmdChangeGroup(int id)

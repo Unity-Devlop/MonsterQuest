@@ -10,13 +10,15 @@ namespace Game
         public string userId;
         public string playerName;
 
+        // public int teamId;
+        // [MemoryPackIgnore]
         public TeamGroup group;
 
         // self 
         public PokemonData self;
-        
+
         public PokemonData carry1;
-        
+
         public PlayerData(string userId, string playerName, PokemonData self)
         {
             group = TeamGroup.Default;

@@ -51,5 +51,6 @@ MonoBehaviour:
         baseRunSpeed: 5
         baseRotateSpeed: 5
         baseFlySpeed: 0
-        prefab: {fileID: 2602637115700601785, guid: ee3a4c11cab25ff46a1f50cb482d1944,
-          type: 3}
+        prefab: {fileID: 0}
+  playerEntityPrefab: {fileID: 2602637115700601785, guid: ee3a4c11cab25ff46a1f50cb482d1944,
+    type: 3}

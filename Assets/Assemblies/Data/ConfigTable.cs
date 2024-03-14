@@ -9,9 +9,9 @@ namespace Game
     [CreateAssetMenu(fileName = "ConfigTable", menuName = "Game/ConfigTable")]
     public class ConfigTable : ScriptableObject
     {
-        
         public SerializableDictionary<ItemEnum, ItemConfig> itemConfigs;
         public SerializableDictionary<PokemonEnum, PokemonConfig> pokemonConfigs;
+        public GameObject playerEntityPrefab;
 
         public ItemConfig GetItemConfig(ItemEnum id)
         {

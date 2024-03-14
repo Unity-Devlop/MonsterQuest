@@ -13,7 +13,7 @@ namespace Game
                 entity.groupId != target.groupId)
             {
                 target.canBeHit = false;  // 客户端暂时设置为不可被攻击 后面服务器同步
-                target.CmdBeAttack(damagePoint);
+                target.HandleBeAttack(damagePoint);
             }
         }
     }

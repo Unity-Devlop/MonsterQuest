@@ -23,7 +23,7 @@ namespace Game.UI
 
         public void Open()
         {
-            Player.LocalPlayer.OnSwitchPokemon += OnSwitchPokemon;
+            // Player.LocalPlayer.OnSwitchPokemon += OnSwitchPokemon;
             GlobalManager.EventSystem.Register<OnLocalPlayerPokemonHealthChange>(OnPokemonHealthChanged);
 
             PokemonData data = Player.LocalPlayer.controller.data;
@@ -36,7 +36,7 @@ namespace Game.UI
         {
             if (Player.LocalPlayer != null)
             {
-                Player.LocalPlayer.OnSwitchPokemon -= OnSwitchPokemon;
+                // Player.LocalPlayer.OnSwitchPokemon -= OnSwitchPokemon;
             }
 
             if (GlobalManager.EventSystem != null)
