@@ -2,7 +2,7 @@
 
 namespace Game
 {
-    public class PlayerBeAttackState : IState<PlayerController>
+    public class PlayerBeAttackState : IState<PlayerController> //,ITempAnimState
     {
         public void OnEnter(PlayerController owner)
         {
@@ -11,12 +11,10 @@ namespace Game
 
         public void OnUpdate(PlayerController owner)
         {
-            
         }
 
         public void OnExit(PlayerController owner)
         {
-           
         }
     }
 }

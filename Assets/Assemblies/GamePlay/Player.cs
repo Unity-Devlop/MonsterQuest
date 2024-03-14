@@ -240,13 +240,12 @@ namespace Game
         private void PlayerSetup(GameObject obj, Vector3 position)
         {
             controller = obj.GetComponent<PlayerController>();
-            controller.Init(this, obj, data.self, position);
+            controller.Init(this, data.self, position);
             Transform modelTransform = controller.transform;
             _camera.Follow = modelTransform;
             _camera.LookAt = modelTransform;
             state = NetworkState.Ready;
         }
-
 
 
         [Command]

@@ -29,16 +29,12 @@ namespace Game
             {
                 canExit = true;
             }
-
-            // TODO 必须要打出关键帧后才能退出
+            
             if (owner.isOwned)
             {
-                // Debug.Log("Owned OnUpdate");
                 // 攻击检测只在拥有者的客户端进行
                 owner.hit.Tick(owner);
             }
-
-
             // 动画放结束就切换到Idle状态
             if (stateInfo.normalizedTime > 0.95f)
             {

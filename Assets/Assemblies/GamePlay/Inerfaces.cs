@@ -25,6 +25,15 @@ namespace Game
         public bool ToAttack(T owner);
         public bool ToBeAttack(T owner);
     }
+    
+    public interface IEntityController : IHittable
+    {
+        void HandleIdle();
+        void HandleWalk(Vector3 viewDir, Vector2 moveInput);
+        void HandleRun(Vector3 viewDir, Vector2 moveInput);
+        void HandleAttack();
+        void HandleBeAttack(int damagePoint, NetworkConnectionToClient sender = null);
+    }
 
     public interface IHittable : IEntity
     {

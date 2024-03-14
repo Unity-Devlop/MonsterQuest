@@ -5,9 +5,15 @@ using UnityToolkit;
 
 namespace Game
 {
-    public class NormalHitController : HitController
+    public class PokemonHitController : MonoBehaviour
     {
-    
+        protected readonly HashSet<Collider> filter = new HashSet<Collider>(10);
+
+        public void Reset()
+        {
+            filter.Clear();
+        }
+
         private BoxCollider _hitBox;
 
         private void Awake()
@@ -16,7 +22,7 @@ namespace Game
         }
 
 
-        public override void Tick(PokemonController owner)
+        public void Tick(PokemonController owner)
         {
             if (_hitBox.enabled)
             {

@@ -5,6 +5,7 @@ using UnityEngine.Serialization;
 
 namespace Game
 {
+    [RequireComponent(typeof(PokemonController))]
     public class WildPokemon : NetworkBehaviour
     {
         private PokemonController _pokemonController;
@@ -23,7 +24,7 @@ namespace Game
         public override void OnStartClient()
         {
             data = new PokemonData(pokemonEnum);
-            _pokemonController.Init(null, gameObject, data, transform.position);
+            _pokemonController.Init(null, data, transform.position);
         }
     }
 }

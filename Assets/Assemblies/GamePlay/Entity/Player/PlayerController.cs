@@ -16,15 +16,14 @@ namespace Game
 
         public Transform orientation { get; private set; }
 
-        public HitController hit { get; private set; }
-
-        private bool _init;
+        // public PlayerHitController hit { get; private set; }
 
         [field: SerializeField, Sirenix.OdinInspector.ReadOnly]
         public Player player { get; private set; }
 
-        public bool canBeHit { get; set; } = true;
+        public PackageData package => player.package;
 
+        public bool canBeHit { get; set; } = true;
 
         public int groupId
         {
@@ -41,20 +40,24 @@ namespace Game
 
         public Vector3 position => transform.position;
 
-        public void Init(Player player, GameObject obj, PokemonData data, Vector3 position)
+        private bool _init;
+
+        #region Setup
+
+        public void Init(Player player, PokemonData data, Vector3 position)
         {
             this.player = player;
-            modelTransform = obj.transform.Find("Model");
-            orientation = obj.transform.Find("Orientation");
+            modelTransform = transform.Find("Model");
+            orientation = transform.Find("Orientation");
 
-            characterController = obj.GetComponent<CharacterController>();
+            characterController = GetComponent<CharacterController>();
             characterController.transform.position = position;
 
             this.data = data;
 
             animator = modelTransform.GetComponent<Animator>();
-
-            hit = modelTransform.Find("HitController").GetComponent<HitController>();
+            
+            // hit = new PlayerHitController(this);
 
             NetworkManagerMode mode = NetworkManager.singleton.mode;
             if (mode == NetworkManagerMode.ServerOnly)
@@ -133,6 +136,10 @@ namespace Game
                 }
             }
         }
+
+        #endregion
+
+        #region Handle
 
         public void HandleBeAttack(int damagePoint, NetworkConnectionToClient sender = null)
         {
@@ -282,7 +289,7 @@ namespace Game
             stateMachine.ToAttack(this); // 本地立刻切换状态 避免异常
             CmdAttack();
         }
-        
+
 
         [Command]
         private void CmdAttack()
@@ -304,5 +311,7 @@ namespace Game
                 }
             }
         }
+
+        #endregion
     }
 }

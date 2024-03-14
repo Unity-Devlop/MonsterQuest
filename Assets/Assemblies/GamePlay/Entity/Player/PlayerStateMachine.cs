@@ -12,12 +12,15 @@ namespace Game
 
         public bool Change<T>(PlayerController owner) where T : IState<PlayerController>
         {
+            // 当前动画没有达到可以退出的条件
             if (currentState is ITempAnimState { canExit: false })
             {
                 return false;
             }
 
-            if (typeof(T).IsAssignableFrom(typeof(PokemonIdleState)) && currentState is ITempAnimState { over: false })
+            //typeof(T).IsAssignableFrom(typeof(PokemonIdleState))
+            // 动画没播完前 不允许切换到 Idle 状态
+            if (typeof(T) == typeof(PokemonIdleState) && currentState is ITempAnimState { over: false })
             {
                 return false;
             }

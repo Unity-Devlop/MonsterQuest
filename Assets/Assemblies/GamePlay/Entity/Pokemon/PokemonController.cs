@@ -13,16 +13,13 @@ namespace Game
         public CharacterController characterController { get; private set; }
         public PokemonStateMachine stateMachine { get; private set; }
         public PokemonData data { get; private set; }
-        public Transform pokemonTransform { get; private set; }
         public Transform modelTransform { get; private set; }
-
         public Transform orientation { get; private set; }
 
-        public HitController hit { get; private set; }
+        public PokemonHitController hit { get; private set; }
 
         private bool _init;
-
-        [field: SerializeField, Sirenix.OdinInspector.ReadOnly]
+        
         public Player player { get; private set; }
 
         public bool canBeHit { get; set; } = true;
@@ -40,23 +37,22 @@ namespace Game
             }
         }
 
-        public Vector3 position => pokemonTransform.position;
+        public Vector3 position => transform.position;
 
-        public void Init(Player player, GameObject obj, PokemonData data, Vector3 position)
+        public void Init(Player player, PokemonData data, Vector3 position)
         {
             this.player = player;
-            pokemonTransform = obj.transform;
-            modelTransform = obj.transform.Find("Model");
-            orientation = obj.transform.Find("Orientation");
+            modelTransform = transform.Find("Model");
+            orientation = transform.Find("Orientation");
 
-            characterController = obj.GetComponent<CharacterController>();
+            characterController = GetComponent<CharacterController>();
             characterController.transform.position = position;
 
             this.data = data;
 
             animator = modelTransform.GetComponent<Animator>();
 
-            hit = modelTransform.Find("HitController").GetComponent<HitController>();
+            hit = modelTransform.Find("HitController").GetComponent<PokemonHitController>();
 
             NetworkManagerMode mode = NetworkManager.singleton.mode;
             if (mode == NetworkManagerMode.ServerOnly)
@@ -181,7 +177,7 @@ namespace Game
         }
 
         [Command]
-        internal void CmdIdle()
+        private void CmdIdle()
         {
             RpcIdle();
         }
@@ -222,11 +218,11 @@ namespace Game
         }
 
         [Command]
-        internal void CmdWalk(Vector3 moveVec)
+        private void CmdWalk(Vector3 moveVec)
         {
-            Vector3 forward = Vector3.Slerp(pokemonTransform.forward, moveVec.normalized,
+            Vector3 forward = Vector3.Slerp(transform.forward, moveVec.normalized,
                 Time.deltaTime * data.rotateSpeed);
-            pokemonTransform.forward = forward;
+            transform.forward = forward;
             characterController.Move(moveVec * (data.moveSpeed * Time.deltaTime));
 
             RpcWalkAnim();
@@ -259,8 +255,8 @@ namespace Game
         private void CmdRun(Vector3 moveVec)
         {
             Vector3 forward =
-                Vector3.Slerp(pokemonTransform.forward, moveVec.normalized, Time.deltaTime * data.rotateSpeed);
-            pokemonTransform.forward = forward;
+                Vector3.Slerp(transform.forward, moveVec.normalized, Time.deltaTime * data.rotateSpeed);
+            transform.forward = forward;
             characterController.Move(moveVec * (data.runSpeed * Time.deltaTime));
 
             RpcRunAnim();
@@ -286,7 +282,7 @@ namespace Game
         }
 
         [Command]
-        public void CmdAttack()
+        private void CmdAttack()
         {
             RpcAttackAnim();
         }
@@ -307,11 +303,5 @@ namespace Game
         }
     }
 
-    public interface IEntityController : IHittable
-    {
-        void HandleIdle();
-        void HandleWalk(Vector3 viewDir, Vector2 moveInput);
-        void HandleRun(Vector3 viewDir, Vector2 moveInput);
-        void HandleAttack();
-    }
+
 }
