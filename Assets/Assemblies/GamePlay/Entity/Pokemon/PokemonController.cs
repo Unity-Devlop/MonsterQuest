@@ -19,9 +19,10 @@ namespace Game
         public PokemonHitController hit { get; private set; }
 
         private bool _init;
-        
+
         public Player player { get; private set; }
 
+        [field: SerializeField, Sirenix.OdinInspector.ReadOnly]
         public bool canBeHit { get; set; } = true;
 
         public int groupId
@@ -131,14 +132,14 @@ namespace Game
                 }
             }
         }
-
+        
         public void HandleBeAttack(int damagePoint, NetworkConnectionToClient sender = null)
         {
             CmdBeAttack(damagePoint);
         }
 
         [Command(requiresAuthority = false)]
-        public void CmdBeAttack(int damagePoint, NetworkConnectionToClient sender = null)
+        private void CmdBeAttack(int damagePoint, NetworkConnectionToClient sender = null)
         {
             data.currentHealth -= damagePoint;
             // OnCurrentHealthChanged?.Invoke(data.currentHealth);
@@ -302,6 +303,4 @@ namespace Game
             }
         }
     }
-
-
 }

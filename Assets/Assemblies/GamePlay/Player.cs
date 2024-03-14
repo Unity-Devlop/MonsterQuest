@@ -21,7 +21,7 @@ namespace Game
         }
 
         public static Player LocalPlayer { get; private set; }
-        private CinemachineFreeLook _camera;
+        public CinemachineFreeLook freeLookCamera { get; private set; }
 
         public static event Action OnLocalPlayerSpawned;
         private CinemachineInputProvider _cameraInputProvider;
@@ -42,8 +42,8 @@ namespace Game
 
         private void Awake()
         {
-            _camera = transform.Find("Camera").GetComponent<CinemachineFreeLook>();
-            _cameraInputProvider = _camera.GetComponent<CinemachineInputProvider>();
+            freeLookCamera = transform.Find("Camera").GetComponent<CinemachineFreeLook>();
+            _cameraInputProvider = freeLookCamera.GetComponent<CinemachineInputProvider>();
         }
 
         public override void OnStartServer()
@@ -61,7 +61,7 @@ namespace Game
 
         public override void OnStartClient()
         {
-            _camera.enabled = isLocalPlayer;
+            freeLookCamera.enabled = isLocalPlayer;
 
 
             if (isLocalPlayer)
@@ -155,7 +155,7 @@ namespace Game
             if (moveInput.sqrMagnitude > 0.01f)
             {
                 Vector3 pokemonPos = controller.transform.position;
-                Vector3 cameraPos = _camera.transform.position;
+                Vector3 cameraPos = freeLookCamera.transform.position;
                 Vector3 viewDir = pokemonPos - new Vector3(cameraPos.x, pokemonPos.y, cameraPos.z);
                 if (input.Run.IsPressed())
                 {
@@ -242,8 +242,8 @@ namespace Game
             controller = obj.GetComponent<PlayerController>();
             controller.Init(this, data.self, position);
             Transform modelTransform = controller.transform;
-            _camera.Follow = modelTransform;
-            _camera.LookAt = modelTransform;
+            freeLookCamera.Follow = modelTransform;
+            freeLookCamera.LookAt = modelTransform;
             state = NetworkState.Ready;
         }
 

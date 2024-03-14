@@ -9,7 +9,6 @@ namespace Game
     public partial class PackageData
     {
         public List<ItemData> items = new List<ItemData>();
-
         public void AddItem(int id, int count)
         {
             

@@ -26,5 +26,11 @@ namespace Game
             data = new PokemonData(pokemonEnum);
             _pokemonController.Init(null, data, transform.position);
         }
+        
+        public override void OnStartServer()
+        {
+            data = new PokemonData(pokemonEnum);
+            _pokemonController.Init(null, data, transform.position);
+        }
     }
 }

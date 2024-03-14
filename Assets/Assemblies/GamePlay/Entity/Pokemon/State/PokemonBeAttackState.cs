@@ -11,6 +11,7 @@ namespace Game
         public void OnEnter(PokemonController owner)
         {
             // Debug.Log("PokemonBeAttackState OnEnter");
+            owner.canBeHit = false;
             canExit = false;
             over = false;
             owner.animator.SetTrigger(IEntity.BeAttack);
@@ -28,15 +29,16 @@ namespace Game
             {
                 canExit = true;
                 over = true;
+                owner.stateMachine.Change<PokemonIdleState>(owner);
                 return;
             }
         }
 
         public void OnExit(PokemonController owner)
         {
-            // Debug.Log("PokemonBeAttackState OnExit");
             canExit = false;
             over = false;
+            owner.canBeHit = true;
         }
     }
 }

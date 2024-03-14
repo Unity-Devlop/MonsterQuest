@@ -1,6 +1,7 @@
 ﻿using System;
 using Sirenix.Utilities;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityToolkit;
 
 namespace Game
@@ -12,7 +13,7 @@ namespace Game
         public SerializableDictionary<ItemEnum, ItemConfig> itemConfigs;
         public SerializableDictionary<PokemonEnum, PokemonConfig> pokemonConfigs;
         public GameObject playerEntityPrefab;
-
+       public GameObject grassAttackPrefab;
         public ItemConfig GetItemConfig(ItemEnum id)
         {
             return itemConfigs[id];

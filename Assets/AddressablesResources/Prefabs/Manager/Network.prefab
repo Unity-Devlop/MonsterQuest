@@ -66,8 +66,11 @@ MonoBehaviour:
   autoCreatePlayer: 0
   playerSpawnMethod: 0
   spawnPrefabs:
+  - {fileID: 2602637115700601785, guid: ee3a4c11cab25ff46a1f50cb482d1944, type: 3}
   - {fileID: 4078537705340059023, guid: c3cdc83333d16294bac7452f0baaec0f, type: 3}
   - {fileID: 1798567185816299044, guid: f8bf43b5d839c4748a57d2b7429bb47e, type: 3}
+  - {fileID: 5750778281908433020, guid: cf21e407a0b49cc4c84e67d66ec785a2, type: 3}
+  - {fileID: 8663196379843615619, guid: 5409a458ed6a352409ff0925e7cd2902, type: 3}
   exceptionsDisconnect: 1
   snapshotSettings:
     bufferTimeMultiplier: 2

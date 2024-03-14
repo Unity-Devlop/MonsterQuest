@@ -124,12 +124,11 @@ namespace Game
                     stateMachine.OnUpdate(this);
                 }
             }
-
-
+            
             if (isServer)
             {
                 //不在地面上时，应用重力
-                if (!characterController.isGrounded && characterController.transform.position.y > 0)
+                if (!characterController.isGrounded )//&& characterController.transform.position.y > 0)
                 {
                     // TODO 变成加速运动
                     characterController.Move(Time.deltaTime * Physics.gravity);
@@ -143,6 +142,7 @@ namespace Game
 
         public void HandleBeAttack(int damagePoint, NetworkConnectionToClient sender = null)
         {
+            Debug.Log($"canBeHit:{canBeHit}");
             CmdBeAttack(damagePoint, sender);
         }
 
