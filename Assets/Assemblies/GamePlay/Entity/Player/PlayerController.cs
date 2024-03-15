@@ -23,6 +23,26 @@ namespace Game
 
         public PackageData package => player.package;
 
+        public int GetDamagePoint()
+        {
+            return data.damagePoint;
+        }
+
+        public Collider GetCollider()
+        {
+            return characterController;
+        }
+
+        public Transform GetTransform()
+        {
+            return transform;
+        }
+
+        public NetworkIdentity GetNetworkIdentity()
+        {
+            return netIdentity;
+        }
+
         public bool canBeHit { get; set; } = true;
 
         public int groupId
@@ -56,7 +76,7 @@ namespace Game
             this.data = data;
 
             animator = modelTransform.GetComponent<Animator>();
-            
+
             // hit = new PlayerHitController(this);
 
             NetworkManagerMode mode = NetworkManager.singleton.mode;
@@ -124,11 +144,11 @@ namespace Game
                     stateMachine.OnUpdate(this);
                 }
             }
-            
+
             if (isServer)
             {
                 //不在地面上时，应用重力
-                if (!characterController.isGrounded )//&& characterController.transform.position.y > 0)
+                if (!characterController.isGrounded) //&& characterController.transform.position.y > 0)
                 {
                     // TODO 变成加速运动
                     characterController.Move(Time.deltaTime * Physics.gravity);
@@ -230,9 +250,9 @@ namespace Game
         internal void CmdWalk(Vector3 moveVec)
         {
             Vector3 forward = Vector3.Slerp(transform.forward, moveVec.normalized,
-                Time.deltaTime * data.rotateSpeed);
+                Time.fixedDeltaTime * data.rotateSpeed);
             transform.forward = forward;
-            characterController.Move(moveVec * (data.moveSpeed * Time.deltaTime));
+            characterController.Move(moveVec * (data.moveSpeed * Time.fixedDeltaTime));
 
             RpcWalkAnim();
         }
@@ -264,9 +284,9 @@ namespace Game
         private void CmdRun(Vector3 moveVec)
         {
             Vector3 forward =
-                Vector3.Slerp(transform.forward, moveVec.normalized, Time.deltaTime * data.rotateSpeed);
+                Vector3.Slerp(transform.forward, moveVec.normalized, Time.fixedDeltaTime * data.rotateSpeed);
             transform.forward = forward;
-            characterController.Move(moveVec * (data.runSpeed * Time.deltaTime));
+            characterController.Move(moveVec * (data.runSpeed * Time.fixedDeltaTime));
 
             RpcRunAnim();
         }
@@ -286,7 +306,7 @@ namespace Game
 
         public void HandleAttack()
         {
-            stateMachine.ToAttack(this); // 本地立刻切换状态 避免异常
+            // stateMachine.ToAttack(this); // 本地立刻切换状态 避免异常
             CmdAttack();
         }
 
@@ -304,14 +324,33 @@ namespace Game
             {
                 if (stateMachine != null)
                 {
-                    if (!isOwned)
-                    {
-                        stateMachine.ToAttack(this);
-                    }
+                    stateMachine.ToAttack(this);
                 }
             }
         }
 
         #endregion
+
+        private GameObject GetFAttackPrefab()
+        {
+            return GlobalManager.Singleton.configTable.grassAttackPrefab;
+        }
+
+        [Command]
+        public void CmdSpawnFAttackEntity()
+        {
+            GameObject obj = Instantiate(GetFAttackPrefab(), transform.position,
+                Quaternion.identity); // TODO 根据玩家状态动态选取
+            NetworkServer.Spawn(obj, connectionToClient);
+            RpcSpawnFAttackEntity(obj.GetComponent<NetworkIdentity>());
+        }
+
+
+        [ClientRpc]
+        private void RpcSpawnFAttackEntity(NetworkIdentity identity)
+        {
+            IAttackEntity attackEntity = identity.GetComponent<IAttackEntity>();
+            attackEntity.Setup(this);
+        }
     }
 }

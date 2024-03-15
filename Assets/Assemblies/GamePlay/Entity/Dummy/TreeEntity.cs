@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace Game
 {
-    public class TreeEntity : NetworkBehaviour, IHittable
+    public class TreeEntity : NetworkBehaviour, ICanTakeDamage
     {
         public int groupId => TeamGroup.Default.id;
         [field: SyncVar, SerializeField] public bool canBeHit { get; set; } = true;
-
+        
 
         public int maxHitPoint = 5;
         public int currentHitPoint;

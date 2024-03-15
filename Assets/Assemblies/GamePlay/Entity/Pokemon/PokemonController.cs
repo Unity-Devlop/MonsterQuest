@@ -132,7 +132,7 @@ namespace Game
                 }
             }
         }
-        
+
         public void HandleBeAttack(int damagePoint, NetworkConnectionToClient sender = null)
         {
             CmdBeAttack(damagePoint);
@@ -167,6 +167,26 @@ namespace Game
                     stateMachine.ToBeAttack(this);
                 }
             }
+        }
+
+        public Collider GetCollider()
+        {
+            return characterController;
+        }
+
+        public Transform GetTransform()
+        {
+            return transform;
+        }
+
+        public NetworkIdentity GetNetworkIdentity()
+        {
+            return netIdentity;
+        }
+        
+        public int GetDamagePoint()
+        {
+            return data.damagePoint;
         }
 
         public void HandleIdle()

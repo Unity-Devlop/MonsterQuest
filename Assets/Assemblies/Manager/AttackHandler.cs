@@ -6,7 +6,7 @@ namespace Game
     public static class AttackHandler
     {
         [Client]
-        public static void HandleAttack(IEntity entity, IHittable target, int damagePoint)
+        public static void HandleAttack(ICanApplyDamage entity, ICanTakeDamage target)
         {
             if (!target.canBeHit) return;
 
@@ -14,8 +14,8 @@ namespace Game
                 entity.groupId != target.groupId)
             {
                 target.canBeHit = false;  // 客户端暂时设置为不可被攻击 后面服务器同步
-                Debug.Log("HandleAttack, entity: " + entity + ", target: " + target + ", damagePoint: " + damagePoint);
-                target.HandleBeAttack(damagePoint);
+                // Debug.Log("HandleAttack, entity: " + entity + ", target: " + target + ", damagePoint: " + damagePoint);
+                target.HandleBeAttack(entity.GetDamagePoint());
             }
         }
     }

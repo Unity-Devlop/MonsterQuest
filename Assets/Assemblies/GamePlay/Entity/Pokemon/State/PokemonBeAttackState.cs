@@ -14,7 +14,7 @@ namespace Game
             owner.canBeHit = false;
             canExit = false;
             over = false;
-            owner.animator.SetTrigger(IEntity.BeAttack);
+            owner.animator.SetTrigger(IEntity.beAttack);
         }
 
         public void OnUpdate(PokemonController owner)

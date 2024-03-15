@@ -17,14 +17,25 @@ MonoBehaviour:
     - key: 1
   pokemonConfigs:
     list:
+    - key: 0
+      value:
+        id: 0
+        element: 0
+        baseDamagePoint: 1
+        baseMaxHealth: 10
+        baseMoveSpeed: 6
+        baseRunSpeed: 10
+        baseRotateSpeed: 5
+        baseFlySpeed: 0
+        prefab: {fileID: 0}
     - key: 1
       value:
         id: 1
         element: 0
         baseDamagePoint: 1
         baseMaxHealth: 10
-        baseMoveSpeed: 3
-        baseRunSpeed: 5
+        baseMoveSpeed: 6
+        baseRunSpeed: 10
         baseRotateSpeed: 5
         baseFlySpeed: 0
         prefab: {fileID: 4078537705340059023, guid: c3cdc83333d16294bac7452f0baaec0f,
@@ -35,23 +46,12 @@ MonoBehaviour:
         element: 3
         baseDamagePoint: 2
         baseMaxHealth: 10
-        baseMoveSpeed: 3
-        baseRunSpeed: 6
+        baseMoveSpeed: 6
+        baseRunSpeed: 10
         baseRotateSpeed: 5
         baseFlySpeed: 3
         prefab: {fileID: 1798567185816299044, guid: f8bf43b5d839c4748a57d2b7429bb47e,
           type: 3}
-    - key: 0
-      value:
-        id: 0
-        element: 0
-        baseDamagePoint: 1
-        baseMaxHealth: 10
-        baseMoveSpeed: 3
-        baseRunSpeed: 5
-        baseRotateSpeed: 5
-        baseFlySpeed: 0
-        prefab: {fileID: 0}
   playerEntityPrefab: {fileID: 2602637115700601785, guid: ee3a4c11cab25ff46a1f50cb482d1944,
     type: 3}
   grassAttackPrefab: {fileID: 587529130605643939, guid: 60444da4d23cd8641b466cfef9bc2026,

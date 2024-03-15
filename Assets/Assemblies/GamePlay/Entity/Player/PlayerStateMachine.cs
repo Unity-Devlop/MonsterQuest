@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Mirror;
 using UnityEngine;
 using UnityToolkit;
@@ -11,8 +12,11 @@ namespace Game
         private Dictionary<Type, IState<PlayerController>> _stateDic;
         public IState<PlayerController> currentState { get; private set; }
 
+        private bool _frozen = false;
+
         public bool Change<T>(PlayerController owner) where T : IState<PlayerController>
         {
+            if (_frozen) return false;
             // 当前动画没有达到可以退出的条件
             if (currentState is ITempAnimState { canExit: false })
             {
@@ -53,7 +57,7 @@ namespace Game
             Add(new PlayerIdleState());
             Add(new PlayerWalkState());
             Add(new PlayerRunState());
-            Add(new PlayerAttackState());
+            // Add(new PlayerAttackState());
             Add(new PlayerBeAttackState());
             Change<PlayerIdleState>(owner);
         }
@@ -75,7 +79,29 @@ namespace Game
 
         public bool ToAttack(PlayerController owner)
         {
-            return Change<PlayerAttackState>(owner);
+            if(_frozen) return false;
+            _frozen = true;
+            // Debug.Log("Attack");
+            currentState?.OnExit(owner);
+            currentState = null;
+            owner.animator.SetBool(IEntity.attack, true);
+           
+            Change<PlayerIdleState>(owner);
+
+            if (owner.isOwned)
+            {
+                owner.CmdSpawnFAttackEntity();
+            }
+
+            UniTask.WaitForSeconds(0.5f).ContinueWith(() =>
+            {
+                // Debug.Log("Attack End");
+                owner.animator.SetBool(IEntity.attack, false);
+                Change<PlayerIdleState>(owner);
+                _frozen = false;
+            }).Forget();
+
+            return true;
         }
 
         public bool ToBeAttack(PlayerController owner)

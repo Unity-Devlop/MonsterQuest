@@ -6,7 +6,7 @@ using UnityToolkit;
 
 namespace Game
 {
-    public class DummyEntity : NetworkBehaviour, IHittable
+    public class DummyEntity : NetworkBehaviour, ICanTakeDamage
     {
         [field: SyncVar, SerializeField] public bool canBeHit { get; set; } = true;
 

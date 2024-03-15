@@ -35,9 +35,9 @@ namespace Game
                     Collider tar = colliders[i];
                     if (tar == owner.characterController) continue;
                     if (filter.Contains(tar)) continue;
-                    if (!tar.TryGetComponent(out IHittable hittable)) continue;
+                    if (!tar.TryGetComponent(out ICanTakeDamage hittable)) continue;
                     filter.Add(tar);
-                    AttackHandler.HandleAttack(owner, hittable, owner.data.damagePoint);
+                    AttackHandler.HandleAttack(owner, hittable);
                 }
             }
         }

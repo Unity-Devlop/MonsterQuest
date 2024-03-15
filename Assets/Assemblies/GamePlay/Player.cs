@@ -102,8 +102,19 @@ namespace Game
         {
             if (isLocalPlayer && state == NetworkState.Ready)
             {
-                TickStateLogic();
+                if (input.Fire.WasPressedThisFrame() && !EventSystem.current.IsPointerOverGameObject())
+                {
+                    controller.HandleAttack();
+                }
                 TickUILogic();
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            if (isLocalPlayer && state == NetworkState.Ready)
+            {
+                TickStateLogic();
             }
         }
 
@@ -144,12 +155,6 @@ namespace Game
 
         private void TickStateLogic()
         {
-            if (input.Fire.WasPressedThisFrame() && !EventSystem.current.IsPointerOverGameObject())
-            {
-                controller.HandleAttack();
-                return;
-            }
-
             // 必须要结束瞬时状态才能切换到其他状态
             Vector2 moveInput = input.Move.ReadValue<Vector2>();
             if (moveInput.sqrMagnitude > 0.01f)

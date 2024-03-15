@@ -10,27 +10,20 @@ namespace Game
 
         public void OnEnter(PlayerController owner)
         {
+            over = false;
             owner.canBeHit = false;
-            owner.animator.SetTrigger(IEntity.BeAttack);
+            owner.animator.SetTrigger(IEntity.beAttack);
+            Debug.Log("PlayerBeAttackState OnEnter");
+            Timer.Register(2f, () => { over = true; });
         }
 
         public void OnUpdate(PlayerController owner)
         {
-            AnimatorStateInfo stateInfo = owner.animator.GetCurrentAnimatorStateInfo(0);
-            if (!stateInfo.IsName("Be_Attacked"))
-            {
-                return;
-            }
-
-            if (stateInfo.normalizedTime > 0.95f)
-            {
-                over = true;
-                return;
-            }
         }
 
         public void OnExit(PlayerController owner)
         {
+            Debug.Log("PlayerBeAttackState OnExit");
             owner.canBeHit = true;
         }
     }
