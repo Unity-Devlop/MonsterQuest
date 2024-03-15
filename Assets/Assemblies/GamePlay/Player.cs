@@ -20,7 +20,7 @@ namespace Game
             Ready,
         }
 
-        public static Player LocalPlayer { get; private set; }
+        public static Player Local { get; private set; }
         public CinemachineFreeLook freeLookCamera { get; private set; }
 
         public static event Action OnLocalPlayerSpawned;
@@ -38,7 +38,7 @@ namespace Game
         [field: SerializeField] public NetworkState state { get; private set; }
 
 
-        private GameInput.PlayerActions input => InputManager.Singleton.input.Player;
+        public GameInput.PlayerActions input => InputManager.Singleton.input.Player;
 
         private void Awake()
         {
@@ -66,7 +66,7 @@ namespace Game
 
             if (isLocalPlayer)
             {
-                LocalPlayer = this;
+                Local = this;
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
             }
@@ -94,19 +94,41 @@ namespace Game
             // if (PokemonClient.SingletonNullable == null) return;
             if (isLocalPlayer)
             {
-                LocalPlayer = null;
+                Local = null;
             }
+        }
+
+        public void DisableInput()
+        {
+            input.Disable();
+            DisableCursor();
+        }
+
+        public void EnableInput()
+        {
+            input.Enable();
+            EnableCursor();
+        }
+
+        private void DisableCursor()
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            _cameraInputProvider.enabled = false;
+        }
+
+        private void EnableCursor()
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            _cameraInputProvider.enabled = true;
         }
 
         private void Update()
         {
             if (isLocalPlayer && state == NetworkState.Ready)
             {
-                if (input.Fire.WasPressedThisFrame() && !EventSystem.current.IsPointerOverGameObject())
-                {
-                    controller.HandleAttack();
-                }
-                TickUILogic();
+                TickFrameStateLogic();
             }
         }
 
@@ -114,46 +136,50 @@ namespace Game
         {
             if (isLocalPlayer && state == NetworkState.Ready)
             {
-                TickStateLogic();
+                TickPhysicsStateLogic();
             }
         }
 
-        private void TickUILogic()
+
+        private void TickFrameStateLogic()
         {
-            if (EventSystem.current.IsPointerOverGameObject())
+            if (input.Fire.WasPressedThisFrame() && Cursor.lockState == CursorLockMode.Locked)
             {
-                _cameraInputProvider.enabled = false;
-                return;
+                controller.HandleAttack();
+            }
+
+            // Cursor Logic
+            if (Cursor.lockState == CursorLockMode.Locked) // 指针锁定时
+            {
+                if (Keyboard.current.altKey.wasPressedThisFrame)
+                {
+                    DisableCursor();
+                }
+            }
+            else if (Cursor.lockState == CursorLockMode.None) // 指针没有锁定时
+            {
+                if (Keyboard.current.altKey.wasReleasedThisFrame) // 松开alt键 则锁定
+                {
+                    EnableCursor();
+                }
+            }
+
+
+            if (Keyboard.current.bKey.wasPressedThisFrame)
+            {
+                UIRoot.Singleton.OpenPanel<PackagePanel>();
             }
 
             if (Keyboard.current.escapeKey.wasPressedThisFrame)
             {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                _cameraInputProvider.enabled = false;
-            }
-
-            if (Mouse.current.leftButton.wasPressedThisFrame)
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-                _cameraInputProvider.enabled = true;
-            }
-
-            if (Keyboard.current.bKey.wasPressedThisFrame)
-            {
-                if (!UIRoot.Singleton.IsOpen<PackagePanel>())
+                if (UIRoot.Singleton.CurTop() is not GamePanel)
                 {
-                    UIRoot.Singleton.OpenPanel<PackagePanel>();
-                }
-                else
-                {
-                    UIRoot.Singleton.ClosePanel<PackagePanel>();
+                    UIRoot.Singleton.CloseTop();
                 }
             }
         }
 
-        private void TickStateLogic()
+        private void TickPhysicsStateLogic()
         {
             // 必须要结束瞬时状态才能切换到其他状态
             Vector2 moveInput = input.Move.ReadValue<Vector2>();

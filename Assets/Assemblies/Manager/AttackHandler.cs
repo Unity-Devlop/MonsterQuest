@@ -5,7 +5,7 @@ namespace Game
 {
     public static class AttackHandler
     {
-        [Client]
+        [Client] 
         public static void HandleAttack(ICanApplyDamage entity, ICanTakeDamage target)
         {
             if (!target.canBeHit) return;

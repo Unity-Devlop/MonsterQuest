@@ -22,7 +22,7 @@ namespace Game.UI
             GlobalManager.EventSystem.Register<OnLocalPlayerHealthChange>(OnLocalPlayerHealthChanged);
             GlobalManager.EventSystem.Register<OnLocalPlayerLevelChange>(OnLocalPlayerLevelChanged);
 
-            PokemonData data = Player.LocalPlayer.controller.data;
+            PokemonData data = Player.Local.controller.data;
             _healthBar.SetWithoutNotify(data.currentHealth, 0, data.maxHealth);
             levelText.text = $"Lv.{data.level}";
             
@@ -33,7 +33,7 @@ namespace Game.UI
 
         public void Close()
         {
-            if (Player.LocalPlayer != null)
+            if (Player.Local != null)
             {
                 // Player.LocalPlayer.OnSwitchPokemon -= OnSwitchPokemon;
             }

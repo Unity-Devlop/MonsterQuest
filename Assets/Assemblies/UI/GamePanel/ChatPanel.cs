@@ -39,7 +39,7 @@ namespace Game.UI
                 name = Authentication.playerName,
                 content = _msgInput.text
             };
-            Player.LocalPlayer.CmdSendChatMessage(MemoryPackSerializer.Serialize(msg));
+            Player.Local.CmdSendChatMessage(MemoryPackSerializer.Serialize(msg));
             _msgInput.text = "";
         }
 

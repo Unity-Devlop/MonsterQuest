@@ -23,8 +23,8 @@ MonoBehaviour:
         element: 0
         baseDamagePoint: 1
         baseMaxHealth: 10
-        baseMoveSpeed: 6
-        baseRunSpeed: 10
+        baseMoveSpeed: 3
+        baseRunSpeed: 5
         baseRotateSpeed: 5
         baseFlySpeed: 0
         prefab: {fileID: 0}
@@ -34,8 +34,8 @@ MonoBehaviour:
         element: 0
         baseDamagePoint: 1
         baseMaxHealth: 10
-        baseMoveSpeed: 6
-        baseRunSpeed: 10
+        baseMoveSpeed: 3
+        baseRunSpeed: 5
         baseRotateSpeed: 5
         baseFlySpeed: 0
         prefab: {fileID: 4078537705340059023, guid: c3cdc83333d16294bac7452f0baaec0f,
@@ -46,8 +46,8 @@ MonoBehaviour:
         element: 3
         baseDamagePoint: 2
         baseMaxHealth: 10
-        baseMoveSpeed: 6
-        baseRunSpeed: 10
+        baseMoveSpeed: 3
+        baseRunSpeed: 5
         baseRotateSpeed: 5
         baseFlySpeed: 3
         prefab: {fileID: 1798567185816299044, guid: f8bf43b5d839c4748a57d2b7429bb47e,
