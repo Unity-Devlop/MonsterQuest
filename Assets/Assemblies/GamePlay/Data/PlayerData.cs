@@ -1,5 +1,6 @@
 ﻿using System;
 using MemoryPack;
+using Newtonsoft.Json;
 using UnityEngine.Serialization;
 
 namespace Game
@@ -12,16 +13,16 @@ namespace Game
 
         // public int teamId;
         // [MemoryPackIgnore]
-        public TeamGroup group;
+        public int groupId;
 
         // self 
         public PokemonData self;
 
-        public PokemonData carry1;
-
+        public PokemonData carry1;// TODO null as default
+        
         public PlayerData(string userId, string playerName, PokemonData self)
         {
-            group = TeamGroup.Default;
+            groupId = TeamGroup.Default.id;
             this.userId = userId;
             this.playerName = playerName;
             this.self = self;

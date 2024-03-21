@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MemoryPack;
+using Newtonsoft.Json;
 
 namespace Game
 {
@@ -9,8 +10,8 @@ namespace Game
     public partial class PackageData
     {
         [Sirenix.OdinInspector.ShowInInspector]
+        [JsonProperty]
         private Dictionary<ItemType, List<ItemData>> _itemsByType;
-
         public PackageData()
         {
             _itemsByType = new Dictionary<ItemType, List<ItemData>>();
@@ -19,10 +20,23 @@ namespace Game
                 _itemsByType.Add((ItemType)value, new List<ItemData>());
             }
         }
+        
+        public IEnumerable<ItemData> GetEnumerator(ItemType type)
+        {
+            return _itemsByType[type];
+        }
+
 
         public void AddItem(ItemEnum id, int count)
         {
             // TODO: Add item to package
+            ItemConfig config = GlobalManager.Singleton.configTable.GetItemConfig(id);
+            List<ItemData> itemData = _itemsByType[config.type];
+            itemData.Add(new ItemData()
+            {
+                id = id,
+                count = count
+            });
         }
 
         public void RemoveItem(ItemEnum id, int count)

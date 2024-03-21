@@ -54,7 +54,7 @@ namespace Game
                     return TeamGroup.Default.id;
                 }
 
-                return player.data.group.id;
+                return player.data.groupId;
             }
         }
 

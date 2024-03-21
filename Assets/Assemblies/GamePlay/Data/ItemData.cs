@@ -1,5 +1,6 @@
 ﻿using System;
 using MemoryPack;
+using Newtonsoft.Json;
 using Sirenix.Utilities;
 using UnityEngine;
 using UnityToolkit;
@@ -7,15 +8,15 @@ using UnityToolkit;
 namespace Game
 {
     [MemoryPackable, Serializable]
-    public partial struct  ItemData
+    public partial struct ItemData
     {
         public ItemEnum id;
-        [MemoryPackIgnore] public string name => config.name;
-        [MemoryPackIgnore] public ItemType type => config.type;
-        [MemoryPackIgnore] private ItemConfig _config;
-        [MemoryPackIgnore] private bool _configInitialized;
+        [MemoryPackIgnore, JsonIgnore] public string name => config.name;
+        [MemoryPackIgnore, JsonIgnore] public ItemType type => config.type;
+        [MemoryPackIgnore, JsonIgnore] private ItemConfig _config;
+        [MemoryPackIgnore, JsonIgnore] private bool _configInitialized;
 
-        [MemoryPackIgnore]
+        [MemoryPackIgnore, JsonIgnore]
         public ItemConfig config
         {
             get

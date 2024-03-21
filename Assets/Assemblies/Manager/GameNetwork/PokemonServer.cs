@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using MemoryPack;
 using Mirror;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityToolkit;
@@ -8,18 +10,25 @@ using UnityToolkit;
 namespace Game
 {
     [Serializable]
-    public class PlayerRecord
+    public partial class PokemonServer : MonoSingleton<PokemonServer>
     {
-        public string userId;
-        public PlayerData data;
-        public PackageData package;
-        public Vector3 position;
-        public TeamGroup teamGroup;
-    }
+        [Serializable]
+        private partial class PlayerRecord
+        {
+            public string userId;
+            public PlayerData data;
+            public PackageData package;
+            public Vector3 position;
+            // public ArraySegment<byte> packagePayload
+            // {
+            //     get
+            //     {
+            //         Debug.Log(package.ItemCount(ItemType.宝石));
+            //         return MemoryPackSerializer.Serialize(package);
+            //     }
+            // }
+        }
 
-    [Serializable]
-    public class PokemonServer : MonoSingleton<PokemonServer>
-    {
         protected override bool DontDestroyOnLoad() => false;
 
         private static readonly string RecordPath = "Record.json";
@@ -29,7 +38,7 @@ namespace Game
         [SerializeField] private SerializableDictionary<string, PlayerRecord> records;
         [SerializeField] private SerializableDictionary<int, TeamGroup> id2TeamGroup;
 
-        
+
         // 非持久化数据
         private Dictionary<string, NetworkConnectionToClient> _onlineId2Conn;
 
@@ -75,6 +84,14 @@ namespace Game
         [Sirenix.OdinInspector.Button]
         private void Save()
         {
+            // foreach (var playerRecord in records.Values)
+            // {
+            //     Debug.Log(JsonConvert.SerializeObject(playerRecord.package));
+            //     foreach (var itemData in playerRecord.package.GetEnumerator(ItemType.宝石))
+            //     {
+            //         Debug.Log($"itemData:{itemData.name} {itemData.count}");
+            //     }
+            // }
             JsonUtil.SaveJsonToStreamingAssets(RecordPath, records);
             JsonUtil.SaveJsonToStreamingAssets(TeamGroupPath, id2TeamGroup);
         }
@@ -158,7 +175,6 @@ namespace Game
                 data = new PlayerData(userId, playerName, new PokemonData(PokemonEnum.玩家)),
                 package = new PackageData(),
                 position = Vector3.zero,
-                teamGroup = TeamGroup.Default
             };
         }
 

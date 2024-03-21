@@ -157,7 +157,7 @@ namespace Game
                     DisableCursor();
                 }
             }
-            else if (Cursor.lockState == CursorLockMode.None) // 指针没有锁定时
+            else if (Cursor.lockState == CursorLockMode.None && UIRoot.Singleton.CurTop() is GamePanel) // 指针没有锁定时
             {
                 if (Keyboard.current.altKey.wasReleasedThisFrame) // 松开alt键 则锁定
                 {
@@ -188,6 +188,18 @@ namespace Game
                     {
                         gamePanel.CloseSub();
                     }
+                }
+            }
+
+            if (Keyboard.current.backquoteKey.wasPressedThisFrame)
+            {
+                if (DebugPanel.Singleton.IsOpen())
+                {
+                    DebugPanel.Singleton.Close();
+                }
+                else
+                {
+                    DebugPanel.Singleton.Open();
                 }
             }
         }
@@ -303,7 +315,7 @@ namespace Game
         private void RpcChangeGroup(ArraySegment<byte> groupPayload)
         {
             TeamGroup groupData = MemoryPackSerializer.Deserialize<TeamGroup>(groupPayload);
-            data.group = groupData;
+            data.groupId = groupData.id;// todo 
         }
 
 
@@ -326,6 +338,40 @@ namespace Game
         public void TargetAddScore(NetworkConnection conn, int i)
         {
             Debug.Log($"Add Score: {i}");
+        }
+
+        public void HandleAddItem(ItemEnum id, int number)
+        {
+            if (!isLocalPlayer && !isServer)
+            {
+                Debug.LogError("HandleAddItem: Not Local Player");
+                return;
+            }
+
+            CmdAddItem(id, number);
+        }
+
+        [Command]
+        private void CmdAddItem(ItemEnum id, int number)
+        {
+            bool s1 = PokemonServer.Singleton.QueryPackageData(userId, out var data1);
+            Assert.IsTrue(s1);
+            Assert.IsTrue(data1 == package);
+            Debug.Log(data1 == package);
+
+            Debug.Log($"CmdAddItem: {id} {number}");
+            package.AddItem(id, number);
+            RpcAddItem(id, number);
+        }
+
+        [ClientRpc]
+        private void RpcAddItem(ItemEnum id, int number)
+        {
+            if (isLocalPlayer && !isServer)
+            {
+                Debug.Log($"RpcAddItem: {id} {number}");
+                package.AddItem(id, number);
+            }
         }
     }
 }
