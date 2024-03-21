@@ -2,6 +2,6 @@
 {
     public enum ItemEnum
     {
-        硬硬果实 = 001,
+        妙蛙种子的宝石=001,
     }
 }

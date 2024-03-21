@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityToolkit;
 
 namespace Game.UI
@@ -13,6 +14,9 @@ namespace Game.UI
         {
             _chatPanel = transform.Find("ChatPanel").GetComponent<ChatPanel>();
             _hudPanel = transform.Find("HUDPanel").GetComponent<HUDPanel>();
+            
+            _chatPanel.Init();
+            _hudPanel.Init();
         }
 
         public override void OnOpened()
@@ -31,9 +35,17 @@ namespace Game.UI
 
         private void OnLocalPlayerSpawned()
         {
-            // Debug.Log("OnLocalPlayerSpawned");
-            _chatPanel.Open();
             _hudPanel.Open();
+        }
+
+        public void CloseSub()
+        {
+            _chatPanel.Close();
+        }
+
+        public void OpenChatPanel()
+        {
+            _chatPanel.Open();
         }
     }
 }

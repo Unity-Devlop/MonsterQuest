@@ -3,19 +3,19 @@ using UnityEngine;
 
 namespace Game
 {
-    public class NetworkHUD : MonoBehaviour
+    [RequireComponent(typeof(NetworkManager))]
+    public class PokemonNetworkHUD : MonoBehaviour
     {
-        NetworkManager manager;
-
+        private NetworkManager _manager;
         public int offsetX;
         public int offsetY;
 
-        void Awake()
+        private void Awake()
         {
-            manager = GetComponent<NetworkManager>();
+            _manager = GetComponent<NetworkManager>();
         }
 
-        void OnGUI()
+        private void OnGUI()
         {
             // If this width is changed, also change offsetX in GUIConsole::OnGUI
             int width = 300;
@@ -57,16 +57,16 @@ namespace Game
 #else
                 // Server + Client
                 if (GUILayout.Button("Host (Server + Client)"))
-                    manager.StartHost();
+                    _manager.StartHost();
 #endif
 
                 // Client + IP (+ PORT)
                 GUILayout.BeginHorizontal();
 
                 if (GUILayout.Button("Client"))
-                    manager.StartClient();
+                    _manager.StartClient();
 
-                manager.networkAddress = GUILayout.TextField(manager.networkAddress);
+                _manager.networkAddress = GUILayout.TextField(_manager.networkAddress);
                 // only show a port field if we have a port transport
                 // we can't have "IP:PORT" in the address field since this only
                 // works for IPV4:PORT.
@@ -80,9 +80,9 @@ namespace Game
                 }
 
                 GUILayout.EndHorizontal();
-                
+
                 GUILayout.BeginHorizontal();
-                
+
                 Authentication.playerName = GUILayout.TextArea(Authentication.playerName);
                 Authentication.userId = GUILayout.TextArea(Authentication.userId);
                 GUILayout.EndHorizontal();
@@ -93,15 +93,15 @@ namespace Game
                 GUILayout.Box("( WebGL cannot be server )");
 #else
                 if (GUILayout.Button("Server Only"))
-                    manager.StartServer();
+                    _manager.StartServer();
 #endif
             }
             else
             {
                 // Connecting
-                GUILayout.Label($"Connecting to {manager.networkAddress}..");
+                GUILayout.Label($"Connecting to {_manager.networkAddress}..");
                 if (GUILayout.Button("Cancel Connection Attempt"))
-                    manager.StopClient();
+                    _manager.StopClient();
             }
         }
 
@@ -124,7 +124,7 @@ namespace Game
             else if (NetworkClient.isConnected)
             {
                 // client only
-                GUILayout.Label($"<b>Client</b>: connected to {manager.networkAddress} via {Transport.active}");
+                GUILayout.Label($"<b>Client</b>: connected to {_manager.networkAddress} via {Transport.active}");
             }
         }
 
@@ -139,11 +139,11 @@ namespace Game
 #else
                 // stop host if host mode
                 if (GUILayout.Button("Stop Host"))
-                    manager.StopHost();
+                    _manager.StopHost();
 
                 // stop client if host mode, leaving server up
                 if (GUILayout.Button("Stop Client"))
-                    manager.StopClient();
+                    _manager.StopClient();
 #endif
                 GUILayout.EndHorizontal();
             }
@@ -151,13 +151,13 @@ namespace Game
             {
                 // stop client if client-only
                 if (GUILayout.Button("Stop Client"))
-                    manager.StopClient();
+                    _manager.StopClient();
             }
             else if (NetworkServer.active)
             {
                 // stop server if server-only
                 if (GUILayout.Button("Stop Server"))
-                    manager.StopServer();
+                    _manager.StopServer();
             }
         }
     }

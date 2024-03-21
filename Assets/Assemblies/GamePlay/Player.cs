@@ -5,6 +5,7 @@ using Game.UI;
 using MemoryPack;
 using Mirror;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -169,12 +170,24 @@ namespace Game
             {
                 UIRoot.Singleton.OpenPanel<PackagePanel>();
             }
-
-            if (Keyboard.current.escapeKey.wasPressedThisFrame)
+            else if (input.OpenChatPanel.WasPressedThisFrame())
+            {
+                bool success = UIRoot.Singleton.GetOpenedPanel(out GamePanel panel);
+                Assert.IsTrue(success);
+                panel.OpenChatPanel();
+            }
+            else if (Keyboard.current.escapeKey.wasPressedThisFrame)
             {
                 if (UIRoot.Singleton.CurTop() is not GamePanel)
                 {
                     UIRoot.Singleton.CloseTop();
+                }
+                else
+                {
+                    if (UIRoot.Singleton.CurTop() is GamePanel gamePanel)
+                    {
+                        gamePanel.CloseSub();
+                    }
                 }
             }
         }
@@ -305,7 +318,7 @@ namespace Game
         {
             ChatMessage msg = MemoryPackSerializer.Deserialize<ChatMessage>(payload);
             GlobalManager.EventSystem.Send(msg);
-            Debug.Log($"Receive Chat Message: {msg.content}");
+            // Debug.Log($"Receive Chat Message: {msg.content}");
         }
 
 

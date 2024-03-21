@@ -30,6 +30,11 @@ namespace Game.UI
             item.Bind(serverList[idx]);
         }
 
+        public bool IsOpen()
+        {
+            return gameObject.activeSelf;
+        }
+
         public async void Open()
         {
             gameObject.SetActive(true);

@@ -73,6 +73,15 @@ namespace Game
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenChatPanel"",
+                    ""type"": ""Button"",
+                    ""id"": ""4f96b89b-9ae5-4487-bc30-a20e6f33dbf4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -328,6 +337,17 @@ namespace Game
                     ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""78bfc3cb-68ba-4f2e-b663-1bb877eb0d46"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenChatPanel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -409,6 +429,7 @@ namespace Game
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
             m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
             m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
+            m_Player_OpenChatPanel = m_Player.FindAction("OpenChatPanel", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_OpenPackage = m_UI.FindAction("OpenPackage", throwIfNotFound: true);
@@ -480,6 +501,7 @@ namespace Game
         private readonly InputAction m_Player_Move;
         private readonly InputAction m_Player_Fire;
         private readonly InputAction m_Player_Run;
+        private readonly InputAction m_Player_OpenChatPanel;
         public struct PlayerActions
         {
             private @GameInput m_Wrapper;
@@ -489,6 +511,7 @@ namespace Game
             public InputAction @Move => m_Wrapper.m_Player_Move;
             public InputAction @Fire => m_Wrapper.m_Player_Fire;
             public InputAction @Run => m_Wrapper.m_Player_Run;
+            public InputAction @OpenChatPanel => m_Wrapper.m_Player_OpenChatPanel;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -513,6 +536,9 @@ namespace Game
                 @Run.started += instance.OnRun;
                 @Run.performed += instance.OnRun;
                 @Run.canceled += instance.OnRun;
+                @OpenChatPanel.started += instance.OnOpenChatPanel;
+                @OpenChatPanel.performed += instance.OnOpenChatPanel;
+                @OpenChatPanel.canceled += instance.OnOpenChatPanel;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -532,6 +558,9 @@ namespace Game
                 @Run.started -= instance.OnRun;
                 @Run.performed -= instance.OnRun;
                 @Run.canceled -= instance.OnRun;
+                @OpenChatPanel.started -= instance.OnOpenChatPanel;
+                @OpenChatPanel.performed -= instance.OnOpenChatPanel;
+                @OpenChatPanel.canceled -= instance.OnOpenChatPanel;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -618,6 +647,7 @@ namespace Game
             void OnMove(InputAction.CallbackContext context);
             void OnFire(InputAction.CallbackContext context);
             void OnRun(InputAction.CallbackContext context);
+            void OnOpenChatPanel(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {

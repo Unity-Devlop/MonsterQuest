@@ -30,7 +30,17 @@ namespace Game.UI
 
         public void Bind(int idx, ChatMessage message)
         {
-            _content.text = message.content;
+            string contentText;
+            if (message.uid == Player.Local.userId)
+            {
+                contentText = $"<color=#FF0000>{message.name}</color>: {message.content}";
+            }
+            else
+            {
+                contentText = $"<color=#0000FF>{message.name}</color>: {message.content}";
+            }
+
+            _content.text = contentText;
             _layoutElement.preferredHeight = _content.preferredHeight;
             _content.rectTransform.sizeDelta = new Vector2(DEFAULT_CONTENT_WIDTH, _content.preferredHeight);
             if (_content.preferredHeight > DEFAULT_HEIGHT)

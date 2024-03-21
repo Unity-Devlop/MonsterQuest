@@ -9,11 +9,16 @@ namespace Game.UI
     {
         private ProgressBar _healthBar;
         private TextMeshProUGUI levelText;
-
-        private void Awake()
+        
+        public void Init()
         {
             _healthBar = transform.Find("HealthBar").GetComponent<ProgressBar>();
             levelText = transform.Find("LevelText").GetComponent<TextMeshProUGUI>();
+        }
+
+        public bool IsOpen()
+        {
+            return gameObject.activeSelf;
         }
 
         public void Open()
@@ -25,10 +30,9 @@ namespace Game.UI
             PokemonData data = Player.Local.controller.data;
             _healthBar.SetWithoutNotify(data.currentHealth, 0, data.maxHealth);
             levelText.text = $"Lv.{data.level}";
-            
-            
+
+
             gameObject.SetActive(true);
-            
         }
 
         public void Close()
