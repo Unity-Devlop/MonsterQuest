@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Google.Protobuf.WellKnownTypes;
 using MemoryPack;
 using Mirror;
 using Newtonsoft.Json;
@@ -9,6 +10,8 @@ using UnityToolkit;
 
 namespace Game
 {
+    // using userId = String;
+
     [Serializable]
     public partial class PokemonServer : MonoSingleton<PokemonServer>
     {
@@ -18,6 +21,7 @@ namespace Game
             public string userId;
             public PlayerData data;
             public PackageData package;
+
             public Vector3 position;
             // public ArraySegment<byte> packagePayload
             // {
@@ -33,10 +37,14 @@ namespace Game
 
         private static readonly string RecordPath = "Record.json";
         private static readonly string TeamGroupPath = "TeamGroup.json";
+        private static readonly string FriendShipPath = "FriendShip.json";
 
         // 玩家记录
         [SerializeField] private SerializableDictionary<string, PlayerRecord> records;
         [SerializeField] private SerializableDictionary<int, TeamGroup> id2TeamGroup;
+
+        [Sirenix.OdinInspector.ShowInInspector]
+        private HashSet<FriendShip> friendShips;
 
 
         // 非持久化数据
@@ -92,8 +100,10 @@ namespace Game
             //         Debug.Log($"itemData:{itemData.name} {itemData.count}");
             //     }
             // }
+            // TODO using Database to save data rather than directly save to json
             JsonUtil.SaveJsonToStreamingAssets(RecordPath, records);
             JsonUtil.SaveJsonToStreamingAssets(TeamGroupPath, id2TeamGroup);
+            JsonUtil.SaveJsonToStreamingAssets(FriendShipPath, friendShips);
         }
 
         [Server]
@@ -103,6 +113,8 @@ namespace Game
             records = JsonUtil.LoadJsonFromStreamingAssets<SerializableDictionary<string, PlayerRecord>>(RecordPath);
 
             id2TeamGroup = JsonUtil.LoadJsonFromStreamingAssets<SerializableDictionary<int, TeamGroup>>(TeamGroupPath);
+
+            friendShips = JsonUtil.LoadJsonFromStreamingAssets<HashSet<FriendShip>>(FriendShipPath);
             // DataBase = JsonUtil.LoadJsonFromStreamingAssets<PokemonDataBase>(DataBasePath);
 
 
@@ -182,6 +194,41 @@ namespace Game
         public bool Registered(string userId)
         {
             return records.ContainsKey(userId);
+        }
+
+
+        [Server]
+        public bool AddFriend(string uid1, string uid2)
+        {
+            var friendShip = new FriendShip(uid1, uid2, null, null);
+            if (friendShips.Contains(friendShip)) return false;
+            friendShips.Add(friendShip);
+            return true;
+        }
+
+        [Server]
+        public void RemoveFriend(string uid1, string uid2)
+        {
+            friendShips.Remove(new FriendShip(uid1, uid2, null, null));
+        }
+
+        [Server]
+        public List<FriendPair> GetFriendList(string uid)
+        {
+            var result = new List<FriendPair>();
+            foreach (var friendShip in friendShips)
+            {
+                if (friendShip.uid1 == uid)
+                {
+                    result.Add(new FriendPair(friendShip.uid2, friendShip.playerName2));
+                }
+                else if (friendShip.uid2 == uid)
+                {
+                    result.Add(new FriendPair(friendShip.uid1, friendShip.playerName1));
+                }
+            }
+
+            return result;
         }
 
         [Server]
