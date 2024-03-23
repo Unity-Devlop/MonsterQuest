@@ -69,12 +69,15 @@ namespace Game.UI
         {
             base.OnOpened();
             Player.Local.DisableInput();
+            _detailPanel.Open();
             SwitchItemType(_currentType, true);
         }
 
         public override void OnClosed()
         {
             base.OnClosed();
+            _detailPanel.Close();
+            PackageItemCell.ClearSelect();
             if (Player.Local != null)
             {
                 Player.Local.EnableInput();

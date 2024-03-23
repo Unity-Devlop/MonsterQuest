@@ -1,14 +1,18 @@
-﻿using MemoryPack;
+﻿using System;
+using MemoryPack;
 
 namespace Game
 {
-    [MemoryPackable]
+    [MemoryPackable,Serializable]
     public partial struct ItemConfig
     {
-        public int id;
-        public string name => ((ItemEnum)id).ToString();
+        public string name;
         public ItemType type;
+#if UNITY_EDITOR
+        [UnityEngine.TextArea]
+#endif
         public string desc;
+
         public bool canStack;
         public int maxStack;
     }

@@ -14,6 +14,8 @@ namespace Game
         [MemoryPackIgnore, JsonIgnore] public string name => config.name;
         [MemoryPackIgnore, JsonIgnore] public ItemType type => config.type;
         [MemoryPackIgnore, JsonIgnore] private ItemConfig _config;
+        
+        [MemoryPackIgnore, JsonIgnore] public string desc => config.desc;
         [MemoryPackIgnore, JsonIgnore] private bool _configInitialized;
 
         [MemoryPackIgnore, JsonIgnore]

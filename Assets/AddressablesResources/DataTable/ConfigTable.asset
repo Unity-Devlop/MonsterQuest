@@ -15,6 +15,12 @@ MonoBehaviour:
   itemConfigs:
     list:
     - key: 1
+      value:
+        name: "\u5999\u86D9\u79CD\u5B50\u7684\u5B9D\u77F3"
+        type: 0
+        desc: "\u88C5\u5907\u540E\u53EF\u4EE5\u4F7F\u7528\u85E4\u97AD"
+        canStack: 0
+        maxStack: 0
   pokemonConfigs:
     list:
     - key: 0
