@@ -16,7 +16,7 @@ namespace Game.UI
         private Button _sendButton;
         private TMP_InputField _msgInput;
         private List<ChatMessage> _messages; // TODO Move To Other Place
-        
+
 
         public void Init()
         {
@@ -36,6 +36,7 @@ namespace Game.UI
             // Debug.Log("ChatPanel Awake");
             GlobalManager.EventSystem.Register<ChatMessage>(OnNewMessage);
         }
+
         private void OnDestroy()
         {
             if (GlobalManager.EventSystem != null)
@@ -64,8 +65,9 @@ namespace Game.UI
         public void Open()
         {
             Player.Local.DisableInput();
-            _msgInput.ActivateInputField(); // Focus // EventSystem.current.SetSelectedGameObject(_msgInput.gameObject);
             gameObject.SetActive(true);
+            _msgInput.ActivateInputField(); // Focus
+            // EventSystem.current.SetSelectedGameObject(_msgInput.gameObject);
             RefreshChatList();
         }
 
@@ -76,6 +78,7 @@ namespace Game.UI
             {
                 Player.Local.EnableInput();
             }
+
             gameObject.SetActive(false);
         }
 
@@ -99,6 +102,5 @@ namespace Game.UI
         {
             tar.GetComponent<ChatMessageItem>().Bind(idx, _messages[idx]);
         }
-
     }
 }

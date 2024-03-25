@@ -12,4 +12,9 @@ namespace Game
     {
         public int currentLevel;
     }
+
+    public struct OnFriendListChange
+    {
+        
+    }
 }

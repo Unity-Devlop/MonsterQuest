@@ -37,7 +37,7 @@ namespace Game
         [field: SerializeField] public PackageData package { get; private set; }
 
         [field: SerializeField] public NetworkState state { get; private set; }
-        
+
         public GameInput.PlayerActions input => InputManager.Singleton.input.Player;
 
         private void Awake()
@@ -164,9 +164,14 @@ namespace Game
                 }
             }
 
-
-            if (Keyboard.current.bKey.wasPressedThisFrame)
+            if (Keyboard.current.f2Key.wasPressedThisFrame)
             {
+                UIRoot.Singleton.CloseAllExcept<GamePanel>();
+                UIRoot.Singleton.OpenPanel<FriendPanel>(); 
+            }
+            else if (Keyboard.current.bKey.wasPressedThisFrame)
+            {
+                UIRoot.Singleton.CloseAllExcept<GamePanel>();
                 UIRoot.Singleton.OpenPanel<PackagePanel>();
             }
             else if (input.OpenChatPanel.WasPressedThisFrame())

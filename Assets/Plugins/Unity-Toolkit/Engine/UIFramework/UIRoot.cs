@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 using UnityEngine.UI;
 
 namespace UnityToolkit
@@ -129,7 +130,6 @@ namespace UnityToolkit
 
         public void CloseTop() => Pop();
 
-
         public T OpenPanel<T>() where T : class, IUIPanel
         {
             Type type = typeof(T);
@@ -167,6 +167,26 @@ namespace UnityToolkit
         {
             Type type = typeof(T);
             ClosePanel(type);
+        }
+
+        public void CloseAllExcept<T>() where T : UIPanel
+        {
+            Type type = typeof(T);
+            List<Type> targets = ListPool<Type>.Get();
+            foreach (var uiPanel in _openedPanelStack)
+            {
+                if (uiPanel.GetType() != type)
+                {
+                    targets.Add(uiPanel.GetType());
+                }
+            }
+
+            foreach (var target in targets)
+            {
+                ClosePanel(target);
+            }
+
+            ListPool<Type>.Release(targets);
         }
 
         public void ClosePanel(Type type)

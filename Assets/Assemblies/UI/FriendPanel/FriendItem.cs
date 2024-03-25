@@ -1,4 +1,6 @@
-﻿using TMPro;
+﻿using System;
+using Proto;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,14 +8,35 @@ namespace Game.UI
 {
     public class FriendItem : MonoBehaviour
     {
-        public TextMeshProUGUI nameText;
-        public Button deleteButton;
+        private TextMeshProUGUI _nameText;
+        private Button _deleteButton;
+        private FriendInfo _friendInfo;
 
+        private void Awake()
+        {
+            _nameText = transform.Find("NameText").GetComponent<TextMeshProUGUI>();
+            _deleteButton = transform.Find("DeleteButton").GetComponent<Button>();
+            _deleteButton.onClick.AddListener(OnDeleteButtonClick);
+        }
 
-        // public void Bind(int idx,FriendPair pair)
-        // {
-        //     nameText.text = pair.playerName;
-        //     deleteButton.onClick.AddListener(() => { Player.Local.HandleDeleteFriend(pair.uid); });
-        // }
+        private async void OnDeleteButtonClick()
+        {
+            ErrorMessage errorMessage = await GrpcClient.GameService.DeleteFriendAsync(new DeleteFriendRequest
+            {
+                SenderUid = Player.Local.userId,
+                TargetUid = _friendInfo.Uid
+            });
+            if (errorMessage.Code != StatusCode.Ok)
+            {
+                Debug.LogError(errorMessage.Content);
+            }
+            GlobalManager.EventSystem.Send(new OnFriendListChange());
+        }
+
+        public void Bind(FriendInfo friendInfo, int idx)
+        {
+            _nameText.text = friendInfo.Name;
+            this._friendInfo = friendInfo;
+        }
     }
 }
