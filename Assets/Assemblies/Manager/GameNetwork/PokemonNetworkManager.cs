@@ -50,12 +50,12 @@ namespace Game
             }
         }
 
-        private void RequestEnterGame(NetworkConnectionToClient connection, RequestEnterGameMessage msg)
+        private async void RequestEnterGame(NetworkConnectionToClient connection, RequestEnterGameMessage msg)
         {
-            if (!PokemonServer.Singleton.Registered(msg.userId))
+            if (!await PokemonServer.Singleton.Registered(msg.userId))
             {
                 Debug.Log($"Id:[{msg.userId}],Name:[{msg.playerName}]第一次上线,初始化角色信息\n");
-                PokemonServer.Singleton.Register(msg.userId, msg.playerName);
+                await PokemonServer.Singleton.Register(msg.userId, msg.playerName);
             }
 
             if (PokemonServer.Singleton.IsOnline(msg.userId))

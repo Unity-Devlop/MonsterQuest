@@ -10,10 +10,10 @@ namespace Game.UI
         public Button deleteButton;
 
 
-        public void Bind(int idx,FriendPair pair)
-        {
-            nameText.text = pair.playerName;
-            deleteButton.onClick.AddListener(() => { Player.Local.HandleDeleteFriend(pair.uid); });
-        }
+        // public void Bind(int idx,FriendPair pair)
+        // {
+        //     nameText.text = pair.playerName;
+        //     deleteButton.onClick.AddListener(() => { Player.Local.HandleDeleteFriend(pair.uid); });
+        // }
     }
 }

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Google.Protobuf.WellKnownTypes;
-using MemoryPack;
+using Cysharp.Threading.Tasks;
 using Mirror;
-using Newtonsoft.Json;
+using Proto;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityToolkit;
 
 namespace Game
@@ -16,35 +14,22 @@ namespace Game
     public partial class PokemonServer : MonoSingleton<PokemonServer>
     {
         [Serializable]
-        private partial class PlayerRecord
+        private class PlayerRecord
         {
             public string userId;
             public PlayerData data;
             public PackageData package;
-
             public Vector3 position;
-            // public ArraySegment<byte> packagePayload
-            // {
-            //     get
-            //     {
-            //         Debug.Log(package.ItemCount(ItemType.宝石));
-            //         return MemoryPackSerializer.Serialize(package);
-            //     }
-            // }
         }
 
         protected override bool DontDestroyOnLoad() => false;
 
         private static readonly string RecordPath = "Record.json";
         private static readonly string TeamGroupPath = "TeamGroup.json";
-        private static readonly string FriendShipPath = "FriendShip.json";
 
         // 玩家记录
         [SerializeField] private SerializableDictionary<string, PlayerRecord> records;
         [SerializeField] private SerializableDictionary<int, TeamGroup> id2TeamGroup;
-
-        [Sirenix.OdinInspector.ShowInInspector]
-        private HashSet<FriendShip> friendShips;
 
 
         // 非持久化数据
@@ -103,7 +88,6 @@ namespace Game
             // TODO using Database to save data rather than directly save to json
             JsonUtil.SaveJsonToStreamingAssets(RecordPath, records);
             JsonUtil.SaveJsonToStreamingAssets(TeamGroupPath, id2TeamGroup);
-            JsonUtil.SaveJsonToStreamingAssets(FriendShipPath, friendShips);
         }
 
         [Server]
@@ -114,7 +98,6 @@ namespace Game
 
             id2TeamGroup = JsonUtil.LoadJsonFromStreamingAssets<SerializableDictionary<int, TeamGroup>>(TeamGroupPath);
 
-            friendShips = JsonUtil.LoadJsonFromStreamingAssets<HashSet<FriendShip>>(FriendShipPath);
             // DataBase = JsonUtil.LoadJsonFromStreamingAssets<PokemonDataBase>(DataBasePath);
 
 
@@ -176,9 +159,19 @@ namespace Game
         }
 
         [Server]
-        public void Register(string userId, string playerName)
+        public async UniTask Register(string userId, string playerName)
         {
-            if (records.ContainsKey(userId)) return;
+            // 没有这个用户 可以注册
+            ErrorMessage registerResponse = await GrpcClient.GameService.RegisterUserAsync(new RegisterRequest
+            {
+                Uid = userId,
+                Name = playerName
+            }).ResponseAsync;
+            if (registerResponse.Code != StatusCode.Ok)
+            {
+                Debug.LogError(registerResponse.Content);
+                return;
+            }
 
             // TODO 多样初始化
             records[userId] = new PlayerRecord
@@ -191,44 +184,15 @@ namespace Game
         }
 
         [Server]
-        public bool Registered(string userId)
+        public async UniTask<bool> Registered(string userId)
         {
-            return records.ContainsKey(userId);
-        }
-
-
-        [Server]
-        public bool AddFriend(string uid1, string uid2)
-        {
-            var friendShip = new FriendShip(uid1, uid2, null, null);
-            if (friendShips.Contains(friendShip)) return false;
-            friendShips.Add(friendShip);
-            return true;
-        }
-
-        [Server]
-        public void RemoveFriend(string uid1, string uid2)
-        {
-            friendShips.Remove(new FriendShip(uid1, uid2, null, null));
-        }
-
-        [Server]
-        public List<FriendPair> GetFriendList(string uid)
-        {
-            var result = new List<FriendPair>();
-            foreach (var friendShip in friendShips)
+            ErrorMessage containsResponse = await GrpcClient.GameService.ContainsUserAsync(new StringMessage
             {
-                if (friendShip.uid1 == uid)
-                {
-                    result.Add(new FriendPair(friendShip.uid2, friendShip.playerName2));
-                }
-                else if (friendShip.uid2 == uid)
-                {
-                    result.Add(new FriendPair(friendShip.uid1, friendShip.playerName1));
-                }
-            }
+                Content = userId
+            }).ResponseAsync;
 
-            return result;
+            if (containsResponse.Code == StatusCode.Ok) return true;
+            return false;
         }
 
         [Server]

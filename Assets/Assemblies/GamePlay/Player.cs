@@ -37,10 +37,7 @@ namespace Game
         [field: SerializeField] public PackageData package { get; private set; }
 
         [field: SerializeField] public NetworkState state { get; private set; }
-
         
-        [SerializeField] private List<FriendPair> friendList;
-
         public GameInput.PlayerActions input => InputManager.Singleton.input.Player;
 
         private void Awake()
@@ -374,48 +371,6 @@ namespace Game
                 Debug.Log($"RpcAddItem: {id} {number}");
                 package.AddItem(id, number);
             }
-        }
-
-        public void HandleDeleteFriend(string friendId)
-        {
-            if (!isLocalPlayer && !isServer)
-            {
-                Debug.LogError("HandleDeleteFriend: Not Local Player");
-                return;
-            }
-
-            CmdDeleteFriend(friendId);
-        }
-
-        [Command]
-        private void CmdDeleteFriend(string friendId, NetworkConnectionToClient sender = null)
-        {
-            bool success = PokemonServer.Singleton.QueryConnection(friendId, out NetworkConnectionToClient conn);
-            Assert.IsTrue(success);
-            TargetDeleteFriend(sender, friendId);
-            TargetDeleteFriend(conn, userId);
-        }
-
-        [TargetRpc]
-        private void TargetDeleteFriend(NetworkConnection conn, string friendId)
-        {
-            // GlobalManager.EventSystem.Send<FriendShip>();
-            throw new NotImplementedException();
-        }
-
-        [Command]
-        private void CmdGetFriendList()
-        {
-            List<FriendPair> friendPairs = PokemonServer.Singleton.GetFriendList(userId);
-            TargetGetFriendList(connectionToClient, friendPairs);
-        }
-
-
-
-        [TargetRpc]
-        private void TargetGetFriendList(NetworkConnection conn, List<FriendPair> friendList)
-        {
-            this.friendList = friendList;
         }
     }
 }
