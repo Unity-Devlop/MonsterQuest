@@ -13,6 +13,7 @@ namespace Game
     [Serializable]
     public partial class PokemonServer : MonoSingleton<PokemonServer>
     {
+        public const int DefaultTeamId = 0;
         [Serializable]
         private class PlayerRecord
         {
@@ -25,11 +26,10 @@ namespace Game
         protected override bool DontDestroyOnLoad() => false;
 
         private static readonly string RecordPath = "Record.json";
-        private static readonly string TeamGroupPath = "TeamGroup.json";
 
         // 玩家记录
         [SerializeField] private SerializableDictionary<string, PlayerRecord> records;
-        [SerializeField] private SerializableDictionary<int, TeamGroup> id2TeamGroup;
+
 
 
         // 非持久化数据
@@ -87,7 +87,7 @@ namespace Game
             // }
             // TODO using Database to save data rather than directly save to json
             JsonUtil.SaveJsonToStreamingAssets(RecordPath, records);
-            JsonUtil.SaveJsonToStreamingAssets(TeamGroupPath, id2TeamGroup);
+
         }
 
         [Server]
@@ -96,22 +96,13 @@ namespace Game
         {
             records = JsonUtil.LoadJsonFromStreamingAssets<SerializableDictionary<string, PlayerRecord>>(RecordPath);
 
-            id2TeamGroup = JsonUtil.LoadJsonFromStreamingAssets<SerializableDictionary<int, TeamGroup>>(TeamGroupPath);
+
 
             // DataBase = JsonUtil.LoadJsonFromStreamingAssets<PokemonDataBase>(DataBasePath);
 
 
             if (records == null) records = new SerializableDictionary<string, PlayerRecord>();
-            if (id2TeamGroup == null)
-            {
-                id2TeamGroup = new SerializableDictionary<int, TeamGroup>
-                {
-                    // preset groups
-                    [0] = TeamGroup.Default,
-                    [1] = new TeamGroup(1, "Red", Color.red), // 红队
-                    [2] = new TeamGroup(2, "Blue", Color.blue) // 蓝队
-                };
-            }
+
 
             // if (DataBase == null) DataBase = new PokemonDataBase();
         }
@@ -177,7 +168,7 @@ namespace Game
             records[userId] = new PlayerRecord
             {
                 userId = userId,
-                data = new PlayerData(userId, playerName, new PokemonData(PokemonEnum.玩家)),
+                data = new PlayerData(userId, playerName, DefaultTeamId, new PokemonData(PokemonEnum.玩家)),
                 package = new PackageData(),
                 position = Vector3.zero,
             };
@@ -248,15 +239,14 @@ namespace Game
                 record.position = pokemonPosition;
             }
         }
-
-        [Server]
-        public void QueryGroupData(int id, out TeamGroup teamGroup)
-        {
-            if (!id2TeamGroup.TryGetValue(id, out teamGroup))
-            {
-                teamGroup = TeamGroup.Default;
-                Debug.LogError($"Group:{id} not found , use default group");
-            }
-        }
+        // [Server]
+        // public void QueryGroupData(int id, out TeamGroup teamGroup)
+        // {
+        //     if (!id2TeamGroup.TryGetValue(id, out teamGroup))
+        //     {
+        //         teamGroup = TeamGroup.Default;
+        //         Debug.LogError($"Group:{id} not found , use default group");
+        //     }
+        // }
     }
 }

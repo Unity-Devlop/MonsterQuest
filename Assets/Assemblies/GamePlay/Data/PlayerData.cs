@@ -10,19 +10,18 @@ namespace Game
     {
         public string userId;
         public string playerName;
-
-        // public int teamId;
+        
         // [MemoryPackIgnore]
-        public int groupId;
+        public int teamId;
 
         // self 
         public PokemonData self;
 
-        public PokemonData carry1;// TODO null as default
-        
-        public PlayerData(string userId, string playerName, PokemonData self)
+        public PokemonData carry1; // TODO null as default
+
+        public PlayerData(string userId, string playerName, int teamId, PokemonData self)
         {
-            groupId = TeamGroup.Default.id;
+            this.teamId = teamId;
             this.userId = userId;
             this.playerName = playerName;
             this.self = self;

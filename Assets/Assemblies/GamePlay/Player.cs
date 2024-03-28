@@ -308,19 +308,19 @@ namespace Game
         }
 
 
-        [Command]
-        private void CmdChangeGroup(int id)
-        {
-            PokemonServer.Singleton.QueryGroupData(id, out TeamGroup groupData);
-            RpcChangeGroup(MemoryPackSerializer.Serialize(groupData));
-        }
+        // [Command]
+        // private void CmdChangeGroup(int id)
+        // {
+        //     PokemonServer.Singleton.QueryGroupData(id, out TeamGroup groupData);
+        //     RpcChangeGroup(MemoryPackSerializer.Serialize(groupData));
+        // }
 
-        [ClientRpc]
-        private void RpcChangeGroup(ArraySegment<byte> groupPayload)
-        {
-            TeamGroup groupData = MemoryPackSerializer.Deserialize<TeamGroup>(groupPayload);
-            data.groupId = groupData.id; // todo 
-        }
+        // [ClientRpc]
+        // private void RpcChangeGroup(ArraySegment<byte> groupPayload)
+        // {
+        //     TeamGroup groupData = MemoryPackSerializer.Deserialize<TeamGroup>(groupPayload);
+        //     data.groupId = groupData.id; // todo 
+        // }
 
 
         [Command(requiresAuthority = false)]

@@ -10,7 +10,7 @@ namespace Game.UI
     {
         private LoopVerticalScrollRect _friendList;
         private EasyGameObjectPool _friendItemPool;
-        private RepeatedField<FriendInfo> _friendInfos;
+        private RepeatedField<UserInfo> _friendInfos;
         private float _refreshInterval = 10f;
         private Timer _refreshTimer;
         private bool _refreshing;

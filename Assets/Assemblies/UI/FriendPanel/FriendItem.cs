@@ -10,7 +10,7 @@ namespace Game.UI
     {
         private TextMeshProUGUI _nameText;
         private Button _deleteButton;
-        private FriendInfo _friendInfo;
+        private UserInfo _friendInfo;
 
         private void Awake()
         {
@@ -33,7 +33,7 @@ namespace Game.UI
             GlobalManager.EventSystem.Send(new OnFriendListChange());
         }
 
-        public void Bind(FriendInfo friendInfo, int idx)
+        public void Bind(UserInfo friendInfo, int idx)
         {
             _nameText.text = friendInfo.Name;
             this._friendInfo = friendInfo;

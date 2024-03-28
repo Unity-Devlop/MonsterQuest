@@ -10,7 +10,7 @@ namespace Game
         {
             if (!target.canBeHit) return;
 
-            if (entity.groupId == TeamGroup.Default.id || target.groupId == TeamGroup.Default.id ||
+            if (entity.groupId == PokemonServer.DefaultTeamId || target.groupId == PokemonServer.DefaultTeamId ||
                 entity.groupId != target.groupId)
             {
                 target.canBeHit = false;  // 客户端暂时设置为不可被攻击 后面服务器同步

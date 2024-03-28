@@ -17,20 +17,23 @@ namespace Game.UI
             _searchPage = transform.Find("SearchPage").GetComponent<FriendSearchPage>();
             _listPage = transform.Find("ListPage").GetComponent<FriendListPage>();
         }
-        
+
 
         public override void OnOpened()
         {
             base.OnOpened();
-           _listPage.Open();
-           Player.Local.DisableInput();
+            _listPage.Open();
+            Player.Local.DisableInput();
         }
-        
+
         public override void OnClosed()
         {
             base.OnClosed();
             _listPage.Close();
-            Player.Local.EnableInput();
+            if (Player.Local != null)
+            {
+                Player.Local.EnableInput();
+            }
         }
     }
 }

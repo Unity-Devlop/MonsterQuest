@@ -31,10 +31,10 @@ namespace Game
             {
                 if (player == null)
                 {
-                    return TeamGroup.Default.id;
+                    return PokemonServer.DefaultTeamId;
                 }
 
-                return player.data.groupId;
+                return player.data.teamId;
             }
         }
 

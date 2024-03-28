@@ -23,7 +23,7 @@ namespace Game
             canBeHit = true;
         }
 
-        public int groupId => TeamGroup.Default.id;
+        public int groupId => PokemonServer.DefaultTeamId;
 
 
         [ClientRpc]

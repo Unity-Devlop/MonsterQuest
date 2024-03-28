@@ -5,9 +5,6 @@ using UnityEngine;
 
 namespace Game
 {
-
-
-
     [MemoryPackable, Serializable]
     public partial class PokemonData
     {

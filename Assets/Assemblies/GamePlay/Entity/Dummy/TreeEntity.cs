@@ -7,7 +7,7 @@ namespace Game
 {
     public class TreeEntity : NetworkBehaviour, ICanTakeDamage
     {
-        public int groupId => TeamGroup.Default.id;
+        public int groupId => PokemonServer.DefaultTeamId;
         [field: SyncVar, SerializeField] public bool canBeHit { get; set; } = true;
         
 
