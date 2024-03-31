@@ -46,15 +46,25 @@ namespace Proto {
     }
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::Proto.GetUidRequest> __Marshaller_proto_GetUidRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Proto.GetUidRequest.Parser));
+    static readonly grpc::Marshaller<global::Proto.StringMessage> __Marshaller_proto_StringMessage = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Proto.StringMessage.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::Proto.UidResponse> __Marshaller_proto_UidResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Proto.UidResponse.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::Proto.StringMessage> __Marshaller_proto_StringMessage = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Proto.StringMessage.Parser));
+    static readonly grpc::Marshaller<global::Proto.UserInfo> __Marshaller_proto_UserInfo = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Proto.UserInfo.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::Proto.ErrorMessage> __Marshaller_proto_ErrorMessage = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Proto.ErrorMessage.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::Proto.RegisterRequest> __Marshaller_proto_RegisterRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Proto.RegisterRequest.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::Proto.LoginRequest> __Marshaller_proto_LoginRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Proto.LoginRequest.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::Proto.LogoutRequest> __Marshaller_proto_LogoutRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Proto.LogoutRequest.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::Proto.UploadRequest> __Marshaller_proto_UploadRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Proto.UploadRequest.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::Proto.DownloadRequest> __Marshaller_proto_DownloadRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Proto.DownloadRequest.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::Proto.DownloadResponse> __Marshaller_proto_DownloadResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Proto.DownloadResponse.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::Proto.FriendListRequest> __Marshaller_proto_FriendListRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Proto.FriendListRequest.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
@@ -81,19 +91,19 @@ namespace Proto {
     static readonly grpc::Marshaller<global::Proto.LeaveTeamRequest> __Marshaller_proto_LeaveTeamRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Proto.LeaveTeamRequest.Parser));
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Method<global::Proto.GetUidRequest, global::Proto.UidResponse> __Method_GetUid = new grpc::Method<global::Proto.GetUidRequest, global::Proto.UidResponse>(
+    static readonly grpc::Method<global::Proto.StringMessage, global::Proto.UidResponse> __Method_RequestUid = new grpc::Method<global::Proto.StringMessage, global::Proto.UidResponse>(
         grpc::MethodType.Unary,
         __ServiceName,
-        "GetUid",
-        __Marshaller_proto_GetUidRequest,
+        "RequestUid",
+        __Marshaller_proto_StringMessage,
         __Marshaller_proto_UidResponse);
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Method<global::Proto.StringMessage, global::Proto.ErrorMessage> __Method_ContainsUser = new grpc::Method<global::Proto.StringMessage, global::Proto.ErrorMessage>(
+    static readonly grpc::Method<global::Proto.UserInfo, global::Proto.ErrorMessage> __Method_ContainsUser = new grpc::Method<global::Proto.UserInfo, global::Proto.ErrorMessage>(
         grpc::MethodType.Unary,
         __ServiceName,
         "ContainsUser",
-        __Marshaller_proto_StringMessage,
+        __Marshaller_proto_UserInfo,
         __Marshaller_proto_ErrorMessage);
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
@@ -103,6 +113,46 @@ namespace Proto {
         "RegisterUser",
         __Marshaller_proto_RegisterRequest,
         __Marshaller_proto_ErrorMessage);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::Proto.LoginRequest, global::Proto.ErrorMessage> __Method_Login = new grpc::Method<global::Proto.LoginRequest, global::Proto.ErrorMessage>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "Login",
+        __Marshaller_proto_LoginRequest,
+        __Marshaller_proto_ErrorMessage);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::Proto.LogoutRequest, global::Proto.ErrorMessage> __Method_Logout = new grpc::Method<global::Proto.LogoutRequest, global::Proto.ErrorMessage>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "Logout",
+        __Marshaller_proto_LogoutRequest,
+        __Marshaller_proto_ErrorMessage);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::Proto.StringMessage, global::Proto.ErrorMessage> __Method_IsLogin = new grpc::Method<global::Proto.StringMessage, global::Proto.ErrorMessage>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "IsLogin",
+        __Marshaller_proto_StringMessage,
+        __Marshaller_proto_ErrorMessage);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::Proto.UploadRequest, global::Proto.ErrorMessage> __Method_UploadPlayerData = new grpc::Method<global::Proto.UploadRequest, global::Proto.ErrorMessage>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "UploadPlayerData",
+        __Marshaller_proto_UploadRequest,
+        __Marshaller_proto_ErrorMessage);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::Proto.DownloadRequest, global::Proto.DownloadResponse> __Method_DownloadPlayerData = new grpc::Method<global::Proto.DownloadRequest, global::Proto.DownloadResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "DownloadPlayerData",
+        __Marshaller_proto_DownloadRequest,
+        __Marshaller_proto_DownloadResponse);
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Method<global::Proto.FriendListRequest, global::Proto.FriendShipList> __Method_GetFriendList = new grpc::Method<global::Proto.FriendListRequest, global::Proto.FriendShipList>(
@@ -193,19 +243,79 @@ namespace Proto {
       /// <param name="context">The context of the server-side call handler being invoked.</param>
       /// <returns>The response to send back to the client (wrapped by a task).</returns>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::System.Threading.Tasks.Task<global::Proto.UidResponse> GetUid(global::Proto.GetUidRequest request, grpc::ServerCallContext context)
+      public virtual global::System.Threading.Tasks.Task<global::Proto.UidResponse> RequestUid(global::Proto.StringMessage request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
 
+      /// <summary>
+      ///检查是否存在用户
+      /// </summary>
+      /// <param name="request">The request received from the client.</param>
+      /// <param name="context">The context of the server-side call handler being invoked.</param>
+      /// <returns>The response to send back to the client (wrapped by a task).</returns>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::System.Threading.Tasks.Task<global::Proto.ErrorMessage> ContainsUser(global::Proto.StringMessage request, grpc::ServerCallContext context)
+      public virtual global::System.Threading.Tasks.Task<global::Proto.ErrorMessage> ContainsUser(global::Proto.UserInfo request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
 
+      /// <summary>
+      ///注册用户
+      /// </summary>
+      /// <param name="request">The request received from the client.</param>
+      /// <param name="context">The context of the server-side call handler being invoked.</param>
+      /// <returns>The response to send back to the client (wrapped by a task).</returns>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual global::System.Threading.Tasks.Task<global::Proto.ErrorMessage> RegisterUser(global::Proto.RegisterRequest request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      /// <summary>
+      ///登录
+      /// </summary>
+      /// <param name="request">The request received from the client.</param>
+      /// <param name="context">The context of the server-side call handler being invoked.</param>
+      /// <returns>The response to send back to the client (wrapped by a task).</returns>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::System.Threading.Tasks.Task<global::Proto.ErrorMessage> Login(global::Proto.LoginRequest request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      /// <summary>
+      ///登出
+      /// </summary>
+      /// <param name="request">The request received from the client.</param>
+      /// <param name="context">The context of the server-side call handler being invoked.</param>
+      /// <returns>The response to send back to the client (wrapped by a task).</returns>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::System.Threading.Tasks.Task<global::Proto.ErrorMessage> Logout(global::Proto.LogoutRequest request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      /// <summary>
+      ///检查是否登录
+      /// </summary>
+      /// <param name="request">The request received from the client.</param>
+      /// <param name="context">The context of the server-side call handler being invoked.</param>
+      /// <returns>The response to send back to the client (wrapped by a task).</returns>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::System.Threading.Tasks.Task<global::Proto.ErrorMessage> IsLogin(global::Proto.StringMessage request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::System.Threading.Tasks.Task<global::Proto.ErrorMessage> UploadPlayerData(global::Proto.UploadRequest request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::System.Threading.Tasks.Task<global::Proto.DownloadResponse> DownloadPlayerData(global::Proto.DownloadRequest request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
@@ -302,9 +412,9 @@ namespace Proto {
       /// <param name="cancellationToken">An optional token for canceling the call.</param>
       /// <returns>The response received from the server.</returns>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::Proto.UidResponse GetUid(global::Proto.GetUidRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual global::Proto.UidResponse RequestUid(global::Proto.StringMessage request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
-        return GetUid(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+        return RequestUid(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
       /// <summary>
       ///获取一个uid
@@ -313,9 +423,9 @@ namespace Proto {
       /// <param name="options">The options for the call.</param>
       /// <returns>The response received from the server.</returns>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::Proto.UidResponse GetUid(global::Proto.GetUidRequest request, grpc::CallOptions options)
+      public virtual global::Proto.UidResponse RequestUid(global::Proto.StringMessage request, grpc::CallOptions options)
       {
-        return CallInvoker.BlockingUnaryCall(__Method_GetUid, null, options, request);
+        return CallInvoker.BlockingUnaryCall(__Method_RequestUid, null, options, request);
       }
       /// <summary>
       ///获取一个uid
@@ -326,9 +436,9 @@ namespace Proto {
       /// <param name="cancellationToken">An optional token for canceling the call.</param>
       /// <returns>The call object.</returns>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual grpc::AsyncUnaryCall<global::Proto.UidResponse> GetUidAsync(global::Proto.GetUidRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual grpc::AsyncUnaryCall<global::Proto.UidResponse> RequestUidAsync(global::Proto.StringMessage request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
-        return GetUidAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+        return RequestUidAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
       /// <summary>
       ///获取一个uid
@@ -337,49 +447,289 @@ namespace Proto {
       /// <param name="options">The options for the call.</param>
       /// <returns>The call object.</returns>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual grpc::AsyncUnaryCall<global::Proto.UidResponse> GetUidAsync(global::Proto.GetUidRequest request, grpc::CallOptions options)
+      public virtual grpc::AsyncUnaryCall<global::Proto.UidResponse> RequestUidAsync(global::Proto.StringMessage request, grpc::CallOptions options)
       {
-        return CallInvoker.AsyncUnaryCall(__Method_GetUid, null, options, request);
+        return CallInvoker.AsyncUnaryCall(__Method_RequestUid, null, options, request);
       }
+      /// <summary>
+      ///检查是否存在用户
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The response received from the server.</returns>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::Proto.ErrorMessage ContainsUser(global::Proto.StringMessage request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual global::Proto.ErrorMessage ContainsUser(global::Proto.UserInfo request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return ContainsUser(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
+      /// <summary>
+      ///检查是否存在用户
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The response received from the server.</returns>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::Proto.ErrorMessage ContainsUser(global::Proto.StringMessage request, grpc::CallOptions options)
+      public virtual global::Proto.ErrorMessage ContainsUser(global::Proto.UserInfo request, grpc::CallOptions options)
       {
         return CallInvoker.BlockingUnaryCall(__Method_ContainsUser, null, options, request);
       }
+      /// <summary>
+      ///检查是否存在用户
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The call object.</returns>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual grpc::AsyncUnaryCall<global::Proto.ErrorMessage> ContainsUserAsync(global::Proto.StringMessage request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual grpc::AsyncUnaryCall<global::Proto.ErrorMessage> ContainsUserAsync(global::Proto.UserInfo request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return ContainsUserAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
+      /// <summary>
+      ///检查是否存在用户
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The call object.</returns>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual grpc::AsyncUnaryCall<global::Proto.ErrorMessage> ContainsUserAsync(global::Proto.StringMessage request, grpc::CallOptions options)
+      public virtual grpc::AsyncUnaryCall<global::Proto.ErrorMessage> ContainsUserAsync(global::Proto.UserInfo request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_ContainsUser, null, options, request);
       }
+      /// <summary>
+      ///注册用户
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The response received from the server.</returns>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual global::Proto.ErrorMessage RegisterUser(global::Proto.RegisterRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return RegisterUser(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
+      /// <summary>
+      ///注册用户
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The response received from the server.</returns>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual global::Proto.ErrorMessage RegisterUser(global::Proto.RegisterRequest request, grpc::CallOptions options)
       {
         return CallInvoker.BlockingUnaryCall(__Method_RegisterUser, null, options, request);
       }
+      /// <summary>
+      ///注册用户
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The call object.</returns>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual grpc::AsyncUnaryCall<global::Proto.ErrorMessage> RegisterUserAsync(global::Proto.RegisterRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return RegisterUserAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
+      /// <summary>
+      ///注册用户
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The call object.</returns>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual grpc::AsyncUnaryCall<global::Proto.ErrorMessage> RegisterUserAsync(global::Proto.RegisterRequest request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_RegisterUser, null, options, request);
+      }
+      /// <summary>
+      ///登录
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The response received from the server.</returns>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::Proto.ErrorMessage Login(global::Proto.LoginRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return Login(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      /// <summary>
+      ///登录
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The response received from the server.</returns>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::Proto.ErrorMessage Login(global::Proto.LoginRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_Login, null, options, request);
+      }
+      /// <summary>
+      ///登录
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The call object.</returns>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::Proto.ErrorMessage> LoginAsync(global::Proto.LoginRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return LoginAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      /// <summary>
+      ///登录
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The call object.</returns>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::Proto.ErrorMessage> LoginAsync(global::Proto.LoginRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_Login, null, options, request);
+      }
+      /// <summary>
+      ///登出
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The response received from the server.</returns>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::Proto.ErrorMessage Logout(global::Proto.LogoutRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return Logout(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      /// <summary>
+      ///登出
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The response received from the server.</returns>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::Proto.ErrorMessage Logout(global::Proto.LogoutRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_Logout, null, options, request);
+      }
+      /// <summary>
+      ///登出
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The call object.</returns>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::Proto.ErrorMessage> LogoutAsync(global::Proto.LogoutRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return LogoutAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      /// <summary>
+      ///登出
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The call object.</returns>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::Proto.ErrorMessage> LogoutAsync(global::Proto.LogoutRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_Logout, null, options, request);
+      }
+      /// <summary>
+      ///检查是否登录
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The response received from the server.</returns>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::Proto.ErrorMessage IsLogin(global::Proto.StringMessage request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return IsLogin(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      /// <summary>
+      ///检查是否登录
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The response received from the server.</returns>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::Proto.ErrorMessage IsLogin(global::Proto.StringMessage request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_IsLogin, null, options, request);
+      }
+      /// <summary>
+      ///检查是否登录
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The call object.</returns>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::Proto.ErrorMessage> IsLoginAsync(global::Proto.StringMessage request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return IsLoginAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      /// <summary>
+      ///检查是否登录
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The call object.</returns>
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::Proto.ErrorMessage> IsLoginAsync(global::Proto.StringMessage request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_IsLogin, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::Proto.ErrorMessage UploadPlayerData(global::Proto.UploadRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return UploadPlayerData(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::Proto.ErrorMessage UploadPlayerData(global::Proto.UploadRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_UploadPlayerData, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::Proto.ErrorMessage> UploadPlayerDataAsync(global::Proto.UploadRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return UploadPlayerDataAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::Proto.ErrorMessage> UploadPlayerDataAsync(global::Proto.UploadRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_UploadPlayerData, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::Proto.DownloadResponse DownloadPlayerData(global::Proto.DownloadRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return DownloadPlayerData(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::Proto.DownloadResponse DownloadPlayerData(global::Proto.DownloadRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_DownloadPlayerData, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::Proto.DownloadResponse> DownloadPlayerDataAsync(global::Proto.DownloadRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return DownloadPlayerDataAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::Proto.DownloadResponse> DownloadPlayerDataAsync(global::Proto.DownloadRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_DownloadPlayerData, null, options, request);
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual global::Proto.FriendShipList GetFriendList(global::Proto.FriendListRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
@@ -575,9 +925,14 @@ namespace Proto {
     public static grpc::ServerServiceDefinition BindService(GameServiceBase serviceImpl)
     {
       return grpc::ServerServiceDefinition.CreateBuilder()
-          .AddMethod(__Method_GetUid, serviceImpl.GetUid)
+          .AddMethod(__Method_RequestUid, serviceImpl.RequestUid)
           .AddMethod(__Method_ContainsUser, serviceImpl.ContainsUser)
           .AddMethod(__Method_RegisterUser, serviceImpl.RegisterUser)
+          .AddMethod(__Method_Login, serviceImpl.Login)
+          .AddMethod(__Method_Logout, serviceImpl.Logout)
+          .AddMethod(__Method_IsLogin, serviceImpl.IsLogin)
+          .AddMethod(__Method_UploadPlayerData, serviceImpl.UploadPlayerData)
+          .AddMethod(__Method_DownloadPlayerData, serviceImpl.DownloadPlayerData)
           .AddMethod(__Method_GetFriendList, serviceImpl.GetFriendList)
           .AddMethod(__Method_AddFriend, serviceImpl.AddFriend)
           .AddMethod(__Method_DeleteFriend, serviceImpl.DeleteFriend)
@@ -596,9 +951,14 @@ namespace Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     public static void BindService(grpc::ServiceBinderBase serviceBinder, GameServiceBase serviceImpl)
     {
-      serviceBinder.AddMethod(__Method_GetUid, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Proto.GetUidRequest, global::Proto.UidResponse>(serviceImpl.GetUid));
-      serviceBinder.AddMethod(__Method_ContainsUser, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Proto.StringMessage, global::Proto.ErrorMessage>(serviceImpl.ContainsUser));
+      serviceBinder.AddMethod(__Method_RequestUid, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Proto.StringMessage, global::Proto.UidResponse>(serviceImpl.RequestUid));
+      serviceBinder.AddMethod(__Method_ContainsUser, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Proto.UserInfo, global::Proto.ErrorMessage>(serviceImpl.ContainsUser));
       serviceBinder.AddMethod(__Method_RegisterUser, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Proto.RegisterRequest, global::Proto.ErrorMessage>(serviceImpl.RegisterUser));
+      serviceBinder.AddMethod(__Method_Login, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Proto.LoginRequest, global::Proto.ErrorMessage>(serviceImpl.Login));
+      serviceBinder.AddMethod(__Method_Logout, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Proto.LogoutRequest, global::Proto.ErrorMessage>(serviceImpl.Logout));
+      serviceBinder.AddMethod(__Method_IsLogin, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Proto.StringMessage, global::Proto.ErrorMessage>(serviceImpl.IsLogin));
+      serviceBinder.AddMethod(__Method_UploadPlayerData, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Proto.UploadRequest, global::Proto.ErrorMessage>(serviceImpl.UploadPlayerData));
+      serviceBinder.AddMethod(__Method_DownloadPlayerData, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Proto.DownloadRequest, global::Proto.DownloadResponse>(serviceImpl.DownloadPlayerData));
       serviceBinder.AddMethod(__Method_GetFriendList, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Proto.FriendListRequest, global::Proto.FriendShipList>(serviceImpl.GetFriendList));
       serviceBinder.AddMethod(__Method_AddFriend, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Proto.AddFriendRequest, global::Proto.ErrorMessage>(serviceImpl.AddFriend));
       serviceBinder.AddMethod(__Method_DeleteFriend, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Proto.DeleteFriendRequest, global::Proto.ErrorMessage>(serviceImpl.DeleteFriend));

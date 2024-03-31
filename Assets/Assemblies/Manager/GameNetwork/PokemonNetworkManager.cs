@@ -52,7 +52,7 @@ namespace Game
 
         private async void RequestEnterGame(NetworkConnectionToClient connection, RequestEnterGameMessage msg)
         {
-            if (!await PokemonServer.Singleton.Registered(msg.userId))
+            if (!await PokemonServer.Singleton.ContainsUser(msg.userId,msg.playerName))
             {
                 Debug.Log($"Id:[{msg.userId}],Name:[{msg.playerName}]第一次上线,初始化角色信息\n");
                 await PokemonServer.Singleton.Register(msg.userId, msg.playerName);
@@ -65,7 +65,11 @@ namespace Game
                 return;
             }
 
-            PokemonServer.Singleton.UserLogin(msg.userId, connection);
+            if (!await PokemonServer.Singleton.UserLogin(msg.userId, connection))
+            {
+                connection.Disconnect();
+                return;
+            }
 
             // Query Last Pos
             PokemonServer.Singleton.QueryPosition(msg.userId, out Vector3 position);

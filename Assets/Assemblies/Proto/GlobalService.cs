@@ -24,20 +24,20 @@ namespace Proto {
     static GlobalServiceReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChRnbG9iYWxfc2VydmljZS5wcm90bxIFcHJvdG8aEmdhbWVfc2VydmljZS5w",
-            "cm90byITChFTZXJ2ZXJMaXN0UmVxdWVzdCInCgpTZXJ2ZXJJbmZvEgsKA3Vy",
-            "aRgBIAEoCRIMCgRuYW1lGAIgASgJIjwKElNlcnZlckxpc3RSZXNwb25zZRIm",
-            "CgtzZXJ2ZXJfbGlzdBgBIAMoCzIRLnByb3RvLlNlcnZlckluZm8iMgoVUmVn",
-            "aXN0ZXJTZXJ2ZXJSZXF1ZXN0EgsKA3VyaRgCIAEoCRIMCgRuYW1lGAMgASgJ",
-            "IiYKF1VuUmVnaXN0ZXJTZXJ2ZXJSZXF1ZXN0EgsKA3VyaRgCIAEoCTLjAQoN",
-            "R2xvYmFsU2VydmljZRJECg1HZXRTZXJ2ZXJMaXN0EhgucHJvdG8uU2VydmVy",
-            "TGlzdFJlcXVlc3QaGS5wcm90by5TZXJ2ZXJMaXN0UmVzcG9uc2USQwoOUmVn",
-            "aXN0ZXJTZXJ2ZXISHC5wcm90by5SZWdpc3RlclNlcnZlclJlcXVlc3QaEy5w",
-            "cm90by5FcnJvck1lc3NhZ2USRwoQVW5SZWdpc3RlclNlcnZlchIeLnByb3Rv",
-            "LlVuUmVnaXN0ZXJTZXJ2ZXJSZXF1ZXN0GhMucHJvdG8uRXJyb3JNZXNzYWdl",
-            "QgpaCC4vO3Byb3RvYgZwcm90bzM="));
+            "ChRnbG9iYWxfc2VydmljZS5wcm90bxIFcHJvdG8aDGNvbW1vbi5wcm90byIT",
+            "ChFTZXJ2ZXJMaXN0UmVxdWVzdCInCgpTZXJ2ZXJJbmZvEgsKA3VyaRgBIAEo",
+            "CRIMCgRuYW1lGAIgASgJIjwKElNlcnZlckxpc3RSZXNwb25zZRImCgtzZXJ2",
+            "ZXJfbGlzdBgBIAMoCzIRLnByb3RvLlNlcnZlckluZm8iMgoVUmVnaXN0ZXJT",
+            "ZXJ2ZXJSZXF1ZXN0EgsKA3VyaRgCIAEoCRIMCgRuYW1lGAMgASgJIiYKF1Vu",
+            "UmVnaXN0ZXJTZXJ2ZXJSZXF1ZXN0EgsKA3VyaRgCIAEoCTLjAQoNR2xvYmFs",
+            "U2VydmljZRJECg1HZXRTZXJ2ZXJMaXN0EhgucHJvdG8uU2VydmVyTGlzdFJl",
+            "cXVlc3QaGS5wcm90by5TZXJ2ZXJMaXN0UmVzcG9uc2USQwoOUmVnaXN0ZXJT",
+            "ZXJ2ZXISHC5wcm90by5SZWdpc3RlclNlcnZlclJlcXVlc3QaEy5wcm90by5F",
+            "cnJvck1lc3NhZ2USRwoQVW5SZWdpc3RlclNlcnZlchIeLnByb3RvLlVuUmVn",
+            "aXN0ZXJTZXJ2ZXJSZXF1ZXN0GhMucHJvdG8uRXJyb3JNZXNzYWdlQgpaCC4v",
+            "O3Byb3RvYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Proto.GameServiceReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Proto.CommonReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.ServerListRequest), global::Proto.ServerListRequest.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.ServerInfo), global::Proto.ServerInfo.Parser, new[]{ "Uri", "Name" }, null, null, null, null),

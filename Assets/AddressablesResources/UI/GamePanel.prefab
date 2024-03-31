@@ -535,7 +535,7 @@ GameObject:
   - component: {fileID: 6739830426568170472}
   - component: {fileID: 5873123690225704121}
   m_Layer: 5
-  m_Name: GroupPanel
+  m_Name: TeamPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1588,7 +1588,7 @@ GameObject:
   - component: {fileID: 7456760255139061607}
   - component: {fileID: 5058530075977082716}
   m_Layer: 5
-  m_Name: GroupColor
+  m_Name: TeamColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
