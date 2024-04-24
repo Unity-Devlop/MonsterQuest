@@ -25,6 +25,7 @@ namespace Game
         public CinemachineFreeLook freeLookCamera { get; private set; }
 
         public static event Action OnLocalPlayerSpawned;
+        public event Action OnTeamChanged = delegate { }; 
         private CinemachineInputProvider _cameraInputProvider;
 
         public PlayerController controller { get; private set; }
@@ -186,13 +187,6 @@ namespace Game
                 {
                     UIRoot.Singleton.CloseTop();
                 }
-                else
-                {
-                    if (UIRoot.Singleton.CurTop() is GamePanel gamePanel)
-                    {
-                        gamePanel.CloseSub();
-                    }
-                }
             }
 
             if (Keyboard.current.backquoteKey.wasPressedThisFrame)
@@ -308,19 +302,37 @@ namespace Game
         }
 
 
-        // [Command]
-        // private void CmdChangeGroup(int id)
-        // {
-        //     PokemonServer.Singleton.QueryGroupData(id, out TeamGroup groupData);
-        //     RpcChangeGroup(MemoryPackSerializer.Serialize(groupData));
-        // }
-
-        // [ClientRpc]
-        // private void RpcChangeGroup(ArraySegment<byte> groupPayload)
-        // {
-        //     TeamGroup groupData = MemoryPackSerializer.Deserialize<TeamGroup>(groupPayload);
-        //     data.groupId = groupData.id; // todo 
-        // }
+        [Command(requiresAuthority = false)]
+        public async void CmdChangeTeam(int teamId)
+        {
+            if (teamId == PokemonServer.DefaultTeamId)
+            {
+                return;
+            }
+            // 先离开 , 再加入新的
+            await GrpcClient.GameService.LeaveTeamAsync(new Proto.LeaveTeamRequest
+            {
+                Sender = data.userId,
+                TeamId = data.teamId
+            });
+            
+            await GrpcClient.GameService.JoinTeamAsync(new Proto.JoinTeamRequest
+            {
+                Sender = data.userId,
+                TeamId = teamId
+            });
+            data.teamId = teamId;
+            // Debug.Log($"Change Team: {teamId}");
+            RpcChangeTeam(teamId);
+        }
+        
+        [ClientRpc]
+        public void RpcChangeTeam(int teamId)
+        {
+            Debug.Log($"Change Team: {teamId}");
+            data.teamId = teamId;
+            OnTeamChanged();
+        }
 
 
         [Command(requiresAuthority = false)]

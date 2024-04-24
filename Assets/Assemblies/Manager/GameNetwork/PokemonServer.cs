@@ -104,6 +104,7 @@ namespace Game
             _onLineConn2Id.Remove(_onlineId2Conn[userId]);
             _onlineId2Conn.Remove(userId);
 
+            Debug.Log(records[userId].data.teamId);
             // Upload
             ErrorMessage errorMessage = await GrpcClient.GameService.UploadPlayerDataAsync(new UploadRequest
             {
@@ -132,9 +133,8 @@ namespace Game
         [Server]
         public void UserOffLine(NetworkConnectionToClient conn)
         {
-            NetworkServer.DestroyPlayerForConnection(conn);
-            _onlineId2Conn.Remove(_onLineConn2Id[conn]);
-            _onLineConn2Id.Remove(conn);
+            string userId = _onLineConn2Id[conn];
+            UserOffLine(userId);
         }
 
         [Server]

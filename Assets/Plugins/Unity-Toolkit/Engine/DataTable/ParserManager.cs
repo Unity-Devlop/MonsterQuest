@@ -34,7 +34,7 @@ namespace UnityToolkit.Editor
             _buildInGenericParserType.GetMethod(nameof(BuildInStringGenericParser.StructAndClassParser));
 
 
-        [DidReloadScripts]
+        // [DidReloadScripts]
         internal static void OnAssemblyReload()
         {
             _cacheDict.Clear();

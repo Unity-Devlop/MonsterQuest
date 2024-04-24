@@ -1,6 +1,7 @@
 ﻿using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityToolkit;
 
 namespace Game.UI
@@ -30,8 +31,7 @@ namespace Game.UI
             PokemonData data = Player.Local.controller.data;
             _healthBar.SetWithoutNotify(data.currentHealth, 0, data.maxHealth);
             levelText.text = $"Lv.{data.level}";
-
-
+            
             gameObject.SetActive(true);
         }
 

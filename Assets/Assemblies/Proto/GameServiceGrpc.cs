@@ -82,6 +82,10 @@ namespace Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::Proto.TeamListResponse> __Marshaller_proto_TeamListResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Proto.TeamListResponse.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::Proto.TeamInfoRequest> __Marshaller_proto_TeamInfoRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Proto.TeamInfoRequest.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::Proto.TeamInfoResponse> __Marshaller_proto_TeamInfoResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Proto.TeamInfoResponse.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::Proto.JoinTeamRequest> __Marshaller_proto_JoinTeamRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Proto.JoinTeamRequest.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::Proto.CreateTeamRequest> __Marshaller_proto_CreateTeamRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Proto.CreateTeamRequest.Parser));
@@ -193,6 +197,14 @@ namespace Proto {
         "GetTeamList",
         __Marshaller_proto_TeamListRequest,
         __Marshaller_proto_TeamListResponse);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::Proto.TeamInfoRequest, global::Proto.TeamInfoResponse> __Method_GetTeamInfo = new grpc::Method<global::Proto.TeamInfoRequest, global::Proto.TeamInfoResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "GetTeamInfo",
+        __Marshaller_proto_TeamInfoRequest,
+        __Marshaller_proto_TeamInfoResponse);
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Method<global::Proto.JoinTeamRequest, global::Proto.ErrorMessage> __Method_JoinTeam = new grpc::Method<global::Proto.JoinTeamRequest, global::Proto.ErrorMessage>(
@@ -346,6 +358,12 @@ namespace Proto {
 
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual global::System.Threading.Tasks.Task<global::Proto.TeamListResponse> GetTeamList(global::Proto.TeamListRequest request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::System.Threading.Tasks.Task<global::Proto.TeamInfoResponse> GetTeamInfo(global::Proto.TeamInfoRequest request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
@@ -832,6 +850,26 @@ namespace Proto {
         return CallInvoker.AsyncUnaryCall(__Method_GetTeamList, null, options, request);
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::Proto.TeamInfoResponse GetTeamInfo(global::Proto.TeamInfoRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetTeamInfo(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::Proto.TeamInfoResponse GetTeamInfo(global::Proto.TeamInfoRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_GetTeamInfo, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::Proto.TeamInfoResponse> GetTeamInfoAsync(global::Proto.TeamInfoRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetTeamInfoAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::Proto.TeamInfoResponse> GetTeamInfoAsync(global::Proto.TeamInfoRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_GetTeamInfo, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual global::Proto.ErrorMessage JoinTeam(global::Proto.JoinTeamRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return JoinTeam(request, new grpc::CallOptions(headers, deadline, cancellationToken));
@@ -938,6 +976,7 @@ namespace Proto {
           .AddMethod(__Method_DeleteFriend, serviceImpl.DeleteFriend)
           .AddMethod(__Method_SearchFriend, serviceImpl.SearchFriend)
           .AddMethod(__Method_GetTeamList, serviceImpl.GetTeamList)
+          .AddMethod(__Method_GetTeamInfo, serviceImpl.GetTeamInfo)
           .AddMethod(__Method_JoinTeam, serviceImpl.JoinTeam)
           .AddMethod(__Method_CreateTeam, serviceImpl.CreateTeam)
           .AddMethod(__Method_DeleteTeam, serviceImpl.DeleteTeam)
@@ -964,6 +1003,7 @@ namespace Proto {
       serviceBinder.AddMethod(__Method_DeleteFriend, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Proto.DeleteFriendRequest, global::Proto.ErrorMessage>(serviceImpl.DeleteFriend));
       serviceBinder.AddMethod(__Method_SearchFriend, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Proto.SearchFriendRequest, global::Proto.SearchFriendResponse>(serviceImpl.SearchFriend));
       serviceBinder.AddMethod(__Method_GetTeamList, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Proto.TeamListRequest, global::Proto.TeamListResponse>(serviceImpl.GetTeamList));
+      serviceBinder.AddMethod(__Method_GetTeamInfo, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Proto.TeamInfoRequest, global::Proto.TeamInfoResponse>(serviceImpl.GetTeamInfo));
       serviceBinder.AddMethod(__Method_JoinTeam, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Proto.JoinTeamRequest, global::Proto.ErrorMessage>(serviceImpl.JoinTeam));
       serviceBinder.AddMethod(__Method_CreateTeam, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Proto.CreateTeamRequest, global::Proto.ErrorMessage>(serviceImpl.CreateTeam));
       serviceBinder.AddMethod(__Method_DeleteTeam, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Proto.DeleteTeamRequest, global::Proto.ErrorMessage>(serviceImpl.DeleteTeam));
